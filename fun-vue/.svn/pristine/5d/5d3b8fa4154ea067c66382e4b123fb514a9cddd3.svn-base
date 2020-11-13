@@ -1,0 +1,58 @@
+<template>
+  <div class="bg5">
+  </div>
+</template>
+
+<script>
+  // @ is an alias to /src
+  import { api_user } from '@/api/index'
+  import DataSource from '@/common/DataSource'
+  import * as tool from '@/common/Tool'
+
+  export default {
+    name: 'login',
+    data() {
+      return {
+        q: this.$route.params.q,//openid
+        r: this.$route.params.r,//url
+      }
+    },
+    created: function () {
+      this.wxLogin()
+    },
+    methods: {
+      wxLogin() {
+        api_user.loginByOpenid({
+          openid: this.q,
+          saasId: tool.app.saasId
+        })
+          .then(res => {
+            if (res.status == tool.rtCode.status) {
+              DataSource.set('userInfo', res, 1)
+              DataSource.set('token', res.token, 1)
+              DataSource.set('firUrl', window.location.href, 1)
+              tool.setUser(res)
+              if (this.r) {
+                this.redirect(this.r)
+              } else {
+                this.$router.push({ name: 'home' })
+              }
+            } else {
+              this.$router.push({ name: 'login' ,query: {
+                  openid: this.q
+                }})
+            }
+          })
+      },
+      redirect(_url) {
+        let _urlArr = _url.split('-')
+        let url = _urlArr[0] //参数1-跳转路径，参数2-分享人的ID或工号，参数3-可能后续会加
+        if (url.indexOf('index') != -1) {
+          this.$router.push({ name: 'home'})
+        } else if (url.indexOf('articleDetail') != -1) {
+          this.$router.push({ name: 'articleDetail', params: {id: _urlArr[1]}})
+        }
+      }
+    }
+  }
+</script>

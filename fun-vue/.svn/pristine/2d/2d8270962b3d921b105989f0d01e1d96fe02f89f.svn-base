@@ -1,0 +1,84 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0;minimum-scale=1.0, maximum-scale=1.0">
+<title>知识库</title>
+  <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../assets/css/common.css">
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/responsive.css">
+
+
+</head>
+
+<body class="bg3">
+<div class="fun-top-panel bg7  ">
+  <span class="mess-back "><div class="cont-w"></div></span>
+  <span class="title c3 f3 dblock2 t-center ">知识库</span>
+</div>
+<div class="main-top p-fix bg7 b-radius2">
+
+  <section class="f-flex pad7-1 border-b1">
+    <div class="sear-bb ">
+      <div class=" new-search ns2 clearfix">
+        <section class="sear-c posi2 clearfix">
+          <form action="" class="input-search-form" id="search_from"  >
+            <input type="search"  input autocomplete="off" placeholder="输入关键字搜索" ng-model="search.text" class="f2 " >
+          </form>
+          <button class="sea-btn" ng-click="searchLike()"><span class="gg-search" ></span></button>
+        </section>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="main-container mar4-5 bg7 bot1 clearfix">
+      <section class="tab-box3 ">
+        <span class=" active c-p">猜你想问</span>
+        <span class=" c-p">开场白</span>
+        <span class=" c-p">名词介绍</span>
+        <span class=" c-p">保险锦囊</span>
+        <span class=" c-p">拒绝话术</span>
+        <span class=" c-p">理赔指南</span>
+      </section>
+        <section>
+           <h3 class="ek-com-tit tri2 up mar6-2 f3">1.买保险不划算的相关拒绝话术？</h3>
+          <section class="mar3-2 pad1-3">
+            <div class="b-radius3  pad5-3 bg3  mar7-3">
+              <p class="f2 c5">  买保险就是用来防范未知风险的，没事保平安，有事不近能帮我们渡过难关，还能抵御家庭风险，在风险来临是让家人衣食无忧，买保险是爱和责任的表现，而且保险公司是集千家万户的钱去帮助有需要的人，在帮助他们的同时，自己也会是受益者。</p>
+            </div>
+          </section>
+          <h3 class="ek-com-tit tri2 mar6-2 f3">1.买保险不划算的相关拒绝话术？</h3>
+          <h3 class="ek-com-tit tri2 mar6-2 f3">1.买保险不划算的相关拒绝话术？</h3>
+          <h3 class="ek-com-tit tri2 mar6-2 f3">1.买保险不划算的相关拒绝话术？</h3>
+        </section>
+
+</div>
+<div class="t-center f3 c6 pad6">未找到答案？<span class="c8">去提问</span></div>
+
+
+    <div class="fun-panel clearfix">
+      <div class="f-left  blk active">
+        <span class="icon one"></span>
+        <div class="f0 txt t-center">首页</div>
+      </div>
+      <div class="f-left  blk">
+        <span class="icon two"></span>
+        <div class="f0 txt t-center">数字行销</div>
+      </div>
+      <div class="f-left  blk ">
+        <span class="icon three"></span>
+        <div class="f0 txt t-center">会话消息</div>
+      </div>
+      <div class="f-left  blk ">
+        <span class="icon four"></span>
+        <div class="f0 txt t-center">交易服务</div>
+      </div>
+      <div class="f-left  blk ">
+        <span class="icon five"></span>
+        <div class="f0 txt t-center">我的</div>
+      </div>
+    </div>
+
+</body>
+</html>

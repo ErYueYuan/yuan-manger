@@ -1,0 +1,30 @@
+<template>
+  <div id="app">
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive"></router-view>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"></router-view>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'app',
+    mounted () {
+      this.$on('$stateChangeSuccess', (ev, to, toParams, from, fromParams) => {
+        if (tool.globalData.isApp && tool.globalData.isIOS) {
+          window.webkit.messageHandlers.JSViewChange.postMessage(to.url);
+        }
+      })
+    }
+  }
+</script>
+<style>
+  .toast-error {
+    background: #ffe1e1 !important;
+    color: #ad0000 !important;
+  }
+  .toast-warn {
+    background: #ff976a !important;
+  }
+</style>

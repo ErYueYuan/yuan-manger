@@ -1,0 +1,215 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0;minimum-scale=1.0, maximum-scale=1.0">
+<title>全部客户</title>
+  <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../assets/css/common.css">
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/responsive.css">
+
+
+</head>
+
+<body class="bg3">
+<div class="fun-top-panel bg-my  ">
+  <span class="mess-back "><div class="cont-wh"></div></span>
+  <span class="title c7 f3 dblock2 t-center ">全部客户</span>
+  <span class="right"><b class="fun-icon icon-search"></b></span>
+</div>
+<div class="main-container mar3-7 clearfix">
+  <div class="my-n-txtbox pd1">
+      <section class="my2020-nav-top  mnt1 bg7 " >
+        <ul class=" f2 row mar0">
+          <li class="col-4 pad1-1 none t-center bor-b" >
+            <b class="f3 c5">190<span class="f1 c4">人</span></b>
+            <div class="t-center f2 c4">全部客户</div>
+          </li>
+          <li class="col-4 pad1-1 none t-center bor-b">
+            <b class="f3 c5">190<span class="f1 c4">人</span></b>
+            <div class="t-center f2 c4">订单客户</div>
+          </li>
+          <li class="col-4 pad1-1 t-center none bor-b">
+            <b class="f3 c5">3<span class="f1 c4">人</span></b>
+            <div class="t-center f2 c4">成交客户</div>
+          </li>
+          <li class="col-4 pad1-1 t-center none" >
+            <b class="f3 c5">190<span class="f1 c4">人</span></b>
+            <div class="t-center f2 c4">加公众号</div>
+          </li>
+          <li class="col-4 pad1-1 none t-center ">
+            <b class="f3 c5">190人</b>
+            <div class="t-center f2 c4">加微信</div>
+          </li>
+          <li class="col-4 pad1-1 none t-center none">
+            <b class="f3 c5">3<span class="f1 c4">人</span></b>
+            <div class="t-center f2 c4">已绑定顾问</div>
+          </li>
+        </ul>
+      </section>
+
+    <div class="main-top mar3-9 bg7 ">
+      <div class="sale-nav row mar6-6 pad6">
+        <div class="col-6 pad8"> <div class="sale-btn-l2 t-left">
+            <div class="pad5-3">
+              <h3 class="f4 c7">成交客户</h3>
+              <p class="c7 f1">本月有 3 位待续费客户</p>
+            </div>
+        </div></div>
+        <div class="col-6 pad8"> <div class="sale-btn-r2 t-left">
+          <div class="pad5-3">
+            <h3 class="f4 c7">客户关怀</h3>
+            <p class="c7 f1">近7天生日客户 3 位</p>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+    <section class="bg7 b-radius1 mar3-2">
+          <div class=" fresh  border-t2 clearfix ">
+            <section class="box2 f-flex f1-2">
+              <div class="cont">
+                <div class="sel-box2 sb2">
+                  <select>
+                    <option>客户类1</option>
+                    <option>客户类2</option>
+                    <option>客户类3</option>
+                    <option>客户类4</option>
+                  </select>
+                </div>
+              </div>
+              <div class="cont">
+                <div class="sel-box2">
+                  <select>
+                    <option>等级级1</option>
+                    <option>等级级2</option>
+                    <option>等级级3</option>
+                    <option>等级级4</option>
+                  </select>
+                </div>
+              </div>
+              <div class="cont">
+                <div class="sel-box2">
+                  <select>
+                    <option>订单状1</option>
+                    <option>订单状2</option>
+                    <option>订单状3</option>
+                    <option>订单状4</option>
+                  </select>
+                </div>
+              </div>
+              <div class="cont">
+                <div class="sel-box2">
+                  <select>
+                    <option>排序级1</option>
+                    <option>排序级2</option>
+                    <option>排序级3</option>
+                    <option>排序级4</option>
+                  </select>
+                </div>
+              </div>
+              <div><b class="fun-icon icon-select mar3-2" title="筛选"></b></div>
+            </section>
+          </div>
+
+    </section>
+  <section class="bg7 border-t">
+      <div class="blk-cont-box posi2 border-b1 mar6-2">
+          <div class="img-box posi2">
+                <img src="../../assets/img/index/bar_bg.png" />
+                <b class="state c-p">分配客户</b>
+          </div>
+          <div class="right-box posi2  c-p" >
+                <h3 class="f2 c6 mar7-2">范晓华</span>
+                </h3>
+                <div class="f2 c4 ">
+                  <span>年龄：</span><span>30岁</span>
+                </div>
+                <div class=" f2 c4">
+                  <span>客户星级：</span><span class="stars-box"><i></i><i></i><i></i><i></i><i class="grey"></i></span>
+                </div>
+                <div class=" f2 c4">
+                  <span>订单状态：</span><span class="c8">投保录入中</span>
+                </div>
+                <div class=" f2 c4">
+                  <span>订单更新时间：</span><span>2020-08-20 15:00</span>
+                </div>
+                <div class="f1"><b class="ek-btn-5">赠险活动客户</b></div>
+          </div>
+          <b class="flag">客户行销</b>
+      </div>
+        <div class="blk-cont-box posi2 border-b1 mar6-2">
+          <div class="img-box posi2">
+            <img src="../../assets/img/index/bar_bg.png" />
+            <b class="state c-p">分配客户</b>
+          </div>
+          <div class="right-box posi2  c-p" >
+            <h3 class="f2 c6 mar7-2">范晓华</span>
+            </h3>
+            <div class="f2 c4 ">
+              <span>年龄：</span><span>30岁</span><b class="s-icon b3"></b>
+            </div>
+            <div class=" f2 c4">
+              <span>客户星级：</span><span>重庆分公司</span>
+            </div>
+            <div class=" f2 c4">
+              <span>订单状态：</span><span class="c8">投保录入中</span>
+            </div>
+            <div class=" f2 c4">
+              <span>订单更新时间：</span><span>2020-08-20 15:00</span>
+            </div>
+          </div>
+          <b class="flag">客户行销</b>
+        </div>
+        <div class="blk-cont-box posi2 border-b1 mar6-2">
+          <div class="img-box posi2">
+            <img src="../../assets/img/index/bar_bg.png" />
+            <b class="state c-p">分配客户</b>
+          </div>
+          <div class="right-box posi2  c-p" >
+            <h3 class="f2 c6 mar7-2">范晓华</span>
+            </h3>
+            <div class="f2 c4 ">
+              <span>年龄：</span><span>30岁</span>
+            </div>
+            <div class=" f2 c4">
+              <span>客户星级：</span><span>重庆分公司</span>
+            </div>
+            <div class=" f2 c4">
+              <span>订单状态：</span><span class="c8">投保录入中</span>
+            </div>
+            <div class=" f2 c4">
+              <span>订单更新时间：</span><span>2020-08-20 15:00</span>
+            </div>
+          </div>
+          <b class="flag">客户行销</b>
+        </div>
+  </section>
+</div>
+
+<div class="fun-panel clearfix">
+  <div class="f-left  blk active">
+    <span class="icon one"></span>
+    <div class="f0 txt t-center">首页</div>
+  </div>
+  <div class="f-left  blk">
+    <span class="icon two"></span>
+    <div class="f0 txt t-center">数字行销</div>
+  </div>
+  <div class="f-left  blk ">
+    <span class="icon three"></span>
+    <div class="f0 txt t-center">会话消息</div>
+  </div>
+  <div class="f-left  blk ">
+    <span class="icon four"></span>
+    <div class="f0 txt t-center">交易服务</div>
+  </div>
+  <div class="f-left  blk ">
+    <span class="icon five"></span>
+    <div class="f0 txt t-center">我的</div>
+  </div>
+</div>
+</body>
+</html>

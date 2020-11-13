@@ -1,0 +1,41 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0;minimum-scale=1.0, maximum-scale=1.0">
+<title>添加好友</title>
+  <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../assets/css/common.css">
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/responsive.css">
+
+
+</head>
+
+<body class="bg7">
+
+
+<div class="mask-layer"></div>
+<div class="pop-box">
+    <h3 class="tit c6 f4 t-center mar7">添加好友</h3>
+  <section class="mar6-4">
+    <dl class="per-box52 no-p border-b">
+      <dt class="dt1 c6 f3-1">对方号码：</dt>
+      <dd class="dd1 t-left f3 c6 clearfix"><input type="text" class="ca-input  t-left" placeholder="请输入手机号和微信号（必填）"></dd>
+    </dl>
+    <dl class="per-box52 no-p border-b">
+      <dt class="dt1 c6 f3-1">打招呼：</dt>
+      <dd class="dd1 t-left f3 c6 clearfix"><input type="text" class="ca-input  t-left" placeholder="请输入问候语（必填）"></dd>
+    </dl>
+    <dl class="per-box52 no-p border-b">
+      <dt class="dt1 c6 f3-1">备注：</dt>
+      <dd class="dd1 t-left f3 c6 clearfix"><input type="text" class="ca-input  t-left" placeholder=""></dd>
+    </dl>
+  </section>
+  <div class=" pad5  t-center ">
+    <button type="button" class="hx-bt2 f3 t-center">请求添加好友</button>
+  </div>
+</div>
+
+</body>
+</html>

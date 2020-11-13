@@ -1,0 +1,18 @@
+import * as API from './'
+
+export default {
+  getAllClientNewTalk: (params, loadings) => {
+    if (process.env.NODE_ENV === 'development') { //本地环境
+      return API.POST('/funzgapi/funapi/funzg/funapp/timeConversation/getAllClientNewTalk', params, loadings)
+    } else {
+      return API.POST('/user/getAllClientNewTalk', params, loadings)
+    }
+  },
+  getOneTalkList: (params, loadings) => {
+    if (process.env.NODE_ENV === 'development') { //本地环境
+      return API.POST('/funzgapi/funapi/funzg/funapp/timeConversation/getOneTalkList', params, loadings)
+    } else {
+      return API.POST('/user/getOneTalkList', params, loadings)
+    }
+  },
+}

@@ -1,0 +1,106 @@
+<template>
+  <top-panel :topPanel="topPanel"></top-panel>
+
+  <div class="main-container mar3-7 clearfix">
+    <section class="bg7 border-t">
+      <div class="blk-cont-box posi2 border-b1 mar6-2">
+        <div class="img-box posi2">
+          <img src="@/assets/img/index/bar_bg.png" />
+          <b class="state c-p">分配客户</b>
+        </div>
+        <div class="right-box posi2  c-p" >
+          <h3 class="f2 c6 mar7-2">范晓华</h3>
+          <div class="f2 c4 ">
+            <span>年龄：</span><span>30岁</span><b class="s-icon b4"></b>
+          </div>
+          <div class=" f2 c4">
+            <span>客户星级：</span><span class="stars-box"><i></i><i></i><i></i><i></i><i class="grey"></i></span>
+          </div>
+          <div class=" f2 c4">
+            <span>订单状态：</span><span class="c8">投保录入中</span>
+          </div>
+          <div class=" f2 c4">
+            <span>订单更新时间：</span><span>2020-08-20 15:00</span>
+          </div>
+          <div class="f1"><b class="ek-btn-5 mar5">互动：3次</b><b class="ek-btn-5 mar5">赠险活动客户</b></div>
+        </div>
+        <b class="flag">客户行销</b>
+      </div>
+      <div class="blk-cont-box  bg7 posi2 border-b1 mar6-2">
+        <div class="img-box posi2">
+          <img src="@/assets/img/index/bar_bg.png" />
+          <b class="state c-p">分配客户</b>
+        </div>
+        <div class="right-box posi2  c-p" >
+          <h3 class="f2 c6 mar7-2">范晓华</h3>
+          <div class="f2 c4 ">
+            <span>年龄：</span><span>30岁</span><b class="s-icon b3"></b>
+          </div>
+          <div class=" f2 c4">
+            <span>客户星级：</span><span>重庆分公司</span>
+          </div>
+          <div class=" f2 c4">
+            <span>订单状态：</span><span class="c8">投保录入中</span>
+          </div>
+          <div class=" f2 c4">
+            <span>订单更新时间：</span><span>2020-08-20 15:00</span>
+          </div>
+        </div>
+        <b class="flag">客户行销</b>
+      </div>
+      <div class="blk-cont-box  bg7 posi2 border-b1 mar6-2">
+        <div class="img-box posi2">
+          <img src="@/assets/img/index/bar_bg.png" />
+          <b class="state c-p">分配客户</b>
+        </div>
+        <div class="right-box posi2  c-p" >
+          <h3 class="f2 c6 mar7-2">范晓华</h3>
+          <div class="f2 c4 ">
+            <span>年龄：</span><span>30岁</span>
+          </div>
+          <div class=" f2 c4">
+            <span>客户星级：</span><span>重庆分公司</span>
+          </div>
+          <div class=" f2 c4">
+            <span>订单状态：</span><span class="c8">投保录入中</span>
+          </div>
+          <div class=" f2 c4">
+            <span>订单更新时间：</span><span>2020-08-20 15:00</span>
+          </div>
+        </div>
+        <b class="flag">客户行销</b>
+      </div>
+    </section>
+  </div>
+</template>
+
+<script>
+  import { TopPanel } from '@/components/index'
+  import * as tool from '@/common/Tool'
+
+  export default {
+    name: "visitorNews",
+    data () {
+      return {
+        sourceChannel: tool.globalData,
+        topPanel: {
+          back: true,
+          titles: "访客雷达",
+        },
+      }
+    },
+    components: {
+      'top-panel': TopPanel,
+    },
+    beforeCreate: function() {
+      document.getElementsByTagName("body")[0].className = "bg3";
+    },
+    beforeDestroy: function() {
+      document.body.removeAttribute("class", "bg3")
+    },
+  }
+</script>
+
+<style scoped>
+
+</style>

@@ -1,0 +1,157 @@
+<template>
+  <div>
+    <div id="articleTag" class="swiper-container">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" v-for="(tags, index) in articleClassList" :key="index" @click="handleChangeTag(tags, index)">
+          <div class="pad8-1"><span class="hx-bt3 bt2 f2 active">{{tags.groupName}}</span></div>
+        </div>
+      </div>
+    </div>
+    <section class="blk-cont no-md">
+      <ul class="cont-blk icon-wrap clearfix">
+        <li
+          class="li-p bg7 posi2 clearfix"
+          v-for="(article,index) in articleList"
+          :key="index"
+          @click="goInfoDetail(article)"
+        >
+          <div class="ek f-left posi2">
+            <img class="lazy-p" :src="article.coverImage" alt="pic" />
+          </div>
+          <div class="info-blk no-m">
+            <div class="box">
+              <h3 class="no-p1 f3 c44">{{article.title}}</h3>
+              <p class="subtit no-in f1 c222">{{article.simple}}</p>
+            </div>
+            <div class="f1 time">
+              <b class="icon1"></b>
+              {{article.readCount}}观看
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+</template>
+
+<script>
+  import { api_system, api_article } from "@/api/index"
+  import * as tool from "@/common/Tool"
+  import Swiper from 'swiper'
+  import * as scroll from "@/common/Scroll";
+  import 'swiper/css/swiper.min.css'
+  import 'swiper/js/swiper.min.js'
+
+  export default {
+    name: "PopularArticle",
+    data () {
+      return {
+        articleClassList: [],
+        articleList: [],
+        articleId: '',
+        total: 0,
+        offset: tool.pagination.pageoffset,
+        limit: tool.pagination.pagesize
+      }
+    },
+    created () {
+      this.getArticleOneData()
+    },
+    mounted () {
+      window.addEventListener("scroll", this.handleScroll);
+    },
+    methods: {
+      initSwiper () {
+        const swiper = new Swiper('#articleTag', {
+          freeMode: true,
+          freeModeMomentumRatio: 0.5,
+          slidesPerView: 4,
+          speed:300,//滑动开始到滑动结束的时间
+          observer:true,//修改swiper自己或子元素时，自动初始化swiper
+          observeParents:true,//修改swiper的父元素时，自动初始化swiper
+          autoplayDisableOnInteraction:false,//用户操作swiper之后是否禁止autoplay
+        });
+      },
+      getArticleOneData() {
+        let _data = {
+          params: {
+            saasId: tool.app.saasId,
+            platformId: tool.app.platformId,
+            groupType: 'article',
+            status: '1'
+          }
+        };
+        api_article.lmGroupListOneLevel(_data).then((res) => {
+          if (res.status == tool.rtCode.status) {
+            this.articleClassList = res.lmGroupList
+            if (this.articleClassList.length>0) {
+              this.articleId = this.articleClassList[0].id
+              this.getInfoList()
+            }
+            this.initSwiper()
+          }
+        });
+      },
+      getInfoList() {
+        let _data = {
+          params: {
+            saasId: tool.app.saasId,
+            platformId: tool.app.platformId,
+            id: this.articleId,
+            showDeptCode: 1000000,
+            offset: this.offset,
+            limit: this.limit
+          }
+        }
+        api_article.lmGroupArticleList(_data).then((data) => {
+          if (data.status == tool.rtCode.status) {
+            this.isLoad = false
+            this.total = data.total
+            if (this.offset === 0 || this.articleList.length === 0) {
+              this.articleList = data.articleList ? data.articleList : []
+              if (this.articleList.length < this.total) {
+                this.queryLoading = false
+              }
+            } else {
+              this.articleList = this.articleList.concat(data.articleList)
+            }
+            this.allLoaded = this.articleList.length >= this.total
+            if (this.allLoaded) {
+              this.queryLoading = true
+            }
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        });
+      },
+      handleChangeTag (tags, index) {
+        if (this.articleId !== tags.id) {
+          this.articleList = []
+          this.offset = tool.pagination.pageoffset
+          this.articleId = tags.id
+          this.getInfoList()
+        }
+      },
+      handleScroll() {
+        if (scroll.getScrollTop() + scroll.getClientHeight() > scroll.getScrollHeight() - 5) {
+          if (this.articleList.length == this.articleTotal) return;
+          if (!this.isLoad) {
+            this.isLoad = true;
+            this.loadMore();
+          }
+        }
+      },
+      loadMore() {
+        this.offset += tool.pagination.pageoffset
+        this.getInfoList()
+      }
+    },
+    destroyed() {
+      window.removeEventListener('scroll', this.handleScroll)
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

@@ -1,0 +1,120 @@
+export default [
+  {
+    path: '/resetPwd',
+    name: 'resetPwd',
+    meta: {title: '修改密码'},
+    component: () => import(/* webpackChunkName: "resetPwd" */ '@/views/setting/ResetPassword')
+  },
+  {
+    path: '/my',
+    name: 'my',
+    meta: {title: '我的'},
+    component: () => import(/* webpackChunkName: "my" */ '@/views/my/My')
+  },
+  {
+    path: '/articleList',
+    name: 'articleList',
+    meta: {title: '获课文章'},
+    component: () => import(/* webpackChunkName: "article" */ '@/views/article/ArticleList')
+  },
+  {
+    path: '/articleDetail/:id',
+    name: 'articleDetail',
+    meta: {title: '文章详情'},
+    component: () => import(/* webpackChunkName: "article" */ '@/views/article/ArticleDetail')
+  },
+  {
+    path: '/coursesList',
+    name: 'coursesList',
+    meta: {title: '学习课堂'},
+    component: () => import(/* webpackChunkName: "courses" */ '@/views/courses/CoursesList')
+  },
+  {
+    path: '/userSetting',
+    name: 'userSetting',
+    meta: {title: '个人设置'},
+    component: () => import(/* webpackChunkName: "setting" */ '@/views/my/userSetting'),
+  },
+  {
+    path: '/amendPassword',
+    name: 'amendPassword',
+    meta: {title: '修改密码'},
+    component: () => import(/* webpackChunkName: "setting" */ '@/views/my/amendPassword'),
+  },
+  {
+    path: '/myRecord',
+    name: 'myRecord',
+    meta: {title: '我的档案'},
+    component: () => import(/* webpackChunkName: "my" */ '@/views/my/myRecord'),
+  },
+  {
+    path: '/repository',
+    name: 'repository',
+    meta: {title: '知识库'},
+    component: () => import(/* webpackChunkName: "repository" */ '@/views/my/Repository'),
+  },
+  //知识库详情
+  {
+    path: '/repositorydetails/:p',
+    name: 'repositorydetails',
+    meta: {title: ''},
+    component: () => import(/* webpackChunkName: "setting" */ '@/views/my/RepositoryDetails'),
+  },
+  {
+    path: '/client',
+    name: 'client',
+    meta: {title: '我的客户'},
+    component: () => import(/* webpackChunkName: "client" */ '@/views/my/Client'),
+  },
+  {
+    path: '/searchclient',
+    name: 'searchclient',
+    meta: {title: '客户搜索'},
+    component: () => import(/* webpackChunkName: "client" */ '@/views/my/SearchClient'),
+  },
+  {
+    path: '/achieveclient',
+    name: 'achieveclient',
+    meta: {title: '成交客户'},
+    component: () => import(/* webpackChunkName: "client" */ '@/views/my/AchieveClient'),
+  },
+  {
+    path: '/marketing',
+    name: 'marketing',
+    meta: {title: '营销政策'},
+    component: () => import(/* webpackChunkName: "marketing" */ '@/views/my/Marketing'),
+  },
+  {
+    path: '/marketactivity',
+    name: 'marketactivity',
+    meta: {title: '营销活动'},
+    component: () => import(/* webpackChunkName: "marketing" */ '@/views/my/Marketactivity'),
+  },
+  {
+    path: '/activitydetails/:c',
+    name: 'activityDetails',
+    meta: {title: '活动结果'},
+    component: () => import(/* webpackChunkName: "marketing" */ '@/views/my/ActivityDetails'),
+  },
+  {
+    path: '/performance',
+    name: 'performance',
+    meta: {title: '我的业绩'},
+    component: () => import(/* webpackChunkName: "performance" */ '@/views/my/Performance'),
+  },
+  {
+    path: '/qrcode',
+    name: 'qrcode',
+    meta: {title: '配置二维码'},
+    component: () => import(/* webpackChunkName: "setting" */ '@/views/my/QRcode'),
+  },
+  {
+    path: '/proposalList/:path',
+    name: 'proposalList',
+    meta: {title: '计划书'},
+    component: () => import(/* webpackChunkName: "setting" */ '@/views/proposal/ProposalList'),
+  },
+
+
+]
+

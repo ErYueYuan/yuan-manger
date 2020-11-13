@@ -1,0 +1,131 @@
+<template>
+  <div>
+    <div class="index-top4">
+      <h3 class="ek-com-tit2 c6 f3">今日数据</h3>
+      <div class="c6 f2 pad4-1">客户进展</div>
+      <div><img src="@/assets/img/index/chart1.png" /></div>
+      <div class="more-box f2 c4 t-center c-p">
+        <b></b>查看更多
+      </div>
+
+      <div class="c6 f2 pad4-1">消息沟通</div>
+      <div class="bg4 b-radius3 message-box mar7-1">
+        <ul class="mar6-4 pad6-1 border-b">
+          <li>
+            <h3 class="f3 c5 c4 t-center">28<span>条</span></h3>
+            <div class="t-center f1 c4" ><b class="b1"></b>发送消息</div>
+          </li>
+          <li>
+            <h3 class="f3 c5 c4 t-center">28<span>条</span></h3>
+            <div class="t-center f1 c4" ><b class="b2"></b>接受信息</div>
+          </li>
+          <li>
+            <h3 class="f3 c5 c4 t-center">28<span>条</span></h3>
+            <div class="t-center f1 c4" ><b class="b3"></b>超时回复</div>
+          </li>
+        </ul>
+
+        <ul class="mar6-4 pad6-1 ">
+          <li>
+            <h3 class="f3 c5 c4 t-center">28<span>条</span></h3>
+            <div class="t-center f1 c4" ><b class="b4"></b>未回复</div>
+          </li>
+          <li>
+            <h3 class="f3 c5 c4 t-center">28<span>条</span></h3>
+            <div class="t-center f1 c4" ><b class="b5"></b>撤回消息</div>
+          </li>
+          <li>
+            <h3 class="f3 c5 c4 t-center">28<span>条</span></h3>
+            <div class="t-center f1 c4" ><b class="b6"></b>平均响应时长</div>
+          </li>
+        </ul>
+      </div>
+      <div class="c6 f2 pad4-1">朋友圈互动</div>
+      <div class="  message-box2 mar7-1">
+        <ul class="  ">
+          <li class="b-radius3 pad6-1 f2 mar7-2 bg4">
+            <span class="or1"><b class="b1"></b></span>
+            <span class="or2 c4">今日发圈数量</span>
+            <span class="or3 f3 c5 t-center">28</span>
+            <span class="or4 c4">主动点赞朋友</span>
+            <span class="or5 f3 c5 t-center">28</span>
+          </li>
+          <li class="b-radius3 pad6-1 f2 mar7-2 bg4">
+            <span class="or1"><b class="b1"></b></span>
+            <span class="or2 c4">今日发圈数量</span>
+            <span class="or3 f3 c5 t-center">28</span>
+            <span class="or4 c4">主动点赞朋友</span>
+            <span class="or5 f3 c5 t-center">28</span>
+          </li>
+          <li class="b-radius3 pad6-1 f2 mar7-2 bg4">
+            <span class="or1"><b class="b1"></b></span>
+            <span class="or2 c4">今日发圈数量</span>
+            <span class="or3 f3 c5 t-center">28</span>
+            <span class="or4 c4">主动点赞朋友</span>
+            <span class="or5 f3 c5 t-center">28</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="index-top4">
+      <h3 class="ek-com-tit2 c6 f3">本月统计</h3>
+      <div><img src="@/assets/img/index/chart2.png" /></div>
+
+      <div class="  message-box3 mar7-1">
+        <ul class="  ">
+          <li class="b-radius3 pad6-1 f2  ">
+            <span class="or1 c4 f2">深度互动比例</span>
+            <span class="or2 f2 c5 t-center ">36%</span>
+            <span class="or3 c4 t-right"><b class="t-center">快于80%的代理人</b></span>
+          </li>
+          <li class="b-radius3 pad6-1 f2  ">
+            <span class="or1 c4 f2">深度互动比例</span>
+            <span class="or2 f2 c5 t-center ">36%</span>
+            <span class="or3 c4 t-right"><b class="t-center">快于80%的代理人</b></span>
+          </li>
+          <li class="b-radius3 pad6-1 f2  ">
+            <span class="or1 c4 f2">深度互动比例</span>
+            <span class="or2 f2 c5 t-center ">36%</span>
+            <span class="or3 c4 t-right"><b class="t-center">快于80%的代理人</b></span>
+          </li>
+          <li class="b-radius3 pad6-1 f2  ">
+            <span class="or1 c4 f2">深度互动比例</span>
+            <span class="or2 f2 c5 t-center ">36%</span>
+            <span class="or3 c4 t-right"><b class="t-center">快于80%的代理人</b></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "Works",
+    data () {
+      return {
+
+      }
+    },
+    props: {
+      worksStatus: Number
+    },
+    created () {
+
+    },
+    methods: {
+
+    },
+    watch: {
+      worksStatus () {
+        if (this.worksStatus === 1) {
+
+        }
+      }
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

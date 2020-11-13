@@ -1,0 +1,570 @@
+<template>
+  <div id="service">
+    <div class="fun-top-panel bg7">
+      <span class="mess-back ">
+        <div
+          class="cont"
+          @click="goBack"
+        ></div>
+      </span>
+      <span class="title c3 f3 dblock2 t-center ">交易服务</span>
+
+    </div>
+    <div class="main-top p-fix">
+      <section class="index-v20-top f-flex bg7 clearfix">
+        <div class="sear-bb">
+          <div class=" clearfix">
+            <section class="sear-c posi2 clearfix"> 
+              <van-search
+                v-model="searchval"
+                shape="round"
+                background=""
+                placeholder="请输入搜索关键词"
+                @search="searchLike"
+              />
+            </section>
+          </div>
+        </div>
+      </section>
+      <section class=" nav-bar  ps bg7 ">
+        <div class="  t-center">
+          <span
+            class="f3-1 "
+            :class="type == 0 ?'active':''"
+            @click="changeState(0,'done')"
+          >未完成</span>
+        </div>
+        <div class="  t-center">
+          <span
+            class="f3-1"
+            :class="type == 1?'active':''"
+            @click="changeState(1,'done')"
+          >已完成</span>
+        </div>
+      </section>
+      <section class="bg7 fresh posi2 border-b1 clearfix">
+        <div class="border-t2 clearfix b-radius2 pad5-13">
+          <div
+            class="fresh box3"
+            style="padding:0;"
+          >
+            <div
+              class="sel-3 "
+              :class="sels == 1?'on':''"
+              @click="changeState(1,'sel')"
+            >
+              <div
+                class="abc "
+                :class="sels == 1?'abc_selected':''"
+              > {{stateVal==''?'状态':statusName}}</div>
+            </div>
+            <!-- <div
+              class="sel-3"
+              :class="sels == 2?'on':''"
+              @click="changeState(2,'sel')"
+            >
+              <div
+                class="abc"
+                :class="sels == 2?'abc_selected':''"
+              > {{typeVal==''?'险种':typeName}}</div>
+            </div> -->
+            <button
+              @click="resetLoad"
+              class="sea-btn"
+              v-if="type==0"
+            ><b></b></button>
+          </div>
+        </div>
+      </section>
+      <van-popup
+        v-model="selct"
+        round
+        position="bottom"
+        :style="{height:'50%'}"
+      >
+        <van-picker
+          v-if="sels==1"
+          title="状态"
+          show-toolbar
+          :columns="statusList"
+          @confirm="chooseState"
+          @cancel="selct=false"
+        />
+        <!-- <van-picker
+          v-if="sels==2"
+          title="险种"
+          show-toolbar
+          :columns="typeList"
+          @confirm="chooseState"
+          @cancel="selct=false"
+        /> -->
+      </van-popup>
+    </div>
+    <div
+      class="mar4-10 clearfix"
+      :class="total===0?'':'main-container'"
+    >
+      <section class="mar3">
+        <template v-for="(item,index) in list">
+          <div
+            class="b-sh1  pad5-5 bg7 mar6-2 mar7-3"
+            :key="index"
+            v-if="type==0"
+          >
+            <section class="mar20 bg7 ">
+              <div
+                class="order-box-2020 "
+                @click="getDetails(item)"
+              >
+                <h3 class="  order-tit posi2 f3 c3">
+                  <div class="col-9 pad0 tit mess">{{item.productName}}</div>
+                  <span
+                    class="status f1 ts3"
+                    v-if="orderSta(item.orderStatus)!=''"
+                  >{{orderSta(item.orderStatus)}}</span>
+                  <!--双录状态-->
+                  <div class="col-12 f1 t-left time">提交时间：{{item.createdate}}</div>
+                </h3>
+
+                <div class="order-box  clearfix posi2">
+                  <section class="f2-1 pad0">
+                    <p class="order-info"><span class="p-tit">订单号</span><span class="c6">{{item.ordersn}}</span></p>
+                    <p><span class="p-tit">投保人</span><span class="c6">{{item.policyholder}}</span></p>
+                    <p><span class="p-tit">被保人</span><span class="c6">{{item.recognizee}}</span></p>
+                    <p><span class="p-tit">保费</span><span class="c6">{{item.totalAmount}}</span> </p>
+                    <p class="order-memo clearfix border-t2"><span class="p-tit f-left">备注</span><span class="c222 mess5 memo">{{item.underwritingRemark}}</span></p>
+                  </section>
+                </div>
+              </div>
+              <div class="t-right pad557 posi2 bg7">
+                <button
+
+                  class="f-left btn sxt-btn-3 showMoreBtn"
+                  title="展开剩余菜单"
+                  @click="showMenu(index)"
+                ></button>
+                <div class="sl-other-b" v-if="indexs === index">
+                        <b class="sl-trangle"></b>
+                        <span class="border-b1"  @click="goOrderMore(item)">更多操作</span>
+                    </div>
+                <button
+                  class=" ek-btn-3 f1 mar5-2"
+                  @click="goOrderLog(item.ordersn)"
+                >订单轨迹</button>
+                <button
+                  v-if="item.customerId"
+                  class=" ek-btn-4 f1 mar5-2"
+                  @click="goDetail(item)"
+                >客户行销</button>
+                <button
+                  class=" ek-btn-4 f1 mar5-2"
+                  v-if="item.orderStatus == 10"
+                  @click="goOrderIn(item)"
+                >继续录入</button>
+              </div>
+            </section>
+
+          </div>
+          <div
+            class="b-sh1  pad5-5 bg7 mar6-2 mar7-3"
+            :key="index"
+            v-else-if="type==1"
+          >
+            <section class="mar20 bg7">
+              <div
+                class="order-box-2020"
+                @click.stop="getDetails(item)"
+              >
+                <h3 class="  order-tit posi2 f3 c3">
+                  <div class="col-9 pad0 tit mess">{{item.productName}}</div>
+                  <span
+                    class="status f1 ts4"
+                    v-if="orderSta(item.policyStatus)!=''"
+                  >{{orderSta(item.policyStatus)}}</span>
+                  <div class="col-12 f1  t-left time">生效日期：{{item.effectiveDate}}</div>
+                </h3>
+                <div class="order-box  clearfix posi2">
+                  <section class="f2-1 pad0">
+                    <p class="order-info"><span class="p-tit">保单号</span><span class="c6">{{item.policysn}}</span></p>
+                    <p><span class="p-tit">险种</span><span class="c6">{{unfinish(item.riskType)}}</span></p>
+                    <p><span class="p-tit">投保人</span><span class="c6">{{item.policyholder}}</span></p>
+                    <p><span class="p-tit">被保人</span><span class="c6">{{item.recognizee}}</span></p>
+                    <p><span class="p-tit">保费</span><span class="c6">{{item.originalPremium}}</span> </p>
+                    <p class="order-memo clearfix border-t2">
+                    </p>
+                  </section>
+                </div>
+              </div>
+              <div class="t-right pad557 posi2 bg7">
+                <button
+                  class=" ek-btn-4 f1 mar5-2"
+                  @click="goDetail(item)"
+                >客户详情</button>
+              </div>
+            </section>
+
+          </div>
+        </template>
+         <van-empty
+              v-if="total == 0"
+              description="暂无产品"
+            />
+        <div
+          class="f2 pad888"
+          v-if="list.length>=total && list.length>0"
+        >
+          <div class="lzg-h-more posi2 t-center">
+            <span class="c5 bg7 posi2 c222">没有更多啦</span>
+          </div>
+        </div>
+      </section>
+      <footer-panel footer="deal"></footer-panel>
+    </div>
+  </div>
+</template>
+
+<script>
+import Vue from 'vue'
+import { mapGetters } from 'vuex'
+import { FooterPanel } from '@/components/index'
+import { api_service, api_sell } from '@/api/index'
+import * as scroll from '@/common/Scroll'
+import * as tool from '@/common/Tool'
+
+import {
+  Popup, DatetimePicker, DropdownMenu, DropdownItem,
+  Form, Field, Picker, Search, List, Empty
+} from 'vant';
+import RulesVue from '../home/Rules.vue'
+Vue.use(Picker)
+Vue.use(Empty)
+Vue.use(Search)
+Vue.use(Popup)
+Vue.use(Form)
+Vue.use(Field)
+Vue.use(List)
+Vue.use(DatetimePicker)
+Vue.use(DropdownMenu);
+Vue.use(DropdownItem);
+export default {
+  data() {
+    return {
+      searchval: '',//搜索值
+      sels: 1,
+      statusList: [],//状态列表
+      stateVal: '',//状态值
+      statusName: '状态',
+      // typeList: [],//险种列表
+      // typeVal: '',//险种值
+      // typeName: '险种',
+      list: [],
+      total: 0,
+      offset: 0,
+      limit: 10,
+      isLoad: true,
+      allLoaded: false,
+      queryLoading: true,
+      type: 0,//未完成0完成1
+      show: false,
+      currentDate: new Date(),
+      timer: false,
+      effectivestart: '',
+      effectiveEnd: '',
+      nextPaystart: '',
+      nextPayEnd: '',
+      expirystart: '',
+      expiryEnd: '',
+      timetype: '',
+      timeNum: '',
+      selct: false,
+      showMore: false,
+      indexs: '',
+      statusl: 'ch_order_status',
+      entry: 'time'
+    }
+  },
+  created() {
+    this.chOrderStatus();
+    this.chRiskType();
+  },
+  computed: {
+    ...mapGetters(['user']),
+  },
+  mounted() {
+    this.orderList();
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  components: {
+    'footer-panel': FooterPanel,
+  },
+  methods: {
+    changeState(type, str) {
+      if (str == 'done') {
+        if (type == 0) {
+          this.clearnull();
+        }
+        this.stateVal = '';
+        this.typeVal = '';
+        this.offset = 0;
+        this.type = type;
+        this.orderList();
+      } else if (str == 'sel') {
+        this.selct = true;
+        this.sels = type;
+      }
+      this.chOrderStatus();
+    },
+    chOrderStatus() {
+      if (this.type == 0) {
+        this.statusl = 'ch_order_status'
+      } else if (this.type == 1) {
+        this.statusl = 'fun_policy_status'
+      }
+      const _data = { type: `${this.statusl}/` + tool.app.platformCode + '/' + tool.app.saasId }
+      api_sell.sysDict(_data).then(data => {
+        let sList = [];
+        let json = {
+          text: '全部',
+          value: '',
+        }
+        sList.push(json);
+        data.params.dicts.forEach((item) => {
+          var obj = {
+            text: item.name,
+            value: item.value
+          }
+          sList.push(obj);
+        });
+        this.statusList = JSON.parse(JSON.stringify(sList));
+      })
+    },
+    // chRiskType() {
+    //   api_service.chRiskType().then(data => {
+    //     let tList = [];
+    //     let json = {
+    //       text: '全部',
+    //       value: '',
+    //     }
+    //     tList.push(json);
+    //     data.forEach(item => {
+    //       var obj = {
+    //         text: item.name,
+    //         value: item.value
+    //       }
+    //       tList.push(obj);
+    //     });
+    //     this.typeList = JSON.parse(JSON.stringify(tList));
+    //   })
+    // },
+    chooseState(picker) {
+      if (this.sels == 1) {
+        this.stateVal = picker.value;
+        this.statusName = picker.text
+        if (picker.value == '') {
+          this.statusName = '状态';
+        }
+      } 
+      // else if (this.sels == 2) {
+      //   this.typeName = picker.text
+      //   this.typeVal = picker.value;
+      //   if (picker.value == '') { this.typeName = '险种' }
+      // }
+      this.selct = false;
+      this.offset = 0;
+      this.orderList();
+    },
+    orderList() {
+      let _data = {
+        saasId: this.user.userInfo.saasId,
+        userId: this.user.userInfo.userId,
+        offset: this.offset,
+        limit: this.limit,
+        agentCode: this.user.userInfo.agentcode,
+        type: this.type,
+        search: this.searchval,
+        // riskType: this.typeVal
+      }
+      if (this.type == 1) {
+        _data.policyStatus = this.stateVal
+        // if (this.effectivestart != '') {
+        //   _data.effectiveStartDate = this.effectivestart
+        // }
+        // if (this.effectiveEnd != '') {
+        //   _data.effectiveEndDate = this.effectiveEnd
+        // }
+        // if (this.nextPaystart != '') {
+        //   _data.nextPayStartDate = this.nextPaystart
+        // }
+        // if (this.nextPayEnd != '') {
+        //   _data.nextPayEndDate = this.nextPayEnd
+        // }
+        // if (this.expirystart != '') {
+        //   _data.expiryStartDate = this.expirystart
+        // }
+        // if (this.expiryEnd != '') {
+        //   _data.expiryEndDate = this.expiryEnd
+        // }
+      }else{
+        _data.orderStatus = this.stateVal
+      }
+
+      api_service.orderList(_data).then(res => {
+        if (res.status == tool.rtCode.status) {
+          this.isLoad = false
+          this.total = res.total
+          if (this.offset === 0 || this.list.length === 0) {
+            this.list = res.funOrderList ? res.funOrderList : []
+            if (this.list.length < this.total) {
+              this.queryLoading = false
+            }
+          } else {
+            this.list = this.list.concat(res.funOrderList)
+          }
+          this.allLoaded = this.list.length >= this.total
+          if (this.allLoaded) {
+            this.queryLoading = true
+          }
+        } else {
+          tool.toastMessage(res.message, 'error')
+          this.list = [];
+        }
+      })
+    },
+    goOrderLog(ordersn) {
+      this.$router.push({ name: 'orderLogList', params: { q: ordersn } });
+    },
+    searchLike() {
+      this.search = this.searchval;
+      this.offset = 0;
+      this.orderList();
+    },
+    goDetail(item) {
+      this.$router.push({ name: 'customerDetail', params: { q: item.clientId, r: item.customerId, s: item.resultId } });
+    },
+    resetLoad() {
+      this.orderList();
+    },
+    timerchang(str, val) {
+      this.timetype = str;
+      this.timeNum = val;
+      this.timer = true;
+    },
+    confirm(val) {
+      let year = val.getFullYear()
+      let month = val.getMonth() + 1
+      let day = val.getDate()
+      if (month >= 1 && month <= 9) { month = `0${month}` }
+      if (day >= 1 && day <= 9) { day = `0${day}` }
+      let value = `${year}-${month}-${day}`
+      if (this.timetype == "effective") {
+        if (this.timeNum == "1") {
+          this.effectivestart = value;
+        } else {
+          this.effectiveEnd = value;
+        }
+      } else if (this.timetype == "nextPay") {
+        if (this.timeNum == "1") {
+          this.nextPaystart = value;
+        } else {
+          this.nextPayEnd = value;
+        }
+      } else if (this.timetype == "expiry") {
+        if (this.timeNum == "1") {
+          this.expirystart = value
+        } else {
+          this.expiryEnd = value;
+        }
+      }
+      this.timer = false;
+    },
+    confirmtime() {
+      this.orderList(this.entry);
+      this.show = false;
+    },
+    formatter(type, value) {
+      if (type === 'year') {
+        return `${value}年`
+      } else if (type === 'month') {
+        return `${value}月`
+      } else if (type === 'day') {
+        return `${value}日`
+      }
+      return value
+    },
+    clearnull() {
+      this.effectivestart = '',
+        this.effectiveEnd = '',
+        this.nextPaystart = '',
+        this.nextPayEnd = '',
+        this.expirystart = '',
+        this.expiryEnd = '';
+    },
+    goBack() {
+      this.$router.go(-1)
+    },
+    loadMore() {
+      if (this.queryLoading) {
+        return
+      }
+      if (!this.isLoad) {
+        this.isLoad = true
+        this.offset ++
+        this.orderList()
+      }
+    },
+    handleScroll() {
+      if (scroll.getScrollTop() + scroll.getClientHeight() > (scroll.getScrollHeight() - 5)) {
+        this.loadMore()
+      }
+    },
+    getDetails(item) {
+      this.type == 0 ? this.$router.push({ name: 'wdetails', params: { r: item.ordersn } }) : this.$router.push({ name: 'dealdetails', params: { r: item.agentCode, q: item.policyId } })
+    },
+    goOrderMore(item) {
+      const channelUserId = this.user.userInfo.mobile || this.user.userInfo.agentcode
+      window.location.href = tool.app.lzgUrl + '#/channel/channelCode=' + tool.app.platformCode + '&channelUserId=' + channelUserId + '&productId=' + item.productCode + '&briskCode' + item.briskCode + '&supplierCode=' + item.insuranceCompanyCode + '&productType=' + item.source + '&orderSn=' + item.ordersn + '&opType=8&version=' + item.version
+    },
+    goOrderIn(item) {
+      const channelUserId = this.user.userInfo.mobile || this.user.userInfo.agentcode
+      window.location.href = tool.app.lzgUrl + '#/channel/channelCode=' + tool.app.platformCode + '&channelUserId=' + channelUserId + '&productId=' + item.productCode + '&briskCode' + item.briskCode + '&supplierCode=' + item.insuranceCompanyCode + '&productType=' + item.source + '&orderSn=' + item.ordersn + '&opType=2&version=' + item.version
+    },
+    showMenu(index) {
+      this.showMore = !this.showMore
+      if (this.showMore) {
+        this.indexs = index;
+      } else {
+        this.indexs = ''
+      }
+    },
+    orderSta(val) {
+      let StatusName = '';
+      this.statusList.forEach(item => {
+        if (item.value == val) {
+          StatusName = item.text;
+        }
+      })
+      return StatusName
+    },
+    // unfinish(val) {
+    //   let unfinish = '';
+    //   this.typeList.forEach(item => {
+    //     if (item.value == val) {
+    //       unfinish = item.text
+    //     }else if(val == '') {
+    //       unfinish = '';
+    //     }
+    //   })
+    //   return unfinish
+    // }
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.handleScroll)
+  }
+}
+</script>
+
+<style scoped>
+.fresh .box .sel-box.sb2 {
+  color: #fff;
+}
+</style>

@@ -1,0 +1,248 @@
+<template>
+    <div class="bg7">
+        <div class="fun-top-panel bg-my  ">
+            <span class="mess-back " @click="goBack()"><div class="cont-wh"></div></span>
+            <span class="title c7 f4 dblock2 t-center ">个人信息</span>
+        </div>
+
+        <div class="main-container mar1  clearfix">
+            <top-panel :customerBaseInfo="customerBaseInfo" :customerResultId="customerResultId"></top-panel>
+
+            <div class="posi2 mar3-5 bg7  bg7 b-radius1">
+                <section class=" pad1-3  ">
+                    <div id="proNav" class="swiper-container border-b1">
+                        <div class="swiper-wrapper f-flex" style="overflow-x: scroll;">
+                            <van-tabs title-active-color="#ee0a24" v-model="active" @click="handleClickTag">
+                                <van-tab
+                                    :scrollspy="true"
+                                    v-for="(article, index) in tabList"
+                                    :key="index"
+                                    :title="article.tagName">
+                                </van-tab>
+                            </van-tabs>
+                        </div>
+                    </div>
+                    <div>
+                        <section class="mar3-2">
+                            <div class="b-sh1  pad1-3 bg7  mar7-3" v-for="(item, index) in trailList" :key="index">
+                                <div class="blk-cont-box posi2  ">
+                                    <div class="img-box2 posi2">
+                                        <img v-if="!!customerBaseInfo.head" :src="customerBaseInfo.head" alt="pic">
+                                        <img v-if="!customerBaseInfo.head" src="../../assets/img/index/bar_bg.png" alt="pic">
+                                    </div>
+                                    <div class="right-box rb1 posi2 c-p">
+                                        <h3 class="f2 c6 mar7-2">访问产品“{{item.busName}}”</h3>
+                                        <div class="f1 c4 t-right">
+                                            <span class="f-left"></span>{{item.viewdate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <van-empty v-show="total===0" description="暂无轨迹" />
+                        <div class="f2 pad888" v-if="trailList.length>=total && trailList.length>0">
+                            <div class="lzg-h-more posi2 t-center">
+                                <span class="c5 bg7 posi2 c222">没有更多啦</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <footer-panel :customerResultId="customerResultId" :customerBaseInfo="customerBaseInfo"></footer-panel>
+    </div>
+</template>
+<script>
+    import Vue from 'vue'
+    import { mapGetters } from 'vuex'
+    import * as tool from '@/common/Tool'
+    import { api_sell } from '@/api/index'
+    import DataSource from '@/common/DataSource'
+    import '@vant/touch-emulator'
+    import { Tab, Tabs, Empty } from 'vant'
+    import * as scroll from '@/common/Scroll'
+    import { CustomerTopPanel } from '@/components/index'
+    import { CustomerFooterPanel } from '@/components/index'
+
+    Vue.use(Tab)
+    Vue.use(Tabs)
+    Vue.use(Empty)
+
+    export default {
+        name: "trailList",
+        data () {
+            return {
+                customerClientId: this.$route.params.q,
+                customerResultId: this.$route.params.r,
+                customerBaseInfo: {},
+                tabList: [
+                    {
+                        id: '0',
+                        innerCode: '0',
+                        tagName: '基本信息'
+                    },
+                    {
+                        id: '1',
+                        innerCode: '1',
+                        tagName: '订单'
+                    },
+                    {
+                        id: '2',
+                        innerCode: '2',
+                        tagName: '轨迹'
+                    },
+                    {
+                        id: '3',
+                        innerCode: '3',
+                        tagName: '跟进'
+                    },
+                    {
+                        id: '4',
+                        innerCode: '4',
+                        tagName: '历史方案'
+                    },
+                    {
+                        id: '5',
+                        innerCode: '5',
+                        tagName: '已购产品'
+                    }
+                ],
+                tagIndex: '0',
+                active: 2,
+                trailList: [],
+                total: 0,
+                isLoad: true,
+                allLoaded: false,
+                queryLoading: true,
+                offset: 0,
+                limit: 10,
+            }
+        },
+        computed: {
+            ...mapGetters(['user']),
+        },
+        components: {
+            'top-panel': CustomerTopPanel,
+            'footer-panel': CustomerFooterPanel,
+        },
+        created () {
+            this.queryBasicIntroduction();//基本介绍
+        },
+
+        mounted () {
+            window.addEventListener('scroll', this.handleScroll)
+        },
+
+        methods: {
+
+            queryBasicIntroduction () {
+                const _data = {
+                    saasId: tool.app.saasId,
+                    clientId: this.customerClientId
+                }
+                api_sell.queryBasicIntroduction(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.customerBaseInfo = data;
+                        this.getCusVisitTrail(data.clientNewId);//查询访问轨迹
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            handleScroll() {
+                if (scroll.getScrollTop() + scroll.getClientHeight() > (scroll.getScrollHeight() - 5)) {
+                    this.loadMore();
+                }
+            },
+
+            handleClickTag (index, title) {
+                this.tagIndex = this.tabList[index].innerCode
+                this.offset = 0;
+                if (this.tagIndex == '0') {
+                    this.$router.push({ name: 'customerDetail',params: {
+                        q: this.customerClientId,
+                        r: this.customerResultId
+                    } })
+                } else if (this.tagIndex == '1') {
+                    this.$router.push({ name: 'orderList',params: {
+                        q: this.customerClientId,
+                        r: this.customerResultId
+                    } })
+                } else if (this.tagIndex == '3') {
+                    this.$router.push({ name: 'followList',params: {
+                        q: this.customerClientId,
+                        r: this.customerResultId
+                    } })
+                } else if (this.tagIndex == '4') {
+                    this.$router.push({ name: 'historyList',params: {
+                        q: this.customerClientId,
+                        r: this.customerResultId
+                    } })
+                } else if (this.tagIndex == '5') {
+                    this.$router.push({ name: 'payProductList',params: {
+                        q: this.customerClientId,
+                        r: this.customerResultId
+                    } })
+                }
+            },
+
+            loadMore() {
+                if (this.queryLoading) {
+                    return
+                }
+                if (!this.isLoad) {
+                    this.isLoad = true;
+                    this.offset += 10;
+                    this.getCusVisitTrail();
+                }
+            },
+
+            getCusVisitTrail (clientNewId) {
+                const _data = {
+                    // openIds: [1,2],//客户微信openIds – 行销轨迹
+                    saasId: tool.app.saasId,
+                    clientNewId: clientNewId,
+                    offset: this.offset,
+                    limit: this.limit
+                }
+                api_sell.getCusVisitTrail(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.isLoad = false;
+                        this.total = data.total;
+                        if (this.offset === 0 || this.trailList.length === 0) {
+                            this.trailList = data.result ? data.result : []
+                            if (this.trailList.length < this.total) {
+                                this.queryLoading = false;
+                            }
+                        } else {
+                            this.trailList = this.trailList.concat(data.result)
+                        }
+                        this.allLoaded = this.trailList.length >= this.total;
+                        if (this.allLoaded) {
+                            this.queryLoading = true;
+                        }
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            goBack () {
+                this.$router.push({ name: 'sellList',params: {
+                    q: "1"
+                } })
+            },
+
+
+        },
+
+        destroyed() {
+            window.removeEventListener('scroll', this.handleScroll)
+        },
+    }
+</script>
+<style scoped>
+
+</style>

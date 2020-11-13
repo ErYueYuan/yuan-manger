@@ -1,0 +1,235 @@
+<template>
+  <div>
+    <div class="fun-top-panel bg7  ">
+      <span class="mess-back " @click="goBack"><div class="cont"></div></span>
+      <span class="title c3 f3 dblock2 t-center ">会话消息</span>
+      <div class="f2 c8 right"><span class="fun-icon icon-mess"></span></div>
+    </div>
+
+    <div class="chat-member bg3">
+      <div id="chatMem" class="swiper-container border-b1">
+        <div class="swiper-wrapper">
+          <!-- 推荐 -->
+          <div class="swiper-slide active">
+            <div class="img-box posi2">
+              <img src="@/assets/img/index/bar_bg.png" />
+              <b class="state s1" title="微信"></b>
+            </div>
+            <span>范晓华</span>
+          </div>
+          <div class="swiper-slide ">
+            <div class="img-box posi2">
+              <img src="@/assets/img/index/bar_bg.png" />
+              <b class="state s2" title="公众号"></b>
+            </div>
+            <span>范晓华</span>
+          </div>
+          <div class="swiper-slide ">
+            <div class="img-box posi2">
+              <img src="@/assets/img/index/bar_bg.png" />
+              <b class="state s1" title="微信"></b>
+            </div>
+            <span>范晓华</span>
+          </div>
+          <div class="swiper-slide ">
+            <div class="img-box posi2">
+              <img src="@/assets/img/index/bar_bg.png" />
+              <b class="state s2" title="公众号"></b>
+            </div>
+            <span>范晓华</span>
+          </div>
+          <div class="swiper-slide ">
+            <div class="img-box posi2">
+              <img src="@/assets/img/index/bar_bg.png" />
+              <b class="state s1" title="微信"></b>
+            </div>
+            <span>范晓华</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="main-container chatting mar3-7 clearfix">
+      <div class=" nav-bar ps  bg7 border-t2 ">
+        <div class="  t-center">
+          <span class="f3 active">实时会话</span>
+        </div>
+        <div class="  t-center">
+          <span class="f3 ">通讯录</span>
+        </div>
+      </div>
+      <section class="bg7">
+        <div class="blk-cont-box mar6-2  posi2  border-t" v-for="(item, index) in conversation" :key="index" @click="goMessWindow(item)">
+          <div class="img-box2 posi2">
+            <img src="@/assets/img/index/bar_bg.png" />
+            <b class="state s1" title="微信"></b>
+          </div>
+          <div class="right-box rb1 posi2 c-p" >
+            <h3 class="f2 c6 mar7-2">{{item.name}}<span class="f-right f1 c4">{{item.modifydate}}</span>
+            </h3>
+            <div class="f2 c5 ">
+              <span>{{item.content}}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <van-empty v-if="conversation.length === 0" description="暂无消息" />
+    </div>
+
+    <!--<div class="main-container mar3-7 clearfix">-->
+      <!--<div class="pad5-4 posi2 clearfix bg5 f2 c9 mess">-->
+        <!--<b class="fun-icon icon-bell"></b>恭喜您，您的认证信息已审核通过！-->
+        <!--<span class="f2 pad4-3 c-p f-right border-l">更多<b class="fun-icon icon-trans"></b></span>-->
+      <!--</div>-->
+      <!--<div class=" nav-bar ps mar3 bg7 border-t2 border-b">-->
+        <!--<div class="  t-center">-->
+          <!--<span class="f3 active">实时会话</span>-->
+        <!--</div>-->
+        <!--<div class="  t-center">-->
+          <!--<span class="f3 ">访客雷达</span>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<section class="bg7">-->
+        <!--<div class="blk-cont-box mar6-2  posi2  border-t" v-for="(item, index) in conversation" :key="index" @click="goMessWindow(item)">-->
+          <!--<div class="img-box2 posi2">-->
+            <!--<img src="@/assets/img/index/bar_bg.png" />-->
+            <!--<b class="state s1" title="微信"></b>-->
+          <!--</div>-->
+          <!--<div class="right-box rb1 posi2 c-p" >-->
+            <!--<h3 class="f2 c6 mar7-2">{{item.name}}<span class="f-right f1 c4">{{item.modifydate}}</span>-->
+            <!--</h3>-->
+            <!--<div class="f2 c5 ">-->
+              <!--<span>{{item.content}}</span>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--
+        <div class="blk-cont-box mar6-2  posi2  border-t">
+          <div class="img-box2 posi2">
+            <img src="@/assets/img/index/bar_bg.png" />
+            <b class="state s1" title="微信"></b>
+          </div>
+          <div class="right-box rb1 posi2 c-p" >
+            <h3 class="f2 c6 mar7-2">范晓华<b class="ek-btn-6 f1 mar5-2">首次</b><b class="ek-btn-5 f1 mar5-2">已有客户</b><span class="f-right f1 c4">2020-08-17  13:45</span>
+            </h3>
+            <div class="f2 c5 ">
+              <span>关注了您的公众号</span>
+            </div>
+          </div>
+        </div>
+        <div class="blk-cont-box mar6-2  posi2 border-t ">
+          <div class="img-box2 posi2">
+            <img src="@/assets/img/index/bar_bg.png" />
+            <b class="state s2" title="邮件"></b>
+          </div>
+          <div class="right-box rb1 posi2  c-p" >
+            <h3 class="f2 c6 mar7-2">范晓华</h3>
+            <div class="f2 c5 ">
+              <span>我想买一款定期寿险，能帮我做一份详细的保</span>
+            </div>
+          </div>
+        </div>
+        <div class="blk-cont-box bc1 bg7 posi2 border-t ">
+          <div class="img-box2 posi2">
+            <img src="@/assets/img/index/bar_bg.png" />
+            <b class="state s3" title=""></b>
+          </div>
+          <div class="right-box rb1 posi2  c-p" >
+            <h3 class="f2 c6 mar7-2">范晓华</h3>
+            <div class="f2 c5 ">
+              <span>我想买一款定期寿险，能帮我做一份详细的保</span>
+            </div>
+          </div>
+        </div>
+        <div class="blk-cont-box bc1 bg7 posi2 border-t ">
+          <div class="img-box2 posi2">
+            <img src="@/assets/img/index/bar_bg.png" />
+            <b class="state s4" title=""></b>
+          </div>
+          <div class="right-box rb1 posi2  c-p" >
+            <h3 class="f2 c6 mar7-2">范晓华</h3>
+            <div class="f2 c4 ">
+              <span>我想买一款定期寿险，能帮我做一份详细的保</span>
+            </div>
+          </div>
+        </div>
+        -->
+      <!--</section>-->
+
+    <!--</div>-->
+
+    <footer-panel footer="mess"></footer-panel>
+  </div>
+</template>
+
+<script>
+  import Vue from 'vue'
+  import { mapGetters } from 'vuex'
+  import * as tool from '@/common/Tool'
+  import { FooterPanel } from '@/components/index'
+  import { api_mess } from '@/api/index'
+  import Swiper from 'swiper'
+  import 'swiper/css/swiper.min.css'
+  import 'swiper/js/swiper.min.js'
+  import { Empty } from 'vant'
+
+  Vue.use(Empty)
+
+  export default {
+    name: "MessList",
+    data () {
+      return {
+        conversation: []
+      }
+    },
+    components: {
+      'footer-panel': FooterPanel
+    },
+    computed: {
+      ...mapGetters(['user']),
+    },
+    created () {
+      this.getMessList()
+    },
+    mounted () {
+      this.initSwiper()
+    },
+    methods: {
+      initSwiper () {
+        const swiper = new Swiper('#chatMem', {
+          direction: 'vertical',
+          freeMode: true,
+          freeModeMomentumRatio: 0.5,
+          slidesPerView: 4.5,
+          speed:300,//滑动开始到滑动结束的时间
+          observer:true,//修改swiper自己或子元素时，自动初始化swiper
+          observeParents:true,//修改swiper的父元素时，自动初始化swiper
+          autoplayDisableOnInteraction:false,//用户操作swiper之后是否禁止autoplay
+        })
+      },
+      getMessList () {
+        const _data = {
+          saasId: tool.app.saasId,
+          userId: '0003660579e611e9a021246e965b5bf8'//this.user.userInfo.userId
+        }
+        api_mess.getAllClientNewTalk(_data).then(data => {
+          if (data.status === tool.rtCode.status) {
+            this.conversation = data.funRealTimeMessageDTOList
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        })
+      },
+      goMessWindow (it) {
+        this.$router.push({path: '/messWindow/' + it.clientId})
+      },
+      goBack () {
+        this.$router.back()
+      }
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

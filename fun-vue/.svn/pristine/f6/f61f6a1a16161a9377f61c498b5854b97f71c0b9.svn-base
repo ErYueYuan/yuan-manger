@@ -1,0 +1,618 @@
+
+<template>
+    <div class="bg7">
+        <div class="fun-top-panel bg-my  z0">
+            <span class="mess-back " @click="goBack()"><div class="cont-wh"></div></span>
+            <span class="title c7 f4 dblock2 t-center ">个人信息</span>
+        </div>
+
+        <div class="main-container mar1  clearfix">
+            <top-panel :customerid="customerid"></top-panel>
+
+            <div class="posi2 mar3-5 bg7  bg7 b-radius1">
+                <section class=" pad1-3  ">
+                    <div id="proNav" class="swiper-container border-b1">
+                        <div class="swiper-wrapper f-flex" style="overflow-x: scroll;">
+                            <van-tabs title-active-color="#ee0a24" v-model="active" @click="handleClickTag">
+                                <van-tab
+                                    :scrollspy="true"
+                                    v-for="(item, index) in tabList"
+                                    :key="index"
+                                    :title="item.tagName">
+                                </van-tab>
+                            </van-tabs>
+                        </div>
+                    </div>
+
+                    <!-- 基本信息 -->
+                    <div>
+                        <div class="bg7 mar3-2 pad1-3 b-sh1 fun-info-b1">
+                                <h3 class="tit tri f3 c6 " @click="portraitDetail()">客户画像<span class="c5 f1">详情</span></h3>
+                                <div class="floor1 posi2">
+                                    <div class="avator b-sh1">
+                                        <img src="../../assets/img/szxx/me.png" v-if="portraitSex == 1" />
+                                        <img src="../../assets/img/szxx/dau.png" v-if="portraitSex == 0" />
+                                    </div>
+                                    <span>{{portraitSex == '0' ? '女' : '男'}}</span>
+                                    <span>{{portraitAge}}</span>
+                                    <span>三口之家</span>
+                                    <span>产品咨询</span>
+                                    <span class="more">...</span>
+                                </div>
+                                <div class="floor2">
+                                  <span v-for="(item, index) in portraitTagsName" :key="index" style="padding: 5px 10px;"><div>{{item}}</div></span>
+                                    <span class="edit c-p" @click="editLabel()" ><div><i></i>编辑</div></span>
+                                </div>
+                        </div>
+                      <div class="bg7 mar3-2 pad1-3 b-sh1 fun-info-b1">
+                            <h3 class="tit f3 c6  ">互动情况</h3>
+                            <ul class="ul01">
+                                <li @click="goMess()">消息沟通：{{this.addFriendsTime}} 添加为好友，已产生{{this.interactNum}}条信息互动</li>
+                                <li v-if="this.funVisitTrailDTO.length > 0">最近轨迹：{{funVisitTrailDTO.viewTime | dataFormat('yyyy-MM-dd hh:mm:ss')}} 查看产品链接</li>
+                                <li v-if="this.visitTime != ''">回访预约时间：{{this.visitTime | dataFormat('yyyy-MM-dd hh:mm:ss')}}</li>
+                            </ul>
+                      </div>
+                      <div class="bg7 mar3-2 pad1-3 b-sh1 fun-info-b1">
+                                <h3 class="tit tri f3 c6  " @click="checkMore()">历史方案<span  class="c5 f1" v-show="proposalList.length > 0">查看更多</span></h3>
+                                <section class="blk-cont2020  ">
+                                    <ul class="cont-blk  icon-wrap " v-show="proposalList.length > 0">
+                                        <li class="li-p5  posi2 clearfix">
+                                            <div class="product2020 f-left posi2">
+                                                <img class="lazy-p" src="proposalList.ERiskPicRelaPath" alt="pic">
+                                            </div>
+                                            <div class="info-blk  ">
+                                                <h3 class=" mess f3 c44 ">{{proposalList.riskName}}</h3>
+                                                <p class="f2 mess">{{'被保人：' + (proposalList.insuredsex == 1 ? '男' : '女') + '&nbsp;&nbsp;&nbsp;&nbsp;' + proposalList.insuredage + '周岁&nbsp;&nbsp;&nbsp;'}}</p>
+                                                <p class="f2 mar2  mess">编码: {{proposalList.proposalNo}}</p>
+                                                <p class="f2 mess">首期保费：<span class="c8">{{proposalList.totalamount}}￥起</span></p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!-- 空状态 -->
+                                    <div class="cont   bg-1" v-show="proposalList.length == 0">
+                                        <div class=" t-center f1 c4">暂无内容，快去为客户制作方案吧！</div>
+                                    </div>
+                                </section>
+                        </div>
+
+                        <div class="ek-com-tit bold">详细信息</div>
+                        <section class="member-box bg7  b-sh5">
+                            <div id="pMember" class="swiper-container">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide dblock mar3" v-for="(item, index) in familyList" :key="index"  :class="relation == index ? 'active' : ''"   @click="currentRelation(item, index)">
+                                        <img v-show="item.relationFlag == '01' && item.sex == 1" src="../../assets/img/szxx/me.png"/><!-- 本人 -->
+                                        <img v-show="item.relationFlag == '01' && item.sex == 0" src="../../assets/img/szxx/dau.png"/>
+
+                                        <img v-show="item.relationFlag == '02' && item.sex == 1" src="../../assets/img/szxx/dau.png"/><!-- 配偶 -->
+                                        <img v-show="item.relationFlag == '02' && item.sex == 0" src="../../assets/img/szxx/me.png"/>
+
+                                        <img v-show="item.relationFlag == '06' || item.relationFlag == '16'" src="../../assets/img/szxx/mama.png"/><!-- 长辈 -->
+                                        <img v-show="item.relationFlag == '05' || item.relationFlag == '15'" src="../../assets/img/szxx/papa.png"/>
+                                        <img v-show="item.relationFlag == '08' || item.relationFlag == '14'" src="../../assets/img/szxx/gma.png"/>
+                                        <img v-show="item.relationFlag == '07' || item.relationFlag == '13'" src="../../assets/img/szxx/gpa.png"/>
+
+                                        <img v-show="item.relationFlag == '03'" src="../../assets/img/szxx/gson.png"/><!-- 子女 -->
+                                        <img v-show="item.relationFlag == '04'" src="../../assets/img/szxx/gdau.png"/>
+
+                                        <img v-show="item.relationFlag == '09' || item.relationFlag == '11'" src="../../assets/img/szxx/ggson.png"/><!-- 孙辈 -->
+                                        <img v-show="item.relationFlag == '10' || item.relationFlag == '12'" src="../../assets/img/szxx/ggdau.png"/>
+
+                                        <img v-show="item.sex == 2" src="../../assets/img/szxx/other.png"/><!-- 性别未知 -->
+                                        <span>{{item.relationName}}</span>
+
+                                        <!-- <div class="bar" title="当前"></div> --><!-- 小下标 -->
+                                    </div>
+
+                                    <div class="swiper-slide dblock mar3" @click="addFamily()">
+                                        <img src="../../assets/img/szxx/add.png"/>
+                                        <span title="添加"><span style="opacity: 0;">添加</span>&nbsp;</span>
+                                        <div class="bar" title="当前"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- 基本信息 -->
+                        <section class="mar3-6 bg7  b-sh1">
+                            <section class="pad1">
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1" style="font-weight: bolder !important">{{customerName}}信息</dt>
+                                    <dd class="t-right f3 c8 flex-end" @click="editCustomerDetail(clientId)">
+                                        <img src="../../assets/img/szxx/edit2.png" alt="" class="editimg">编辑
+                                    </dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">姓名</dt>
+                                    <dd class="t-right f3 c5 ">{{customerDetail.cname}}</dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">性别</dt>
+                                    <dd class="t-right f3 c5 " v-show="!!customerDetail.sex">{{customerDetail.sex == '0' ? '女' : '男'}}</dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">手机号码</dt>
+                                    <dd class="t-right f3 c5 ">{{customerDetail.mobile}}</dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">出生日期</dt>
+                                    <dd class="t-right f3 c5 ">{{customerDetail.birthday}}</dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">年龄</dt>
+                                    <dd class="t-right f3 c5 ">{{customerDetail.age}}</dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">国籍</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.nationality}}</dd>
+                                </dl>
+                                <dl class="per-box bg7">
+                                    <dt class="c6 f3-1">婚姻</dt>
+                                    <dd class="t-right f3 c5" v-show="customerDetail.marriage == 1">已婚</dd>
+                                    <dd class="t-right f3 c5" v-show="customerDetail.marriage == 2">未婚</dd>
+                                    <dd class="t-right f3 c5" v-show="customerDetail.marriage == 3">离异</dd>
+                                    <dd class="t-right f3 c5" v-show="customerDetail.marriage == 4">再婚</dd>
+                                    <dd class="t-right f3 c5" v-show="customerDetail.marriage == 5">丧偶</dd>
+                                </dl>
+                            </section>
+                        </section>
+
+                        <!-- 证件类型 -->
+                        <section class="mar3-6 bg7  b-sh1">
+                            <section class="pad1">
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">证件类型</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.cerTypeName}}</dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">证件有效期</dt>
+                                    <dd class="t-right f3 c5" v-show="customerDetail.cerValidDateType == '1'">{{customerDetail.cerValidDate}}</dd>
+                                    <dd class="t-right f3 c5" v-show="customerDetail.cerValidDateType == '0'">长期有效</dd>
+                                </dl>
+                                <dl class="per-box bg7">
+                                    <dt class="c6 f3-1">证件号码</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.cerCode}}</dd>
+                                </dl>
+                            </section>
+                        </section>
+
+                        <!-- 行业 -->
+                        <section class="mar3-6 bg7  b-sh1" v-show="otherInfo">
+                            <section class="pad1">
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">行业</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.occupname}}</dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">职业</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.occupxtionname}}</dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">电子邮箱</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.email}}</dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">手机号码</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.mobile}}</dd>
+                                </dl>
+                                <dl class="per-box bg7">
+                                    <dt class="c6 f3-1">税收居民</dt>
+                                    <dd class="t-right f3 c5"></dd>
+                                </dl>
+                            </section>
+                        </section>
+
+                        <!-- 常住城市，有个选择框 -->
+                        <section class="mar3-6 bg7  b-sh1" v-show="otherInfo">
+                            <section class="pad1">
+                                <dl class="per-box pb2 bg7 border-b1">
+                                    <dt class="c6 f3-1">常住城市</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.provinceName}} - {{customerDetail.cityName}} - {{customerDetail.countyName}}</dd>
+                                </dl>
+                                <dl class="per-box line2 bg7 border-b1">
+                                    <dt class="c6 f3-1">详细地址</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.address}}</dd>
+                                </dl>
+                                <dl class="per-box bg7">
+                                    <dt class="c6 f3-1">邮政编码</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.postalcode}}</dd>
+                                </dl>
+                            </section>
+                        </section>
+                        <br>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <footer-panel :customerid="customerid"></footer-panel>
+    </div>
+</template>
+<script>
+    import Vue from 'vue'
+    import { mapGetters } from 'vuex'
+    import * as tool from '@/common/Tool'
+    import { api_sell } from '@/api/index'
+    import DataSource from '@/common/DataSource'
+    import { Popup, Picker, Tab, Tabs } from 'vant'
+    import { CustomerTopPanel } from '@/components/index'
+    import { CustomerFooterPanel } from '@/components/index'
+
+    Vue.use(Popup)
+    Vue.use(Picker)
+    Vue.use(Tab)
+    Vue.use(Tabs)
+
+    export default {
+        name: "CustomerDetail",
+        data () {
+            return {
+                clientId: this.$route.params.q,//客户id
+                clientNewId: this.$route.params.r,
+                nikeName: "",
+                sex: "",//1男，0女，2未知
+                affiliation: "", //归属运营号
+                getSource: "",
+                customerStar: "",
+                cerCode: "",
+                customerDetail: [],
+                familyList: [],//家庭成员列表
+                relation: 0,//家庭成员列表初始化展示项
+                relationFlag: "01",
+                otherInfo: true,
+                funProductTagDTOList: [],//已购产品标签列表
+                funProductDTOList: [],//已购产品列表
+                productTag: 'B',//已购产品标签初始化展示项,B:寿险产品E:互助产品:F:理财产品
+                funFollowUpDTOList: [],//跟进列表
+                portraitTagsName: [],//客户画像里的标签
+                portraitSex: "",
+                portraitAge: "",
+                addFriendsTime: "",
+                interactNum: "",
+                visitTime: "",
+                funVisitTrailDTO: [],
+                tabList: [
+                    {
+                        id: '0',
+                        innerCode: '0',
+                        tagName: '基本信息'
+                    },
+                    {
+                        id: '1',
+                        innerCode: '1',
+                        tagName: '订单'
+                    },
+                    {
+                        id: '2',
+                        innerCode: '2',
+                        tagName: '轨迹'
+                    },
+                    {
+                        id: '3',
+                        innerCode: '3',
+                        tagName: '跟进'
+                    },
+                    {
+                        id: '4',
+                        innerCode: '4',
+                        tagName: '历史方案'
+                    },
+                    {
+                        id: '5',
+                        innerCode: '5',
+                        tagName: '已购产品'
+                    }
+                ],
+                tagIndex: '2',
+                active: 0,
+                customerName: "本人",
+                proposalList: [],
+                offset: 0,
+                limit: 10,
+                length: 0,
+                riskName: "",
+                proposalNo: "",
+                totalamount: "",
+                insuredsex: "",
+                insuredage: "",
+                customerid: this.$route.params.r,
+
+            }
+        },
+        computed: {
+            ...mapGetters(['user']),
+        },
+        components: {
+            'top-panel': CustomerTopPanel,
+            'footer-panel': CustomerFooterPanel,
+        },
+        created () {
+            this.queryCustomerPortrait();//客户画像
+            this.getCustomerInteract();//互动情况
+            this.queryProposalList();//历史方案列表
+            this.getCustomerLastTrail();//访客记录
+            this.getCustomerDetail();//客户详情
+            this.getFamilyList();//家庭成员列表
+            this.getProductTag();//已购产品标签查询
+            this.getCustomerProduct();//已购产品查询
+            this.queryFollowUpList();//跟进列表查询
+        },
+        methods: {
+
+            handleClickTag (index, title) {
+                this.tagIndex = this.tabList[index].innerCode
+                if (this.tagIndex == '1') {
+                    this.$router.push({ path: '/orderList/' + this.clientId + '/' + this.clientNewId});
+                } else if (this.tagIndex == '2') {
+                    this.$router.push({ path: '/trailList/' + this.clientId + '/' + this.clientNewId});
+                } else if (this.tagIndex == '3') {
+                    this.$router.push({ path: '/followList/' + this.clientId + '/' + this.clientNewId});
+                } else if (this.tagIndex == '4') {
+                    this.$router.push({ path: '/historyList/' + this.clientId + '/' + this.clientNewId});
+                } else if (this.tagIndex == '5') {
+                    this.$router.push({ path: '/payProductList/' + this.clientId + '/' + this.clientNewId});
+                }
+            },
+
+            queryCustomerPortrait () {
+                const _data = {
+                    saasId: tool.app.saasId,
+                    clientNewidId: this.clientNewId
+                }
+                api_sell.queryCustomerPortrait(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.portraitSex = data.sex;
+                        this.portraitAge = data.age;
+                        this.portraitTagsName = data.tagsName;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            getCustomerInteract () {
+                const _data = {
+                    saasId: tool.app.saasId,
+                    clientId: this.clientId
+                }
+                api_sell.getCustomerInteract(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.addFriendsTime = data.funCustomerInteractDTO.addFriendsTime;
+                        this.interactNum = data.funCustomerInteractDTO.interactNum;
+                        this.visitTime = data.funCustomerInteractDTO.visitTime;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            queryProposalList () {
+                const _data = {
+                    agentCode: this.user.userInfo.agentcode,
+                    saasId: tool.app.saasId,
+                    amountFlag: "",
+                    operation: "1",
+                    branchComCode: "",
+                    pagesize: this.limit,
+                    pageoffset: 1,
+                    customerId: this.clientId,
+                    platformId: tool.app.platformId,
+
+                    // agentCode: "Q730011093",
+                    // saasId: "ff5a67337b6611e89feafa163eb3e537",
+                    // amountFlag: "",
+                    // operation: "1",
+                    // branchComCode: "",
+                    // pagesize: 10,
+                    // pageoffset: 1,
+                    // customerId: "062daa1e4d8a11e9967f6c92bf603f23",
+                    // platformId:"2724341dfdc5463cbf167f1195da6e3e"
+                }
+
+                api_sell.queryProposalList(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.proposalList = data.dataM.proposalList[0];
+                        this.proposalList.riskName = data.dataM.proposalList[0].riskName;
+                        this.proposalList.proposalNo = data.dataM.proposalList[0].proposalNo;
+                        this.proposalList.totalamount = data.dataM.proposalList[0].totalamount;
+                        this.proposalList.insuredsex = data.dataM.proposalList[0].insuredsex;
+                        this.proposalList.insuredage = data.dataM.proposalList[0].insuredage.slice(0,-1);
+                        this.proposalList.length = data.dataM.proposalList.length;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            getCustomerLastTrail () {
+                const _data = {
+                    openid: this.user.userInfo.openid,
+                    saasId: tool.app.saasId,
+                    userId: this.user.userInfo.userId
+                    // openid: 1,
+                    // saasId: tool.app.saasId,
+                    // userId: "0000e94e47b411e9bc64246e965b40f8"
+                }
+                api_sell.getCustomerLastTrail(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        if (!!this.funVisitTrailDTO) {
+                            this.funVisitTrailDTO = data.funVisitTrailDTO;
+                        }
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            currentRelation (item, index) {
+                this.relation = index;
+                this.clientId = item.clientId;
+                this.relationFlag = item.relationFlag;
+                if (item.relationFlag == '01') {
+                    this.otherInfo = true;
+                    this.customerName = "本人";
+                } else {
+                    this.otherInfo = false;
+                    this.customerName = item.name;
+                }
+                this.getCustomerDetail(item.clientId);
+            },
+
+            getFamilyList () {
+                const _data = {
+                    agentCode: this.user.userInfo.agentcode,
+                    clientId: this.clientId,
+                    saasId: tool.app.saasId,
+                    offset: this.offset,
+                    limit: this.limit,
+                    // agentCode: "310201480",
+                    // clientId: "db01e84366f811e9967f6c92bf603fec",
+
+                }
+                api_sell.getFamilyList(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.familyList = data.familyList;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            getCustomerDetail (clientId) {
+                const _data = {
+                    saasId: tool.app.saasId,
+                    clientId: !!clientId ? clientId : this.clientId
+                }
+                api_sell.getCustomerDetail(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.customerDetail = data.customerDetail;
+                        this.customerDetail.cname = data.customerDetail.cname;
+                        this.customerDetail.sex = data.customerDetail.sex;
+                        this.customerDetail.birthday = data.customerDetail.birthday;
+                        this.customerDetail.age = data.customerDetail.age;
+                        this.customerDetail.nationality = data.customerDetail.nationality;//国籍
+                        this.customerDetailmarriage = data.customerDetail.marriage;//1-已婚;2-未婚;3-离异;4-再婚;5-丧偶
+                        this.customerDetail.cerType = data.customerDetail.cerType;
+                        this.customerDetail.cerCode = data.customerDetail.cerCode;
+                        this.customerDetail.cerTypeName = data.customerDetail.cerTypeName;
+                        this.customerDetail.cerValidDateType = data.customerDetail.cerValidDateType;//长短期有效
+                        this.customerDetail.occup = data.customerDetail.occup;
+                        this.customerDetail.occupname = data.customerDetail.occupname;
+                        this.customerDetail.occupxtion = data.customerDetail.occupxtion;
+                        this.customerDetail.occupxtionname = data.customerDetail.occupxtionname;
+                        this.customerDetail.email = data.customerDetail.email;
+                        this.customerDetail.mobile = data.customerDetail.mobile;
+                        this.customerDetail.province = data.customerDetail.province;
+                        this.customerDetail.city = data.customerDetail.city;
+                        this.customerDetail.county = data.customerDetail.county;
+                        this.customerDetail.provinceName = data.customerDetail.provinceName;
+                        this.customerDetail.cityName = data.customerDetail.cityName;
+                        this.customerDetail.countyName = data.customerDetail.countyName;
+                        this.customerDetail.address = data.customerDetail.address;
+                        this.customerDetail.postalcode = data.customerDetail.postalcode;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            queryFollowUpList () {
+                const _data = {
+                    agentUserId: this.user.userInfo.userId,//代理人ID
+                    saasId: tool.app.saasId,
+                    clientNewidId: this.clientNewId,//客户id
+                    // agentUserId: "0003660579e611e9a021246e965b5bf8",
+                    // saasId: tool.app.saasId,
+                    // clientNewidId: "fb27daf7aee911ea967f6c92bf603fec",
+                }
+                api_sell.queryFollowUpList(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.funFollowUpDTOList = data.funFollowUpDTOList;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            getProductTag () {
+                const _data = {
+                    saasId: tool.app.saasId,
+                }
+                api_sell.getProductTag(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.funProductTagDTOList = data.funProductTagDTOList;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            chooseProductTag (item) {
+                this.productTag = item.tagValue;
+                this.getCustomerProduct(item.tagValue);
+            },
+
+            getCustomerProduct (value) {
+                const _data = {
+                    name: this.nikeName,
+                    saasId: tool.app.saasId,
+                    idNo: this.cerCode,
+                    riskType: !!value ? value : this.productTag
+
+                    // name: "汝振鑫",
+                    // saasId: tool.app.saasId,
+                    // idNo: "230506199407230019",
+                    // riskType: "1"
+                }
+                api_sell.getCustomerProduct(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.funProductDTOList = data.funProductDTOList;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            goMess () {
+                // this.$router.push({ path: '/messWindow/' + this.clientId + '/' + this.openid + '/' + this.appid });//id都是这个客户的id
+                this.$router.push({ path: '/messWindow/222222222/oFxXqs-PIyfG6xMVVYstvM0qQWX8/wxcf734e49812941a2' });
+            },
+
+            goTrail () {
+                this.$router.push({ path: '/trailList/' + this.clientId + '/' + this.clientNewId});
+            },
+
+            goFollow () {
+                this.$router.push({ path: '/followList/' + this.clientId + '/' + this.clientNewId})
+            },
+
+            portraitDetail () {
+                this.$router.push({path: '/portraitDetail'});
+            },
+
+            checkMore () {
+                this.$router.push({ path: '/historyList/' + this.clientId + '/' + this.clientNewId});
+            },
+
+            editLabel () {
+                this.$router.push({ path: '/editLabel/' + this.clientId + '/' + this.clientNewId});
+            },
+
+            editCustomerDetail (clientId) {
+                this.$router.push({ path: '/editCustomerDetail/' + this.clientId + '/' + this.clientNewId});
+            },
+
+            addFamily () {
+                this.$router.push({ path: '/addFamily/' + this.clientId + '/' + this.clientNewId});
+            },
+
+            goBack () {
+                this.$router.push({ path: '/sellList/' + "1"});
+            },
+
+        
+        }
+    }
+</script>
+<style scoped>
+
+</style>

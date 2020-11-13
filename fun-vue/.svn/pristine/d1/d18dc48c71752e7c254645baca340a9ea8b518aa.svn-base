@@ -1,0 +1,81 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0;minimum-scale=1.0, maximum-scale=1.0">
+<title>业绩统计</title>
+  <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/css/common.css">
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+
+
+</head>
+
+<body class="bg3">
+<div class="fun-top-panel bg7  ">
+  <span class="mess-back "><div class="cont"></div></span>
+  <span class="title c33 f4 dblock2 t-center ">业绩统计</span>
+</div>
+<div class="posi3 bg7 b-radius2">
+  <section class="pad5-4">
+    <div class="timer-box f2-1">
+      <span class=" c5 sp1">时间:</span>
+      <span class="f1 c5 date c-p">2020年5月12日</span>
+      <span class=" c5 sp1 t-center"><b></b></span>
+      <span class="f1 c5 date c-p">2020年5月12日</span>
+    </div>
+  </section>
+</div>
+    <div class="main-container mar4 clearfix">
+
+      <section class="bg7 mar7-1 b-radius3">
+        <div class="ek-com-tit f3 t-left mar6-2 c33  ">周期内数据总览</div>
+        <div class="achieve-box">
+          <li class="one">
+            <h3 class="f3">76</h3>
+            <h4 class="f1-2">分配(人)</h4>
+          </li>
+          <li class="two">
+            <h3 class="f3">76</h3>
+            <h4 class="f1-2">分配(人)</h4>
+          </li>
+          <li class="three">
+            <h3 class="f3">76</h3>
+            <h4 class="f1-2">分配(人)</h4>
+          </li>
+        </div>
+      </section>
+      <section class="bg7 mar7-1 b-radius3">
+        <div class="ek-com-tit f3 t-left mar6-2 c33  ">客户数据</div>
+        <div class="pad5"><img src="../assets/img/chart2.jpg" />
+        </div>
+      </section>
+
+    </div>
+
+
+    <div class="fun-panel clearfix">
+      <div class="f-left  blk active">
+        <span class="icon one"></span>
+        <div class="f0 txt t-center">首页</div>
+      </div>
+      <div class="f-left  blk">
+        <span class="icon two"></span>
+        <div class="f0 txt t-center">数字行销</div>
+      </div>
+      <div class="f-left  blk ">
+        <span class="icon three"></span>
+        <div class="f0 txt t-center">会话消息</div>
+      </div>
+      <div class="f-left  blk ">
+        <span class="icon four"></span>
+        <div class="f0 txt t-center">交易服务</div>
+      </div>
+      <div class="f-left  blk ">
+        <span class="icon five"></span>
+        <div class="f0 txt t-center">我的</div>
+      </div>
+    </div>
+</body>
+</html>

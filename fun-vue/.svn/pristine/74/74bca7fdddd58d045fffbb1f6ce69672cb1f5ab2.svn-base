@@ -1,0 +1,17 @@
+import TopPanel from './componentsFile/TopPanel.vue'
+import Swiper from './componentsFile/Swiper.vue'
+import FooterPanel from './componentsFile/FooterPanel.vue'
+import GraphCode from './componentsFile/GraphCode.vue'
+import ProvinceCity from './componentsFile/ProvinceCity.vue'
+// import NoContent from '../components/componentsFile/NoContent.vue'
+// import UploadFile from './componentsFile/UploadFile.vue'
+
+export {
+  TopPanel,
+  Swiper,
+  FooterPanel,
+  GraphCode,
+  ProvinceCity,
+  // NoContent,
+  // UploadFile
+}

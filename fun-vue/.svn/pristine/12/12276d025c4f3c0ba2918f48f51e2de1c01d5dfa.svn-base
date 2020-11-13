@@ -1,0 +1,39 @@
+import * as API from './'
+
+export default {
+  // 服务状态
+  chOrderStatus: (params, loadings) => {
+    if (process.env.NODE_ENV === 'development') { //本地环境
+      return API.GET('/fzgzidian/sysDict/childDictList/ch_order_status', params, loadings)
+    } else {
+      return API.POST('/deal/chOrderStatus', params, loadings)
+  }
+  },
+  //险种信息
+  chRiskType: (params, loadings) => {
+    if (process.env.NODE_ENV === 'development') { //本地环境
+      return API.GET('/fzgzidian/sysDict/childDictList/ch_risk_type', params, loadings)
+    } else {
+       return API.POST('/deal/chRiskType',params,loadings)
+    }
+  },
+  //列表
+  orderList: (params, loadings) => {
+    if (process.env.NODE_ENV === 'development') { //本地环境
+      return API.POST('/fzgapi/funOrder/orderList', params, loadings)
+    } else {
+      return API.POST('/deal/orderList',params,loadings)
+    }
+  },
+  //订单详情
+  // http://10.2.3.230:8080/lzgapi/policy/policyInfo/findPolicyInfo
+  orderDetails: (params, loadings) => {
+    if (process.env.NODE_ENV === 'development') { //本地环境
+      return API.POST('/ddxq/lzgapi/policy/policyInfo/findPolicyInfo', params, loadings)
+    } else {
+      return API.POST('/deal/orderDetails',params,loadings)
+    }
+  }
+
+
+}

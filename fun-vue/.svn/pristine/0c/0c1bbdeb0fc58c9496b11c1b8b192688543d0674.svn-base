@@ -1,0 +1,126 @@
+<template>
+  <body class="bg3">
+    <top-panel :topPanel="topPanel"></top-panel>
+    <div class=" mar1 clearfix record">
+      <section class="new-nav-box mar3 clearfix">
+        <ul>
+          <li
+            class="bg7 f3 border-b1 simple2"
+            style="overflow:hidden"
+          >头像
+            <label
+              for="uploadid1"
+              class="f-right"
+            >
+              <div class="avator-box f-left">
+                <img :src="headImg" />
+              </div>
+            </label>
+            <upload-file
+              class="f-right"
+              ref="upLoadFile"
+              style="display:none;"
+              :upload-id="uploadid1"
+              @iptFile="afterRead"
+            />
+          </li>
+          <li class="bg7 f3 c6 border-b1 none no-p">姓名<span class="f-right ">{{name}}</span></li>
+          <li class="bg7 f3 c6 border-b1 none no-p">工号<span class="f-right ">{{agentCode}}</span></li>
+          <li class="bg7 f3 c6 border-b1 none no-p">职级<span class="f-right ">{{agentGrade}}</span></li>
+          <li class="bg7 f3 c6 border-b1 none no-p">公司<span class="f-right ">{{deptName2}}</span></li>
+        </ul>
+      </section>
+    </div>
+  </body>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+import { TopPanel } from '@/components/index'
+import { api_my } from '@/api/index'
+import * as tool from '@/common/Tool'
+import { UploadFile } from '@/components/index'
+import Vue from 'vue';
+import { Uploader } from 'vant';
+import DataSource from '@/common/DataSource'
+
+
+Vue.use(Uploader);
+
+export default {
+  name: 'myrecord',
+  computed: {
+    ...mapGetters(['user'])
+  },
+  components: {
+    'upload-file': UploadFile,
+    'top-panel': TopPanel,
+  },
+  mounted() {
+    this.myProfileDetail();
+  },
+  data() {
+    return {
+      topPanel: {
+        back: true,
+        titles: "我的档案",
+        home: true
+      },
+      agentCode: "",
+      deptName2: "",
+      name: "",
+      agentGrade: '',
+      headImg: '',
+      head: '',
+      uploadid1: 'uploadid1',
+      url:''
+    }
+  },
+  methods: {
+    goBack() {
+      this.$router.go(-1)
+    },
+    myProfileDetail() {
+      let data = DataSource.get('record',1);
+       if (data.status == tool.rtCode.status) {
+          this.agentCode = data.agentCode
+          this.deptName2 = data.deptName2
+          this.name = data.name
+          this.agentGrade = data.agentGrade
+          this.headImg = data.head
+        } else {
+          tool.toastMessage(res.message, 'error')
+        }
+    },
+    updateMyProfile() {
+      let _data = {
+        'userId': this.user.userInfo.userId,
+        'saasId': this.user.userInfo.saasId,
+        'head': this.headImg
+      }
+       api_my.updateMyProfile(_data).then(res => {
+         if (res.status === tool.rtCode.status) {
+           DataSource.set('userHead', this.headImg, 1)
+           tool.setUserHead(this.headImg)
+           tool.toastMessage(res.message)
+         } else {
+           tool.toastMessage(res.message, 'error')
+         }
+      })
+    },
+    afterRead(params) {
+      this.headImg = params.url
+      this.url = params.url
+    },
+
+  },
+  watch: {
+    url(){
+      this.updateMyProfile();
+    }
+  }
+}
+</script>
+
+<style scoped>
+</style>

@@ -1,0 +1,241 @@
+<template>
+  <div>
+    <div class="fun-top-panel bg7  ">
+      <div class="f2 c8 right">客户主页</div>
+      <span class="mess-back " @click="goBack"><div class="cont"></div></span>
+      <span class="title c3 f3 dblock2 t-center ">王佳佳</span>
+    </div>
+    <div class="chat-tag-box">
+      <b>高级经理</b><b>标签</b><b>中产</b><b>中产</b><b>...</b>
+      <div class="t-center c-p"><span class="down"></span></div>
+    </div>
+
+    <div class="chatting-wrapper" id="roll_top" :class="fileStatus?'open':''">
+      <div class="message-box" :class="item.senderFlag === '1' ? 'customer' : (item.senderFlag === '0' ? 'agent' : '')" v-for="(item, index) in messList" :key="index">
+        <div class="time f2">{{item.modifydate | dataFormat('yyyy-MM-dd')}}<span> {{item.modifydate | dataFormat('hh:mm')}}</span></div>
+        <div class="cont">
+          <div class="img-box"><img :src="item.head && item.senderFlag === '1' ? item.head : require('@/assets/img/pic1.png')" /></div>
+          <div class="right-box">
+            <h3 class="f1 c5">{{item.name}}</h3>
+            <div class="f1 c5">{{item.content}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chatting-footer b-shadow">
+      <div class="floor1 d-flex">
+        <div class="voice"><b title="语音"></b></div>
+        <div class="chat"><textarea placeholder="输入发送内容" v-model="sendMess"></textarea></div>
+        <div class="other"><b class="b1" title="表情图标"></b><b class="b2" title="附件" @click="otherFile"></b></div>
+      </div>
+      <div class="floor2 posi2">
+        <label>短信<input type="checkbox"/><b></b></label>
+        <label>邮箱<input type="checkbox"/><b></b></label>
+        <label>公众号<input type="checkbox"/><b></b></label>
+        <label>企业微信<input type="checkbox"/><b></b></label>
+        <div class="submit-b">
+          <button class="submit" @click="messSubmit">发送</button>
+        </div>
+      </div>
+      <div class="floor3" :class="!fileStatus?'hide':''"><!--选择分享链接默认收起-->
+        <div class="f1 c5 pad1-3">选择分享链接：</div>
+        <div id="chatShare" class="swiper-container ">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide ">
+              <div class="new-nav-box tools">
+                <ul class="u1 clearfix">
+                  <li class="l2  f2 pad1 c-p" @click="quickReply">
+                    <span class="c1"></span>快捷回复
+                  </li>
+                  <li class="l2 f2 pad1 c-p">
+                    <span class="three"></span>知识库
+                  </li>
+                  <li class="l2 f2 pad1 c-p">
+                    <label for="upLoadPhoto">
+                      <span class="c2"></span>图片
+                      <upload-file
+                        ref="upLoadPhoto"
+                        :upload-id="upLoadPhoto"
+                        style="display:none;"
+                        @iptFile="iptFileFun"
+                      />
+                    </label>
+                  </li>
+                  <li class="l2 f2 pad1 c-p" @click="sendProduct">
+                    <span class="four"></span>产品
+                  </li>
+                  <li class="l2 f2 pad1 c-p">
+                    <span class="five"></span>计划书
+                  </li>
+                  <li class="l2 f2 pad1 c-p" >
+                    <span class="seven"></span>海报
+                  </li>
+                  <li class="l2  f2 pad1 c-p" @click="sendArticle">
+                    <span class="one"></span>文章
+                  </li>
+                  <li class="l2 f2 pad1 c-p">
+                    <span class="six"></span>名片
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="swiper-slide ">
+              <div class="new-nav-box tools">
+                <ul class="u1 clearfix">
+                  <li class="l2 f2 pad1 c-p">
+                    <span class="two"></span>风险测评
+                  </li>
+                  <li class="l2 f2 pad1 c-p">
+                    <span class="three"></span>资产配置
+                  </li>
+                  <li class="l2 f2 pad1 c-p" >
+                    <span class="eight"></span>微店
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import { mapGetters } from 'vuex'
+  import * as tool from '@/common/Tool'
+  import { api_mess } from '@/api/index'
+  import { UploadFile } from '@/components/index'
+  import Swiper from 'swiper'
+  import 'swiper/css/swiper.min.css'
+  import 'swiper/js/swiper.min.js'
+  import DataSource from '@/common/DataSource'
+
+  export default {
+    name: "MessWindow",
+    data () {
+      return {
+        uid: this.$route.params.uid,
+        oid: this.$route.params.oid,
+        aid: this.$route.params.aid,
+        messList: [],
+        sendMess: '',
+        sendPhoto: '',
+        fileStatus: false,
+        upLoadPhoto: 'upLoadPhoto',
+        sendProductMess: DataSource.get('sendProductMess', 2) || ''
+      }
+    },
+    computed: {
+      ...mapGetters(['user']),
+    },
+    components: {
+      'upload-file': UploadFile,
+    },
+    beforeCreate: function() {
+      document.getElementsByTagName("body")[0].className = "bg3";
+    },
+    created () {
+      this.getMessWindowList()
+      if (this.sendProductMess) {
+        this.sendMess = this.sendProductMess
+        this.messSubmit()
+      }
+    },
+    methods: {
+      initSwiper () {
+        this.$nextTick(() => {
+          const swiper = new Swiper('.swiper-container', {
+            pagination: {
+              el: '.swiper-pagination',
+            },
+          });
+        })
+      },
+      getMessWindowList () {
+        const _data = {
+          saasId: tool.app.saasId,
+          userId: this.uid
+        }
+        api_mess.getOneTalkList(_data).then(data => {
+          if (data.status === tool.rtCode.status) {
+            this.messList = data.funRealTimeMessageDTOList
+            this.handleScroll()
+          }
+        })
+      },
+      messSubmit () {
+        if (!this.sendMess) return tool.toastMessage('发送内容不能为空，请重新输入')
+        const _data = {
+          toUserName: this.oid,
+          fromUserName: this.aid,
+          createTime: new Date().getTime(), // 发送时间
+          msgType: 'text', // 消息类型
+          picUrl: this.sendPhoto,
+          content: this.sendMess, // 文本消息内容
+          appId: this.aid
+        }
+        api_mess.readTimeWindow(_data).then(data => {
+          if (data.status === tool.rtCode.status) {
+            this.sendMess = ''
+            if (this.sendProductMess) {
+              DataSource.del('sendProductMess', 2)
+              this.sendProductMess = ''
+            }
+            this.getMessWindowList()
+            tool.toastMessage('发送成功')
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        })
+      },
+      otherFile () {
+        this.fileStatus = !this.fileStatus
+        this.initSwiper()
+        this.handleScroll()
+      },
+      quickReply () {
+        this.sendMess = '您好！'
+        this.messSubmit()
+      },
+      sendProduct () {
+        DataSource.set('messPath', 'messWindow', 2)
+        this.$router.push({path: '/productList'})
+      },
+      sendArticle () {
+        DataSource.set('messPath', 'messWindow', 2)
+        this.$router.push({path: '/articleList'})
+      },
+      handleScroll () {
+        this.$nextTick(() => {
+          let messWin = document.getElementsByClassName('chatting-wrapper')[0],
+            messBox = document.getElementsByClassName('message-box'),
+            messHeight = 0
+          for (let it of messBox) {
+            messHeight += it.offsetHeight
+          }
+          messHeight = messHeight > 100 ? messHeight-100 : 0
+          messWin.scrollTop = messHeight
+        })
+      },
+      goBack () {
+        this.$router.back()
+      },
+      iptFileFun (params) {
+        console.log(params)
+        if (params && params.url) {
+          this.sendPhoto = params.url
+          this.messSubmit()
+        }
+      }
+    },
+    beforeDestroy: function() {
+      document.body.removeAttribute("class", "bg3")
+    },
+  }
+</script>
+
+<style scoped>
+
+</style>

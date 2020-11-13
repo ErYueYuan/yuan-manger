@@ -1,0 +1,86 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0;minimum-scale=1.0, maximum-scale=1.0">
+<title>自建客户</title>
+  <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../assets/css/common.css">
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/responsive.css">
+</head>
+
+
+<body class="bg3">
+<div class="fun-top-panel bg7  ">
+  <span class="mess-back "><div class="cont"></div></span>
+  <span class="title c3 f3 dblock2 t-center ">自建客户</span>
+</div>
+
+
+ <div class="main-container mar3-7 no-bot clearfix ">
+        <section class="b-radius3  bg7 mar3-2">
+          <dl class="per-box52   border-b">
+            <dt class="c6 f3-1">姓名</dt>
+            <dd class="t-right f3 c6 clearfix"><input type="text" class="ca-input w2 t-right" placeholder="请输入"><span class="f-right insure-icon icon-addr mar1-2" title="通讯录"></span></dd>
+          </dl>
+          <div class="error-alert mr" title="错误提示">姓名不能包含数字</div>
+          <dl class="per-box52   border-b">
+            <dt class="c6 f3-1">手机号码</dt>
+            <dd class="t-right c6 f3 c2"><input type="text" class="ca-input t-right" placeholder="请输入"></dd>
+          </dl>
+          <dl class="per-box52   border-b">
+            <dt class="c6 f3-1">性别</dt>
+            <dd class="t-right f3 ">
+              <div class="f-right pad4 t-left">
+                <label class="reg-sel-btn posi2">
+                  <input type="radio" name="a">
+                  <b class="btn">男</b>
+                </label>
+              </div>
+              <div class="f-right pad4 t-left">
+                <label class="reg-sel-btn posi2">
+                  <input type="radio" name="a">
+                  <b class="btn">女</b>
+                </label>
+              </div>
+            </dd>
+          </dl>
+          <dl class="per-box52   border-b">
+            <dt class="c6 f3-1">证件类型</dt>
+            <dd class="t-right f3 c6 arrow">请选择</dd>
+          </dl>
+          <dl class="per-box52   border-b">
+            <dt class="c6 f3-1">证件有效期</dt>
+            <dd class="t-right f3 c6 ">
+              <select class="form-control h442 t-right arrow-s" dir="rtl">
+                <option>请选择</option>
+                <option>汉族</option>
+                <option>非汉族</option>
+              </select>
+            </dd>
+          </dl>
+          <dl class="per-box52   ">
+            <dt class="c6 f3-1">详细地址</dt>
+            <dd class="t-right f3 c6 ">
+              <select class="form-control h442 t-right arrow-s" dir="rtl">
+                <option>请选择</option>
+                <option>汉族</option>
+                <option>非汉族</option>
+              </select>
+            </dd>
+          </dl>
+
+        </section>
+
+
+
+      </div>
+
+</body>
+<div class="pad5-9 posi1 b1 bg7 border-t1">
+      <div class="reg-bt t-center">
+        <button type="button" class="b-left">上一步</button><button type="button" class="b-right">下一步</button>
+      </div>
+</div>
+</html>

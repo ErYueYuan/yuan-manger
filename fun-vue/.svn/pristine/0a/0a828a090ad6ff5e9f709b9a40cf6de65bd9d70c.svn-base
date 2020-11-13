@@ -1,0 +1,16 @@
+var api = require('../api');
+
+module.exports = {
+  articleClassList: function (req, res, next) {
+    api.fetch(req, res, 'POST', 'lm', 'melzg/articleclass/classList', req.body)
+  },
+  articleManagerList: function (req, res, next) {
+    api.fetch(req, res, 'POST', 'lm', 'melzg/articleManager/list', req.body)
+  },
+  increaseReadCount: function (req, res, next) {
+    api.fetch(req, res, 'POST', 'lm', 'melzg/articleread/increaseReadCount', req.body)
+  },
+  getArticleDetail: function (req, res, next) {
+    api.fetch(req, res, 'POST', 'lm', 'melzg/articleManager/getArticleDetail', req.body)
+  },
+}

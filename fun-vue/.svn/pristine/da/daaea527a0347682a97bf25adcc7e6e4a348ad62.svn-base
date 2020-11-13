@@ -1,0 +1,64 @@
+<template>
+  <div class="bg7">
+    <div class="fun-top-panel bg-my">
+      <span
+        class="mess-back "
+        @click="goBack"
+      >
+        <div class="cont-wh"></div>
+      </span>
+      <span class="title c7 f4 dblock2 t-center ">设置</span>
+    </div>
+    <div class="posi4 bg7 b-radius1">
+      <div class="new-nav-box">
+        <ul>
+          <li class="setting setting1 border-b1 f3-1 c6" @click="$router.push({path:'/amendPassword'})">修改密码</li>
+          <li class="setting setting2 border-b1 f3-1 c6">关于我们</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+// import { api_my } from '@/api/index'
+// import * as tool from '@/common/Tool'
+
+
+export default {
+  name: "userSetting",
+  computed: {
+    ...mapGetters(['user']),
+  },
+  data() {
+    return {
+
+    }
+  },
+  components: {
+
+  },
+  mounted() {
+
+  },
+  methods: {
+    goBack() {
+      this.$router.go(-1)
+    },
+
+
+  }
+}
+</script>
+
+<style scoped>
+.posi4 {
+  top: 55px;
+}
+.new-nav-box li.setting1:before {
+  top: 14px;
+  width: 16px;
+  height: 22px;
+}
+</style>

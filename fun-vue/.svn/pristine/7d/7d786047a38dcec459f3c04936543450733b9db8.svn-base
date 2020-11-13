@@ -1,0 +1,261 @@
+<template>
+  <div>
+    <div class="fun-panel clearfix">
+      <div class="in-nav-bot posi1 " style="bottom: 0px;">
+        <div class=" c-p " @click="addFriend()" v-if="customerBaseInfo.isFriend == '0'"><b class="four"></b>
+          <p class="f1 t-center c6">添加好友</p></div>
+        <div class=" c-p " @click="toTalk()"
+             v-if="customerBaseInfo.openIdAndAppIdDTOList &&  customerBaseInfo.openIdAndAppIdDTOList.length > 0"><b
+          class="one"></b>
+          <p class="f1 t-center c6">客户沟通</p></div>
+        <div class=" c-p pad0" @click="call()">
+          <b class="two"></b>
+          <p class="f1 t-center c6">电话</p>
+        </div>
+        <div class=" c-p pad0" @click="plan()">
+          <b class="three"></b>
+          <p class="f1 t-center c6">制作方案</p>
+        </div>
+        <div class="bbtn t-right c-p" @click="insure()">
+          <span class="hx-bt3 bt1 f3 ">投保</span>
+        </div>
+      </div>
+      <div class="mask-layer z23" v-if="isPhone" @click="closed()"></div>
+      <div class="pop-box" v-if="isPhone">
+        <h3 class="tit c6 f4 t-center"></h3>
+        <div class="pad5-11 f2-1 c5 t-center"><label><input type="radio"/>普通电话 {{customerDetail.mobile}}</label></div>
+        <div class="row mar0 border-t">
+          <div class="col-6 t-center f4 c-p c8 pad6-1 border-r" @click="onTel(customerDetail.mobile)">电话</div>
+          <div class="col-6 t-center f4 c-p c8 pad6-1" @click="onTel(customerDetail.mobile)">网络电话</div>
+        </div>
+      </div>
+
+
+    </div>
+    <!-- 添加好友弹框 -->
+    <div class="mask-layer " v-if="isAddFriend" @click="closed()"></div>
+    <div class="pop-box" v-if="isAddFriend">
+      <h3 class="tit c6 f4 t-center mar6-2 mar7 border-b1">添加好友</h3>
+      <b class="close c-p" title="关闭" @click="closed()"></b>
+      <h3 class=" c6 f3 t-left pad1-3">选择加粉号：</h3>
+      <section class="clearfix">
+        <div id="chatMem2" class="swiper-container">
+          <div class="swiper-wrapper f-flex" style="overflow-x: scroll;">
+            <div class="swiper-slide active" v-for="(item, index) in officeList" :key="index"
+                 @click="chooseFans(item, index)">
+              <img
+                v-lazy="item.source == 'public' ? item.offcialAccountHeadurl : (item.source == 'qyWx' ? item.portraitUrl : '')">
+              <span>{{item.source == 'public' ? item.officialAccountName : (item.source == 'qyWx' ? item.nickName : '')}}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="mar6-4 border-t">
+        <dl class="per-box52 no-p border-b">
+          <dt class="dt1 c6 f3-1">对方号码：</dt>
+          <dd class="dd1 t-left f3 c6 clearfix"><input type="text" class="ca-input  t-left" placeholder="请输入手机号和微信号（必填）"
+                                                       v-model="myphone"></dd>
+        </dl>
+        <dl class="per-box52 no-p border-b">
+          <dt class="dt1 c6 f3-1">打招呼：</dt>
+          <dd class="dd1 t-left f3 c6 clearfix"><input type="text" class="ca-input  t-left" placeholder="请输入问候语"
+                                                       v-model="greetings"></dd>
+        </dl>
+        <dl class="per-box52 no-p border-b">
+          <dt class="dt1 c6 f3-1">备注：</dt>
+          <dd class="dd1 t-left f3 c6 clearfix"><input type="text" class="ca-input  t-left" placeholder=""
+                                                       v-model="remark"></dd>
+        </dl>
+      </section>
+      <div class=" pad5  t-center " @click="addFriendInfo()">
+        <button type="button" class="hx-bt2 f3 t-center">请求添加好友</button>
+      </div>
+    </div>
+    <!-- <add-friend v-if="isAddFriend"
+        :operationWeChat="operationWeChat"
+        @addFriend="addFriendFun">
+    </add-friend> -->
+
+
+  </div>
+</template>
+<script>
+  import Vue from 'vue'
+  import { mapGetters } from 'vuex'
+  import * as tool from '@/common/Tool'
+  import { Lazyload } from 'vant'
+  import { api_mess, api_sell } from '@/api/index'
+  import DataSource from '@/common/DataSource'
+
+  Vue.use(Lazyload, { lazyComponent: true })
+
+  export default {
+    name: 'CustomerFooterPanel',
+    props: {
+      customerBaseInfo: {
+        type: Object, //要求父组件数据传输类型
+        required: true  //必传
+      },
+      customerResultId: {
+        type: String, //要求父组件数据传输类型
+        required: true  //必传
+      },
+      customerDetail: {
+        type: Object,
+        required: true
+      }
+      // customerType: {
+      //     type: String, //要求父组件数据传输类型
+      //     required: true  //必传
+      // }
+    },
+    data() {
+      return {
+        isPhone: false,
+        isAddFriend: false,
+        customerDetailFooter: {},
+        tabList: [],
+        active: 0,
+        tagIndex: '1',
+        myphone: '',
+        greetings: '',
+        remark: '',
+        officeList: [],
+        officeNow: 0,
+        officeInd: -1,
+        operationWeChat: [],//加粉号列表
+      }
+    },
+    computed: {
+      ...mapGetters(['user']),
+    },
+    created() {
+      this.getOperatorManageInfo()
+    },
+    methods: {
+      getOperatorManageInfo() {
+        api_mess.getOperatorManageQyWx({
+          type: this.user.operatorManageInfo.id,
+        }).then(res => {
+          if (res.code == '200') {
+            this.tabList = res.data
+            for (let it of this.tabList) {
+              this.officeInd += 1
+              it.officeInd = this.officeInd
+              it.source = 'qyWx'
+              this.officeList.push(it)
+            }
+            this.operatorId = this.tabList[0].operatorId
+            this.operationWechatId = this.tabList[0].id
+          } else {
+
+          }
+        })
+      },
+
+      chooseFans(it, ind) {
+        console.log('143', item)
+        if (it.source === 'public') {
+          if (this.officeNow !== ind) {
+            this.officeNow = ind
+          }
+        } else if (it.source === 'qyWx') {
+          if (this.officeNow !== ind) {
+            this.officeNow = ind
+          }
+        }
+        this.operatorId = it.operatorId//运营者ID
+        this.operationWechatId = it.id//运营号id
+        this.greetings = ''
+        this.remark = ''
+      },
+
+      plan() {
+        const channelUserId = this.user.userInfo.mobile || this.user.userInfo.agentcode,
+          identificationStatus = this.user.userInfo.status || '',
+          clientNewId = this.customerBaseInfo.clientNewId || ''
+        window.location.href = tool.app.lzgUrl + '#/source/channelUserId=' + channelUserId + '&opType=5&status=' + identificationStatus + '&customerId=' + clientNewId + '&backPath=my&platformId=2724341dfdc5463cbf167f1195da6e3e&platformCode=12'
+      },
+
+      call() {
+        if (!!this.customerDetail.mobile) {
+          this.isPhone = true
+        } else {
+          tool.toastMessage('暂无客户电话', 'error')
+        }
+      },
+
+      onTel(mobile) {
+        if (!mobile) return
+        window.location.href = 'tel://' + mobile
+      },
+
+      addFriend() {
+        this.isAddFriend = true
+        if (!!this.customerDetail.mobile) {
+          this.myphone = this.customerDetail.mobile
+        } else {
+          this.myphone = ''
+        }
+      },
+
+      addFriendInfo() {
+        if (!this.myphone) {
+          tool.toastMessage('请输入手机号和微信号', 'error')
+          return false
+        }
+        const _data = {
+          mobile: this.myphone,
+          operationWechatId: this.operationWechatId,//运营号id
+          operatorId: this.operatorId,//运营者ID
+          requestId: '1',//请求接口id
+          reqType: 'APP',//请求类型：PC或APP
+          greetSb: this.greetings,
+          remark: this.remark
+        }
+        api_sell.addFriends(_data).then(res => {
+          if (res.code == '200') {
+            tool.toastMessage('添加成功')
+            this.isAddFriend = false
+            this.greetings = ''
+            this.remark = ''
+          } else {
+            tool.toastMessage(res.msg, 'error')
+          }
+        })
+      },
+
+      toTalk() {
+        // customerType = 1:加微好友  2:自建、获取  3:关注公众号
+        // let wxId = this.customerType === '1' && this.customerBaseInfo.friendId ? 'fid=' + this.customerBaseInfo.friendId : (this.customerType === '1' && this.customerBaseInfo.groupId ? 'gid=' + this.customerBaseInfo.groupId : ''),
+        //     parameter = this.customerType === '3' ? 'messType=public&oid=' + this.customerBaseInfo.openIdAndAppIdDTOList[0].openId + '&aid=' + this.customerBaseInfo.openIdAndAppIdDTOList[0].appId + '&cid=' + this.customerBaseInfo.clientId : 'messType=qyWx&wid=' + this.customerBaseInfo.operationWechatId + '&' + wxId
+        // this.$router.push({name: 'messWindow', params: {p: parameter}})
+
+
+        DataSource.set('talkNum', '1', 1)
+        let wxId = this.customerBaseInfo.customerType === '1' && this.customerBaseInfo.friendId ? 'fid=' + this.customerBaseInfo.friendId : (this.customerBaseInfo.customerType === '1' && this.customerBaseInfo.groupId ? 'gid=' + this.customerBaseInfo.groupId : ''),
+          parameter = this.customerBaseInfo.customerType === '3' ? 'messType=public&oid=' + this.customerBaseInfo.openIdAndAppIdDTOList[0].openId + '&aid=' + this.customerBaseInfo.openIdAndAppIdDTOList[0].appId + '&cid=' + this.customerBaseInfo.clientId : 'messType=qyWx&wid=' + this.customerBaseInfo.operationWechatId + '&' + wxId
+        this.$router.push({ name: 'messWindow', params: { p: parameter } })
+      },
+      insure() {
+        DataSource.set('bigDataCustomerId', this.customerBaseInfo.clientNewId, 2)
+        this.$router.push({ name: 'productList' })
+      },
+      closed() {
+        this.isPhone = false
+        this.isAddFriend = false
+      },
+
+      addFriendFun(params) {
+        this.isAddFriend = false
+        if (params) {
+
+        }
+      }
+    },
+  }
+</script>
+
+<style scoped>
+
+</style>

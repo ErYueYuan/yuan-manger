@@ -1,0 +1,123 @@
+<template>
+  <div style="overflow:auto">
+      cesl 
+    <template v-for="(item,index) in detailData.panels">
+      <div
+        :key="index"
+        class='panelsitem'
+      >
+        <div class="detitem-title">{{item.title}}</div>
+        <div>
+          <van-row v-if="item.panel">
+            <template v-for="(val,valindex) in item.panel[0].elements">
+              <van-col
+                :span="8"
+                :key="valindex"
+              >
+                <span class='smalltitle'>{{val.fieldName}}：</span>
+                <span>{{val.displayName}}</span>
+              </van-col>
+            </template>
+          </van-row>
+          <van-row v-else>
+            <div class="block">
+              <div
+                class="line-wrap"
+                id="lineWarp"
+                style="margin-bottom:15px;"
+              >
+                <template v-for="(child,chIndex) in item.healthList[0].questions">
+                  <van-row
+                    :key="chIndex"
+                    style="padding:5px 0;"
+                  >
+                    <van-col
+                      :span="2"
+                      align="right"
+                    >
+                      {{chIndex}}：
+                    </van-col>
+                    <van-col
+                      :span="20"
+                      style="padidng:20px 20px;"
+                    >
+                      {{child.showInfo}}
+                    </van-col>
+                    <van-col
+                      :span="2"
+                      align="center"
+                    >
+                      <span class="block round-icon">{{child.selectFlag == 'N'?'否':'是'}}</span>
+                    </van-col>
+                  </van-row>
+                </template>
+              </div>
+              <van-col
+                :span="24"
+                align="center"
+              >
+                <el-button
+                  size='mini'
+                  type="default"
+                  @click="showMoremsg"
+                >{{showMore?'收回':'展开'}}</el-button>
+              </van-col>
+            </div>
+          </van-row>
+        </div>
+      </div>
+    </template>
+
+  </div>
+</template>
+
+<script>
+import { api_service } from '@/api/index'
+// import * as tool from '@/common/Tool'
+import Vue from 'vue';
+import { Col, Row } from 'vant';
+Vue.use(Col);
+Vue.use(Row);
+export default {
+  data() {
+    return {
+      showMore: false,
+      detailData: {},
+    }
+  },
+  mounted () {
+      this.getOrderInfoZhou();
+  },
+  methods: {
+    goBack() {
+      this.$router.go(-1);
+    },
+    showMoremsg() {
+      let DivBox = document.getElementById('lineWarp');
+      this.showMore = !this.showMore
+      if (this.showMore) {
+        DivBox.style.height = '576px'
+        DivBox.style.overflow = 'auto'
+      } else {
+        DivBox.style.height = '192px'
+        DivBox.style.overflow = 'hidden'
+      }
+    },
+    getOrderInfoZhou() {
+      let data = {
+        flag: "0",
+        orderSn: "2020000041008546",
+        saasId: "ff5a67337b6611e89feafa163eb3e537"
+      }
+      let result =  api_service.ordersDet(data)
+      if (result.status == "SUCCESS") {
+        this.detailData = result.data
+      }
+    },
+  },
+}
+</script>
+
+<style scoped>
+
+</style>

@@ -1,0 +1,307 @@
+<template>
+   <div id="service">
+    <div class="fun-top-panel bg7">
+      <span class="mess-back ">
+        <div
+          class="cont"
+          @click="goBack"
+        ></div>
+      </span>
+      <span class="title c3 f3 dblock2 t-center ">交易服务</span>
+    </div>
+    <div class="main-top p-fix">
+      <section class="index-v20-top f-flex bg7 clearfix">
+        <div class="sear-bb ">
+          <div class=" clearfix">
+            <section class="sear-c posi2 clearfix">
+              <!-- <form
+                action=""
+                class="input-search-form"
+                id="search_from"
+              > -->
+                <van-search
+                  v-model="searchval"
+                  shape="round"
+                  background=""
+                  placeholder="请输入搜索关键词"
+                  @search="searchLike"
+                />
+                <!-- <input
+                  type="search"
+                  input
+                  autocomplete="off"
+                  placeholder="输入关键字搜索"
+                  class="f2 "
+                  v-model="searchval"
+                />
+              </form>
+              <button
+                class="sea-btn"
+                @click="searchLike()"
+              ><span class="gg-search"></span></button> -->
+            </section>
+          </div>
+        </div>
+        <div class="message-b f-right mar2">
+          <span
+            t-center
+            class="fun-icon icon-select mar3-2"
+            @click="show = true"
+            v-if="type==1"
+          ><b class="c-flag3"></b></span>
+          <van-popup
+            v-model="show"
+            round
+            position="bottom"
+          >
+            <div class="pop-box3 pb1">
+              <div class="pad6-1">
+                <van-form
+                  input-align="center"
+                  ref="vanform"
+                  name="forms"
+                >
+                  <div class="pad5-9 bg7 b-radius1 t-center">筛选</div>
+                  <div class=" ">
+                    <section class="pad5-5 bg7">
+                      <h3 class="f1 c6 l-h3">生效日期：</h3>
+                      <div class="row">
+                        <div class="col-6">
+                          <van-field
+                            readonly
+                            clickable
+                            name="datetimePicker"
+                            :value="effectivestart"
+                            placeholder="开始日期"
+                            @click="timerchang('effective',1)"
+                          />
+                        </div>
+                        <div class="col-6">
+                          <van-field
+                            readonly
+                            name="datetimePicker"
+                            :border="true"
+                            :value="effectiveEnd"
+                            placeholder="结束日期"
+                            @click="timerchang('effective',2)"
+                          />
+                        </div>
+                      </div>
+                      <h3 class="f1 c6 l-h3">下次缴费日期：</h3>
+                      <div class="row">
+                        <div class="col-6">
+                          <van-field
+                            readonly
+                            name="datetimePicker"
+                            :border="true"
+                            :value="nextPaystart"
+                            placeholder="开始日期"
+                            @click="timerchang('nextPay',1)"
+                          />
+
+                        </div>
+                        <div class="col-6">
+                          <van-field
+                            readonly
+                            name="datetimePicker"
+                            :border="true"
+                            :value="nextPayEnd"
+                            placeholder="结束日期"
+                            @click="timerchang('nextPay',2)"
+                          />
+                        </div>
+                      </div>
+                      <h3 class="f1 c6 l-h3">终止日期：</h3>
+                      <div class="row">
+                        <div class="col-6">
+                          <van-field
+                            readonly
+                            name="datetimePicker"
+                            :border="true"
+                            :value="expirystart"
+                            placeholder="开始日期"
+                            @click="timerchang('expiry',1)"
+                          />
+                        </div>
+                        <div class="col-6">
+                          <van-field
+                            readonly
+                            name="datetimePicker"
+                            :border="true"
+                            :value="expiryEnd"
+                            placeholder="结束日期"
+                            @click="timerchang('expiry',2)"
+                          />
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                  <div class="row mar0">
+                    <div class="col-6 c-p"><span
+                        class="hx-bt5  f3 "
+                        @click="clearnull"
+                      >重置</span></div>
+                    <div class="col-6 c-p"><span
+                        class="hx-bt3  f3 "
+                        @click="confirmtime"
+                      >确定</span></div>
+                  </div>
+                </van-form>
+              </div>
+            </div>
+          </van-popup>
+          <van-popup
+            v-model="timer"
+            round
+            position="bottom"
+            :style="{height:'50%'}"
+          >
+            <van-datetime-picker
+              @confirm="confirm"
+              @cancel="timer = false"
+              v-model="currentDate"
+              type="date"
+              title="选择年月日"
+              :formatter="formatter"
+            />
+          </van-popup>
+        </div>
+
+      </section>
+      <section class=" nav-bar  ps bg7 border-b1">
+        <div class="  t-center">
+          <span
+            class="f3-1 "
+            :class="type == 0 ?'active':''"
+            @click="changeState(0,'done')"
+          >未完成</span>
+        </div>
+        <div class="  t-center">
+          <span
+            class="f3-1"
+            :class="type == 1?'active':''"
+            @click="changeState(1,'done')"
+          >已完成</span>
+        </div>
+      </section>
+      <section class="bg7 fresh posi2 border-b1 clearfix">
+        <div class="box f1-2">
+          <div
+            class="sel-box"
+            :class="sels == 1?'sb2':''"
+            @click="changeState(1,'sel')"
+          >
+            {{statusName}}
+            <select
+              value="状态"
+              disabled
+            >
+            </select>
+          </div>
+          <div
+            class="sel-box mar5-2"
+            :class="sels == 2?'sb2':''"
+            @click="changeState(2,'sel')"
+          >
+            {{typeName}}
+            <select
+              value="险种"
+              disabled
+            >
+            </select>
+          </div>
+          <button
+            @click="resetLoad"
+            class="sea-btn"
+            v-if="type==0"
+          ><b></b></button>
+        </div>
+      </section>
+      <van-popup
+        v-model="selct"
+        round
+        position="bottom"
+        :style="{height:'50%'}"
+      >
+        <van-picker
+          v-if="sels==1"
+          title="状态"
+          show-toolbar
+          :columns="statusList"
+          @confirm="chooseState"
+          @cancel="selct=false"
+        />
+        <van-picker
+          v-if="sels==2"
+          title="险种"
+          show-toolbar
+          :columns="typeList"
+          @confirm="chooseState"
+          @cancel="selct=false"
+        />
+      </van-popup>
+    </div>
+    <div
+      class="mar4-4 clearfix"
+      :class="total===0?'':'main-container'"
+    >
+      <section class="mar3">
+        <template v-for="(item,index) in list">
+          <div
+            class="b-sh1  pad5-5 bg7 mar6-2 mar7-3"
+            :key="index"
+            v-if="type==0"
+          >
+            <section class="mar20 bg7 ">
+              <div
+                class="order-box-2020 "
+                @click="getDetails(item)"
+              >
+                <h3 class="  order-tit posi2 f3 c3">
+                  <div class="col-9 pad0 tit mess">{{item.productName}}</div>
+                  <span class="status f1 ts3">投保录入中</span>
+                  <span class="status f1 ts4">客户录入单</span>
+                  <!--双录状态-->
+                  <div class="col-12 f2 c4 t-left time">创建时间：{{item.createdate}}</div>
+                </h3>
+
+                <div class="order-box  clearfix posi2">
+                  <section class="f2 pad0">
+                    <p class="order-info"><span class="p-tit">订单号</span><span class="c4">{{item.ordersn}}</span></p>
+                    <p><span class="p-tit">投保人</span><span class="c4">{{item.policyholder}}</span></p>
+                    <p><span class="p-tit">保费</span><span class="c4">35000</span> </p>
+                    <p class="order-memo clearfix border-t2"><span class="p-tit f-left">备注</span><span class="c222 mess5 memo"></span></p>
+                  </section>
+                </div>
+              </div>
+              <div class="t-right pad557 posi2 bg7">
+                <button
+                  class="f-left btn sxt-btn-3 showMoreBtn mar5-2"
+                  title="展开剩余菜单"
+                ></button>
+                <button class=" ek-btn-3 f1 mar5-2">订单轨迹</button>
+                <button class=" ek-btn-3 f1 mar5-2">取消订单</button>
+                <button
+                  class=" ek-btn-4 f1 mar5-2"
+                  @click="goDetail(item.id,item.agentCode)"
+                >客户行销</button>
+                <button class=" ek-btn-4 f1 mar5-2">继续录入</button>
+              </div>
+            </section>
+          </div>
+        </template>
+      </section>
+      <footer-panel footer="deal"></footer-panel>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+    naem:'searchclient'
+}
+</script>
+
+<style>
+
+</style>

@@ -1,0 +1,145 @@
+<template>
+  <div>
+    <top-panel :topPanel="topPanel"></top-panel>
+    <div class="main-container mar3-7 clearfix">
+      <section class="bg7 border-t">
+        <van-list
+          v-model="loading"
+          :finished="finished"
+          finished-text="没有更多了"
+          @load="onLoad"
+          offset="100"
+        >
+        <div
+          class="blk-cont-box posi2 border-b1 mar6-2"
+          v-for="(item,index) in  resultList"
+          :key="index"
+          @click="goDetail(item.clientId,item.resultId)"
+        >
+          <div class="img-box posi2">
+            <img src="../../assets/img/index/bar_bg.png" />
+            <b
+              class="state c-p"
+              v-show="item.getSource == 1"
+            >分配用户</b>
+            <b
+              class="state c-p"
+              v-show="item.getSource == 2"
+            >取数用户</b>
+            <b
+              class="state c-p"
+              v-show="item.getSource == 3"
+            >自建客户</b>
+          
+          </div>
+          <div class="right-box posi2  c-p">
+            <h3 class="f2 c6 mar7-2">{{item.name}}
+            </h3>
+            <div class="f2 c4">
+              <span>年龄：</span><span v-if="item.age">{{item.age}}岁</span>
+            </div>
+            <div class=" f2 c4">
+              <span>客户星级：</span><span class="stars-box"><i
+                  v-for="(item,index) in item.customerStar"
+                  :key="index"
+                ></i></span>
+            </div>
+            <div class=" f2 c4">
+              <span>订单状态：</span><span class="c8">{{item.orderStatus}}</span>
+            </div>
+            <div class=" f2 c4">
+              <span>订单更新时间：</span><span>{{item.date}}</span>
+            </div>
+            <div
+              class="f1"
+              v-if="item.activitySource"
+            ><b class="ek-btn-5">{{item.activitySource?item.activitySource:''}}</b></div>
+          </div>
+          <b class="flag">客户行销</b>
+        </div>
+        </van-list>
+      </section>
+    </div>
+  </div>
+</template>
+
+<script>
+import Vue from 'vue'
+import { mapGetters } from 'vuex'
+import { TopPanel } from '@/components/index'
+import * as tool from '@/common/Tool'
+import { api_mess } from '@/api/index'
+import { List } from 'vant'
+
+Vue.use(List)
+export default {
+  name: 'visitorNews',
+  data() {
+    return {
+      sourceChannel: tool.globalData,
+      topPanel: {
+        back: true,
+        titles: '访客雷达',
+      },
+      limit: 10,
+      offset: 0,
+      total: 0,
+      finished: false,
+      loading: false,
+      resultList: []
+    }
+  },
+  components: {
+    'top-panel': TopPanel,
+  },
+  computed: {
+    ...mapGetters(['user'])
+  },
+  created() {
+    this.getVisitorRadarList()
+  },
+  methods: {
+    onLoad() {
+      this.offset++
+      this.getVisitorRadarList()
+    },
+    getVisitorRadarList() {
+      let _data = {
+        'agentUserId': this.user.userid,
+        'saasId': this.saasId,
+        'offset': this.offset,
+        'limit': this.limit
+      }
+      api_mess.getVisitorRadarList(_data).then(res => {
+        if (res.status == tool.rtCode.status) {
+          this.loading = false
+          if (res.result == null || res.result.length == 0) {
+            this.finished = true
+            return
+          }
+          this.total = res.total
+          this.resultList = this.resultList.concat(res.result)
+          if (this.resultList.length >= this.total) {
+            this.finished = true
+          }
+        } else {
+          this.finished = true
+          tool.toastMessage(res.message, 'error')
+        }
+      })
+    },
+    goDetail(clientId, resultId) {
+      this.$router.push({ name: 'customerDetail', params: { q: clientId, r: resultId } })
+    },
+  },
+  beforeCreate: function () {
+    document.getElementsByTagName('body')[0].className = 'bg3'
+  },
+  beforeDestroy: function () {
+    document.body.removeAttribute('class', 'bg3')
+  },
+}
+</script>
+
+<style scoped>
+</style>

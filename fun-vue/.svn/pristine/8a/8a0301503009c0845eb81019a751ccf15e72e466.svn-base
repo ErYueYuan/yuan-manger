@@ -1,0 +1,176 @@
+<template>
+  <div
+    class="bg3"
+    style=""
+  >
+    <TopPanel :topPanel="topPanel"></TopPanel>
+    <div class="clearfix pass">
+      <div
+        class="login-box modify clearfix"
+        style="padding:0;"
+      >
+        <section class="login-info-box reg">
+        
+          <div style="margin-bottom:5px;">
+            <div
+              class="pad5-3 bg7 f4 polydetails"
+            >
+              投保人
+            </div>
+            <div
+              class="list pad5-3 bg7"
+              v-for="(item,index) in policy"
+              :key="index"
+            >
+              <p class="f4 pad6-2">姓名：<span class="c111">{{item.appntname}}</span></p>
+              <p class="f4 pad6-2">性别：<span class="c111">{{item.appntsexname}}</span></p>
+              <p class="f4 pad6-2">证件类型：<span class="c111">{{item.appntidtypename}}</span></p>
+              <p class="f4 pad6-2">证件号：<span class="c111">{{item.appntidno}}</span></p>
+              <p class="f4 pad6-2">出生日期：<span class="c111">{{item.appntbirthday}}</span></p>
+              <p class="f4 pad6-2">电话：<span class="c111">{{item.appntmobile}}</span></p>
+              <p class="f4 pad6-2">地址：<span class="c111">{{item.appntpostaladdress}}</span></p>
+              <p class="f4 pad6-2">邮政编码：<span class="c111">{{item.appntzipcode}}</span></p>
+              <p class="f4 pad6-2">保单号：<span class="c111">{{item.innercontno}}</span></p>
+              <p class="f4 pad6-2">职业：<span class="c111">{{item.appntoccupname}}</span></p>
+              <p class="f4 pad6-2">公司：<span class="c111">{{item.corporation}}</span></p>
+              <p class="f4 pad6-2">分公司：<span class="c111">{{item.branchoffice}}</span></p>
+              <p class="f4 pad6-2">保单号：<span class="c111">{{item.innercontno}}</span></p>
+              <p class="f4 pad6-2">保单状态：<span class="c111">{{item.polstatename}}</span></p>
+            </div>
+          </div>
+            <div style="margin-bottom:5px;">
+            <div
+              class="pad5-3 bg7 f4 polydetails"
+            >
+              被保人
+            </div>
+            <div
+              class="list pad5-3 bg7"
+              v-for="(item,index) in policy[0].insuredLZGVOList"
+              :key="index"
+            >
+              <p class="f4 pad6-2">姓名：<span class="c111">{{item.insuredname}}</span></p>
+              <p class="f4 pad6-2">性别：<span class="c111">{{item.insuredsexname}}</span></p>
+              <p class="f4 pad6-2">证件类型：<span class="c111">{{item.insuredidtypename}}</span></p>
+              <p class="f4 pad6-2">证件号：<span class="c111">{{item.insuredidno}}</span></p>
+              <p class="f4 pad6-2">出生日期：<span class="c111">{{item.insuredbirthday}}</span></p>
+              <p class="f4 pad6-2">电话：<span class="c111">{{item.insuredmobile}}</span></p>
+              <p class="f4 pad6-2">地址：<span class="c111">{{item.insuredpostaladdress}}</span></p>
+              <p class="f4 pad6-2">邮政编码：<span class="c111">{{item.insuredzipcode}}</span></p>
+              <p class="f4 pad6-2">职业：<span class="c111">{{item.insuredoccupname}}</span></p>
+              <p class="f4 pad6-2">关系：<span class="c111">{{item.insureappntrelationname}}</span></p>
+            </div>
+          </div>
+            <div style="margin-bottom:5px;">
+            <div
+              class="pad5-3 bg7 f4 polydetails"
+            >
+              受益人
+            </div>
+            <div
+              class="list pad5-3 bg7"
+              v-for="(item,index) in listBnf"
+              :key="index"
+            >
+               <p class="f4 pad6-2">姓名：<span class="c111">{{item.name}}</span></p>
+              <p class="f4 pad6-2">性别：<span class="c111">{{item.SEXNAME}}</span></p>
+              <p class="f4 pad6-2">证件类型：<span class="c111">{{item.IDTYPENAME}}</span></p>
+              <p class="f4 pad6-2">证件号：<span class="c111">{{item.IDNO}}</span></p>
+              <p class="f4 pad6-2">出生日期：<span class="c111">{{item.birthday}}</span></p>
+              <p class="f4 pad6-2">关系：<span class="c111">{{item.relationtoinsuredname}}</span></p>
+            </div>
+          </div>
+          <div style="margin-bottom:5px;">
+            <div
+              class="pad5-3 bg7 f6 polydetails"
+            >
+              险种信息
+            </div>
+            <div
+              class="list pad5-3 bg7"
+              style="border-bottom:1px solid #ccc;"
+              v-for="(item,index) in listFcpol"
+              :key="index"
+            >
+              <p class="f4 pad6-2">险种名称:<span class="c111">{{item.RISKNAME}}</span></p>
+              <p class="f4 pad6-2">缴费方式:<span class="c111">{{item.PAYINTVNAME}}</span></p>
+              <p class="f4 pad6-2">时长:<span class="c111">{{item.PAYINTV}}</span></p>
+              <p class="f4 pad6-2">金额:<span class="c111">{{item.AMNT}}</span></p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+</template>
+
+<script>
+import { api_service } from '@/api/index'
+import * as tool from '@/common/Tool'
+import { TopPanel } from '@/components/index';
+import Vue from 'vue';
+import { Col, Row } from 'vant'; 
+
+Vue.use(Col);
+Vue.use(Row);
+export default {
+  name: 'dealdetails',
+  data() {
+    return {
+      listBnf: [],
+      listFcpol: [],
+      policy: [],
+      topPanel: {
+        back: true,
+        titles: "保单详情",
+      },
+    }
+  },
+  components: {
+    TopPanel
+  },
+  created() {
+    this.orderDetails();
+  },
+  mounted() {
+  },
+  methods: {
+    goBack() {
+      this.$router.go(-1);
+    },
+    orderDetails() {
+      let _data = {
+        'agentCode': this.$route.params.r,
+        'innercontno':this.$route.params.q
+      }
+      api_service.orderDetails(_data).then(res => {
+        if (res.status == tool.rtCode.status) {
+          this.listBnf = res.listBnf
+          this.listFcpol = res.listFcpol
+          this.policy = res.policy
+        }else {
+          tool.toastMessage(res.message, 'error');
+        }
+      })
+    }
+  },
+}
+</script>
+
+<style scoped>
+.login-box.modify {
+  margin: 10px auto;
+  margin-top: 0;
+}
+.polydetails {
+  height: 50px;
+  background: #fffed7;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  box-shadow:0 0 10px 4px rgba(0, 0, 0, 0.125);
+}
+.pass {
+  margin-top: 40px;
+}
+</style>

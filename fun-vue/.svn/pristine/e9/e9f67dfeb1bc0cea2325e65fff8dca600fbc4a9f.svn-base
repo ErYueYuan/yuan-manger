@@ -1,0 +1,21 @@
+export default [
+    {
+      path: '/service',
+      name: 'service',
+      meta: {title: '产品服务'},
+      component: () => import(/* webpackChunkName: "login" */ '@/views/service/dealService')
+    },
+    {
+      path: '/dealDetails',
+      name: 'dealDetails',
+      meta: {title: '订单详情'},
+      component: () => import(/* webpackChunkName: "login" */ '@/views/service/Dealdetails')
+    },
+    {
+      path: '/wdetails/:r/:q',
+      name: 'wdetails',
+      meta: {title: '详情'},
+      component: () => import(/* webpackChunkName: "login" */ '@/views/service/Wdetails')
+    },
+  ]
+  

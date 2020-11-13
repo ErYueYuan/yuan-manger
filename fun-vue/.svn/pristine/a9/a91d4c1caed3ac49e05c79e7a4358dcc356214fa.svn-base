@@ -1,0 +1,54 @@
+<template>
+    <h3>订单轨迹</h3>
+</template>
+<script>
+    import Vue from 'vue'
+    import { mapGetters } from 'vuex'
+    import * as tool from '@/common/Tool'
+    import { api_sell } from '@/api/index'
+    import DataSource from '@/common/DataSource'
+    import '@vant/touch-emulator'
+
+    export default {
+        name: "orderList",
+        data () {
+            return {
+                orderSn: this.$route.params.q,
+                ciOrderLogList: [],//存放订单轨迹状态
+            }
+        },
+        computed: {
+            ...mapGetters(['user']),
+        },
+        components: {
+
+        },
+        created () {
+            this.queryOrderLog();//订单轨迹
+        },
+        methods: {
+
+            queryOrderLog () {
+                const _data = {type: this.orderSn + '/' + this.user.userInfo.agentcode}
+                // const _data = {type: '2020000041007578/' + '520101251'}
+                api_sell.queryOrderLog(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        console.log(data)
+                        this.ciOrderLogList = data.ciOrderLogList;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            goBack () {
+                this.$router.go(-1);
+            },
+
+
+        }
+    }
+</script>
+<style scoped>
+
+</style>

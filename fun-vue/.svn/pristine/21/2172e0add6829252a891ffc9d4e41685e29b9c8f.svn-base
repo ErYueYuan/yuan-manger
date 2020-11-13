@@ -1,0 +1,34 @@
+var api = require('../api');
+
+module.exports = {
+  login: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'fzg', 'funapp/funUser/login', req.body)
+  },
+  register: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'rg', 'uChannelRegister/register', req.body)
+  },
+  jsapiticket: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'ek', 'ekapi/config/jsapiticket', req.body)
+  },
+  retrievePassword: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'lm', 'user/uUserRegister/retrievePassword', req.body)
+  },
+  statusMove: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'fzg', 'funUserSign/statusMove', req.body)
+  },
+  getTargetPrem: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'fzg', 'funapp/target/getTargetPrem', req.body)
+  },
+  getSameDayTarget: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'fzg', 'funapp/target/getSameDayTarget', req.body)
+  },
+  getUserSignStatuss: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'fzg', 'funUserSign/getUserSignStatuss', req.body)
+  },
+  signStatusMove: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'fzg', 'funUserSign/statusMove', req.body)
+  },
+  queryCustomerStatusCount: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'fzg', 'funapp/digitalMarketing/queryCustomerStatusCount', req.body)
+  },
+}

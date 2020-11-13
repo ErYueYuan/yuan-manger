@@ -1,0 +1,278 @@
+<template>
+
+  <div class="bg7">
+    <div class="fun-top-panel bg7  ">
+      <span
+        class="mess-back "
+        @click="goBack()"
+      >
+        <div class="cont"></div>
+      </span>
+      <span class="title c33 f4 dblock2 t-center ">配置二维码</span>
+    </div>
+
+    <div class="main-container mar3-7 clearfix">
+      <div class="pad5 f1 c4 border-t">配置二维码后，您分享的链接中将自动显示此二维码，便于将潜在客户引流至您的个人微信或公众号中。</div>
+      <section class="mar3-2 pad1-3">
+        <div class="b-sh1  pad5-5 bg7  mar7-3">
+          <div class="c5 f2-1 pad6-2">企业/个人微信二维码</div>
+          <section class="set-ercode">
+            <div class="upload-b">
+              <section class="upload-box posi2">
+                <div>
+                  <img v-if="uploadurl1" :src="uploadurl1" />
+                  <img v-else src="../../assets/img/space.png" />
+                  </div>
+                <div class="input-btn"></div>
+                <upload-file
+                  class="f-right"
+                  ref="upLoadFile"
+                  :upload-id="upload.d1"
+                  @iptFile="afterRead"
+                />
+                <!-- <input type="file" /> -->
+              </section>
+            </div>
+            <div class="info-box">
+              <textarea
+                class="ca-input94"
+                placeholder="请输入二维码说明"
+                v-model="descb"
+              ></textarea>
+              <div class=" sel-b5 posi2">
+                <div class="re-upload">
+                  <div
+                    class="input-btn"
+                    v-if="uploadurl1"
+                  >重新上传</div>
+                  <upload-file
+                    class="f-right"
+                    ref="upLoadFile"
+                    :upload-id="upload.d3"
+                    @iptFile="afterRead"
+                  />
+                </div>
+                <label class="t-right"><span class="f1 c4">在链接中显示</span><input
+                    type="checkbox"
+                    v-model="showType"
+                    value="1"
+                  /><b class="aaa"></b></label>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="b-sh1  pad5-5 bg7  mar7-3">
+          <div class="c5 f2-1 pad6-2">公众号二维码</div>
+          <section class="set-ercode">
+            <div class="upload-b">
+              <section class="upload-box posi2">
+                <div>
+                  <img v-if="uploadurl2" :src="uploadurl2" />
+                  <img v-else src="../../assets/img/space.png" />
+                  </div>
+                <div class="input-btn"></div>
+                <upload-file
+                  class="f-right"
+                  ref="upLoadFile"
+                  :upload-id="upload.d2"
+                  @iptFile="afterRead"
+                />
+              </section>
+            </div>
+            <div class="info-box">
+              <textarea
+                class="ca-input94"
+                v-model="descb2"
+                placeholder="请输入二维码说明"
+              ></textarea>
+              <div class=" sel-b5 posi2">
+                <div class="re-upload">
+                  <div
+                    class="input-btn"
+                    v-if="uploadurl2"
+                  >重新上传</div>
+                  <upload-file
+                    class="f-right"
+                    ref="upLoadFile"
+                    :upload-id="upload.d4"
+                    @iptFile="afterRead"
+                  />
+                </div>
+                <label class="t-right"><span class="f1 c4">在链接中显示</span><input
+                    type="checkbox"
+                    v-model="showType2"
+                    value="true"
+                  /> <b class="aaa"></b></label>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="in-nav-bot posi1 ">
+
+      <div class="bbtn  c-p">
+        <span
+          class="hx-bt3  f3 "
+          @click="insertQrcode()"
+        >确定</span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { UploadFile } from '@/components/index'
+import { api_my } from '@/api/index';
+import { mapGetters } from 'vuex';
+import * as tool from '@/common/Tool'
+
+export default {
+  name: 'qrcode',
+  components: {
+    'upload-file': UploadFile,
+  },
+  computed: {
+    ...mapGetters(['user'])
+  },
+  data() {
+    return {
+      upload: {
+        'd1': 'uplodd1',
+        'd2': 'uplodd2',
+        'd3': 'uplodd3',
+        'd4': 'uplodd4',
+      },
+      uploadurl1: '',
+      uploadurl2: '',
+      uploadurl3: '',
+      uploadurl4: '',
+      rcode: [],
+      descb: "",
+      descb2: "",
+      qrcodeType: '',
+      showType: 0,
+      showType2: 0,
+      id1: '',
+      id2: ''
+    }
+  },
+  created() {
+    this.getQrcode();
+  },
+  methods: {
+    goBack() {
+      this.$router.go(-1);
+    },
+    afterRead(params) {
+      if (params.id == this.upload.d1) {
+        this.uploadurl1 = params.url
+      } else if (params.id == this.upload.d2) {
+        this.uploadurl2 = params.url
+      }
+      else if (params.id == this.upload.d3) {
+        this.uploadurl3 = params.url
+        this.uploadurl1 = params.url
+      } else if (params.id == this.upload.d4) {
+        this.uploadurl4 = params.url
+        this.uploadurl2 = params.url
+      }
+    },
+    getQrcode() {
+      let _data = {
+        "saasId": this.user.saasId,
+        "userId": this.user.userid
+      }
+      api_my.getQrcode(_data).then(res => {
+        if (res.status == tool.rtCode.status) {
+          for (var item of res.funUserQrcodeList) {
+            if (item.qrcodeType == 1) {
+              this.descb = item.descb
+              this.id1 = item.id
+              this.uploadurl1 = item.qrcodeUrl
+              this.showType = Boolean(item.showType)
+            } else if(item.qrcodeType == 2) {
+              this.descb2 = item.descb
+              this.id2 = item.id
+              this.uploadurl2 = item.qrcodeUrl
+              this.showType2 = Boolean(item.showType)
+            }
+          }
+        }
+      })
+    },
+    insertQrcode() {
+      let _data = [
+        {
+          saasId: this.user.saasId,
+          userId: this.user.userInfo.userId,
+          qrcodeType: 1,
+          qrcodeUrl: this.uploadurl1,
+          descb: this.descb,
+          showType: Number(this.showType),
+        },
+        {
+          saasId: this.user.saasId,
+          userId: this.user.userInfo.userId,
+          qrcodeType: 2,
+          qrcodeUrl: this.uploadurl2,
+          descb: this.descb2,
+          showType: Number(this.showType2),
+        },
+      ]
+      api_my.insertQrcode(_data).then(res => {
+        if (res.status == tool.rtCode.status) {
+          tool.toastMessage(res.message, 'success')
+          setTimeout(function () {
+            this.goBack();
+          }, 1000)
+        }
+      })
+    },
+    updateQrcode(val) {
+      let _data = {};
+      if (val == 1) {
+        _data = {
+          id:this.id1,
+          saasId: this.user.saasId,
+          userId: this.user.userInfo.userId,
+          qrcodeType: 1,
+          qrcodeUrl: this.uploadurl1,
+          descb: this.descb,
+          showType: Number(this.showType),
+        }
+      } else if(val == 2) {
+        _data = {
+          id:this.id2,
+          saasId: this.user.saasId,
+          userId: this.user.userInfo.userId,
+          qrcodeType: 2,
+          qrcodeUrl: this.uploadurl2,
+          descb: this.descb2,
+          showType: Number(this.showType2),
+        }
+      }
+      api_my.updateQrcode(_data).then(res => {
+        if (res.status == tool.rtCode.status) {
+          tool.toastMessage(res.message, 'success')
+        } else {
+          tool.toastMessage(res.message, 'error')
+        }
+      })
+    }
+  },
+  watch: {
+    uploadurl3() {
+      this.updateQrcode(1)
+    },
+    uploadurl4() {
+      this.updateQrcode(2)
+    },
+  }
+}
+</script>
+
+<style>
+</style>

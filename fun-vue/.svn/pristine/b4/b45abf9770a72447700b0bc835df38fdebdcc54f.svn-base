@@ -1,0 +1,330 @@
+<template>
+  <div id="service">
+    <div class="fun-top-panel bg7">
+      <span class="mess-back ">
+        <div class="cont"></div>
+      </span>
+      <span class="title c3 f3 dblock2 t-center ">交易服务</span>
+    </div>
+    <div class="main-top p-fix">
+      <section class="index-v20-top f-flex bg7 clearfix">
+        <div class="sear-bb ">
+          <div class=" new-search clearfix">
+            <section class="sear-c posi2 clearfix">
+              <form
+                action=""
+                class="input-search-form"
+                id="search_from"
+              >
+                <input
+                  type="search"
+                  input
+                  autocomplete="off"
+                  placeholder="输入关键字搜索"
+                  class="f2 "
+                  v-model="searchval"
+                />
+              </form>
+
+              <button
+                class="sea-btn"
+                @click="searchLike()"
+              ><span class="gg-search"></span></button>
+            </section>
+          </div>
+        </div>
+        <div class="message-b f-right ">
+          <span
+            t-center
+            class="message m2 posi2 c-p"
+            @click="chooseTime"
+          ><b class="c-flag3"></b></span>
+          <van-popup
+            v-model="show"
+            round
+            position="bottom"
+            :style="{ height: '40%',padding:'10px' }"
+          >
+            <h5 class="t-center">筛选</h5>
+            <div class="time">
+              <p><b>生效日期:</b></p>
+            </div>
+          </van-popup>
+          <van-popup>
+            <van-datetime-picker
+              v-model="currentDate"
+              type="date"
+              title="选择年月日"
+              :min-date="minDate"
+              :max-date="maxDate"
+            />
+          </van-popup>
+        </div>
+
+      </section>
+      <section class=" nav-bar  ps bg7 border-b1">
+        <div class="  t-center">
+          <span
+            class="f3-1 "
+            :class="type == 0 ?'active':''"
+            @click="changeState(0,'done')"
+          >未完成</span>
+        </div>
+        <div class="  t-center">
+          <span
+            class="f3-1"
+            :class="type == 1?'active':''"
+            @click="changeState(1,'done')"
+          >已完成</span>
+        </div>
+      </section>
+      <section class="bg7 fresh posi2 border-b1 clearfix ">
+        <div class="box f1-2">
+          <div
+            class="sel-box"
+            :class="sels == 1?'sb2':''"
+          >
+            <select
+              @click="changeState(1,'sel')"
+              @change="chooseState(1,$event)"
+            >
+              <option
+                v-for="item in statusList"
+                :key="item.value"
+                :value="item.value"
+              >{{item.name}}</option>
+            </select>
+          </div>
+          <div
+            class="sel-box mar5-2"
+            :class="sels == 2?'sb2':''"
+          >
+            <select
+              @click.stop="changeState(2,'sel')"
+              @change="chooseState(2,$event)"
+            >
+              <option
+                v-for="item in typeList"
+                :key="item.value"
+                :value="item.value"
+              >{{item.name}}</option>
+            </select>
+          </div>
+          <button
+            @click="resetLoad"
+            class="sea-btn"
+            v-if="type==0"
+          ><b></b></button>
+        </div>
+      </section>
+    </div>
+    <div class="main-container mar4-4 clearfix">
+      <section class="mar3">
+        <template v-for="(item,index) in list">
+          <div
+            class="b-sh1  pad5-5 bg7 mar6-2 mar7-3"
+            :key="index"
+            v-if="type==0"
+          >
+            <section class="mar20 bg7 ">
+              <div class="order-box-2020 ">
+                <h3 class="  order-tit posi2 f3 c3">
+                  <div class="col-9 pad0 tit mess">{{item.productName}}</div>
+                  <span class="status f1 ts3">投保录入中</span>
+                  <span class="status f1 ts4">客户录入单</span>
+                  <!--双录状态-->
+                  <div class="col-12 f2 c4 t-left time">创建时间：{{item.createdate}}</div>
+                </h3>
+
+                <div class="order-box  clearfix posi2">
+                  <section class="f2 pad0">
+                    <p class="order-info"><span class="p-tit">订单号</span><span class="c4">{{item.ordersn}}</span></p>
+                    <p><span class="p-tit">投保人</span><span class="c4">{{item.policyholder}}</span></p>
+                    <p><span class="p-tit">保费</span><span class="c4">35000</span> </p>
+                    <p class="order-memo clearfix border-t2"><span class="p-tit f-left">备注</span><span class="c222 mess5 memo"></span></p>
+                  </section>
+                </div>
+              </div>
+              <div class="t-right pad557 posi2 bg7">
+                <button
+                  class="f-left btn sxt-btn-3 showMoreBtn mar5-2"
+                  title="展开剩余菜单"
+                ></button>
+                <!-- <div class="sl-other-b ">
+                <b class="sl-trangle"></b>
+                <span class="border-b1">订单轨迹</span>
+                <span>写备忘</span>
+              </div> -->
+                <!-- <button class=" ek-btn-3 f1">照会</button> -->
+                <button class=" ek-btn-3 f1 mar5-2">订单轨迹</button>
+                <button class=" ek-btn-3 f1 mar5-2">取消订单</button>
+                <button
+                  class=" ek-btn-4 f1 mar5-2"
+                  @click="goDetail(item.clientId)"
+                >客户行销</button>
+                <button class=" ek-btn-4 f1 mar5-2">继续录入</button>
+                <!-- <button class=" ek-btn-3 wi1 f1">刷新</button> -->
+              </div>
+            </section>
+          </div>
+          <div
+            class="b-sh1  pad5-5 bg7 mar6-2 mar7-3"
+            :key="index"
+            v-else-if="type==1"
+          >
+            <section class="mar20 bg7 ">
+              <div class="order-box-2020 ">
+                <h3 class="  order-tit posi2 f3 c3">
+                  <div class="col-9 pad0 tit mess">{{item.productName}}</div>
+                  <span class="status f1 ts4">已终止</span>
+                  <!--双录状态-->
+                  <div class="col-12 f2 c4 t-left time">创建时间：{{item.createdate}}</div>
+                </h3>
+                <div class="order-box  clearfix posi2">
+                  <section class="f2 pad0">
+                    <p class="order-info"><span class="p-tit">订单号</span><span class="c4">{{item.ordersn}}</span></p>
+                    <p><span class="p-tit">险种</span><span class="c4">{{item.policyholder}}</span></p>
+                    <p><span class="p-tit">投保人</span><span class="c4">{{item.policyholder}}</span></p>
+                    <p><span class="p-tit">被保人</span><span class="c4">{{item.policyholder}}</span></p>
+                    <p><span class="p-tit">保费</span><span class="c4">35000</span> </p>
+                    <p class="order-memo clearfix border-t2"><span class="p-tit f-left">备注</span><span class="c222 mess5 memo"></span></p>
+                  </section>
+                </div>
+              </div>
+              <div class="t-right pad557 posi2 bg7">
+                <button class=" ek-btn-3 f1 mar5-2">写备忘</button>
+                <button
+                  class=" ek-btn-4 f1 mar5-2"
+                  @click="goDetail(item.clientId)"
+                >客户详情</button>
+              </div>
+            </section>
+          </div>
+        </template>
+      </section>
+      <footer-panel footer="deal"></footer-panel>
+    </div>
+  </div>
+</template>
+
+<script>
+import Vue from 'vue'
+import { mapGetters } from 'vuex'
+import { FooterPanel } from '@/components/index'
+import { api_service } from '@/api/index'
+import * as tool from '@/common/Tool'
+import { Popup, DatetimePicker } from 'vant';
+import DataSource from '@/common/DataSource'
+Vue.use(Popup)
+Vue.use(DatetimePicker)
+
+export default {
+  name: "service",
+  data() {
+    return {
+      searchval: '',//搜索值
+      search: '',
+      sels: 1,
+      statusList: [],//状态列表
+      statusVal: 10,//状态值
+      typeList: [],//险种列表
+      typeVal: 1,//险种值
+      list: '',
+      type: 0,//未完成0完成1
+      show: false,
+      minDate: new Date(2020, 0, 1),
+      maxDate: new Date(2025, 10, 1),
+      currentDate: new Date(),
+    }
+  },
+  created() {
+    this.chOrderStatus();
+    this.chRiskType();
+    this.orderList();
+  },
+  computed: {
+    ...mapGetters(['user']),
+  },
+  components: {
+    'footer-panel': FooterPanel,
+  },
+  methods: {
+    changeState(type, str) {
+      if (str == 'done') {
+        this.type = type;
+        this.orderList();
+      } else if (str == 'sel') {
+        this.sels = type;
+      }
+    },
+    chOrderStatus() {
+      api_service.chOrderStatus().then(data => {
+        this.statusList = data;
+      })
+    },
+    chRiskType() {
+      api_service.chRiskType().then(data => {
+        this.typeList = data;
+      })
+    },
+    chooseState(val, state) {
+      console.log(state.target.value);
+      if (val == 1) {
+        this.stateVal = state.target.value;
+      } else {
+        this.typeVal = state.target.value;
+      }
+      this.orderList();
+    },
+    orderList() {
+      let _data = {
+        saasId: this.user.userInfo.saasId,
+        userId: this.user.userInfo.userId,
+        offset: 0,
+        limit: 10,
+        agentCode: this.user.userInfo.agentcode,
+        type: this.type,
+        search: this.searchval,
+        orderStatus: this.stateVal,
+        //  policyStatus:this.typeVal,
+        source: '',
+      }
+      //  let _data ={
+      //          saasId:'ff5a67337b6611e89feafa163eb3e537',
+      //          userId:'edddd7b5309241b8867160e4e52450e8',
+      //          offset:0,
+      //          limit:10,
+      //          agentCode:520101251,
+      //          search:'客户姓名',
+      //          orderStatus:20,
+      //          policyStatus:40,
+      //          source:16,
+      //       }
+      api_service.orderList(_data).then(res => {
+        if (res.status == tool.rtCode.status) {
+          this.list = res.funOrderList
+        }
+      })
+    },
+    searchLike() {
+      this.search = this.searchval;
+      this.orderList();
+    },
+    goDetail(clientId) {
+      this.$router.push({ path: '/customerDetail/' + clientId });
+    },
+    chooseTime() {
+      this.show = true;
+    },
+    resetLoad() {
+      this.orderList();
+    }
+  }
+}
+</script>
+
+<style scoped>
+.fresh .box .sel-box.sb2 select option {
+  color: #000;
+}
+</style>

@@ -1,0 +1,13 @@
+var api = require('../api');
+
+module.exports = {
+  getVerifyCode: function(req, res, next) {
+    api.fetch(req, res, 'GET', 'fzg', 'funapp/drawImage/getVerifyCode', req.body)
+  },
+  checkVerifyCode: function(req, res, next) {
+    api.fetch(req, res, 'GET', 'fzg', 'funapp/drawImage/verifyCode', req.body)
+  },
+  advertismentList4Front: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'lm', 'melzg/advertisment/advertismentList4Front', req.body)
+  },
+}

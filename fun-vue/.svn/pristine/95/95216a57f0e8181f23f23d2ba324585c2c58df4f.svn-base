@@ -1,0 +1,205 @@
+<template>
+  <div>
+    <top-panel :topPanel="topPanel" v-if="!sourceChannel.isWeiXin"></top-panel>
+    <div class="main-container clearfix" :class="!sourceChannel.isWeiXin?'mar1':''">
+      <form action="/">
+        <van-search
+          shape="round"
+          v-model="search_val"
+          placeholder="搜索词"
+          @search="handleSearch"
+          @clear="handleClear"
+        />
+      </form>
+      <div class="mar3">
+        <div class="row nav-bar3 ps b-radius2 pad1-3">
+          <van-tabs class="w100" @click="handleClickTab">
+            <van-tab
+              v-for="(article, index) in articleClassList"
+              :title="article.groupName"></van-tab>
+          </van-tabs>
+        </div>
+      </div>
+      <section class="blk-cont no-md">
+        <ul class="cont-blk icon-wrap clearfix">
+          <li
+            class="li-p bg7 posi2 clearfix"
+            v-for="(article,index) in articleList"
+            :key="index"
+            @click="goInfoDetail(article)"
+          >
+            <div class="ek f-left posi2">
+              <img class="lazy-p" :src="article.coverImage" alt="pic" />
+            </div>
+            <div class="info-blk no-m">
+              <div class="box">
+                <h3 class="no-p1 f3 c44">{{article.title}}</h3>
+                <p class="subtit no-in f1 c222">{{article.simple}}</p>
+              </div>
+              <div class="f1 time">
+                <b class="icon1"></b>
+                {{article.readCount}}观看
+              </div>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</template>
+
+<script>
+  import Vue from 'vue'
+  import { Search, Tab, Tabs } from 'vant'
+  import { mapGetters } from "vuex";
+  import { TopPanel } from "@/components/index";
+  import { api_system, api_article } from "@/api/index";
+  import * as scroll from "@/common/Scroll";
+  import * as tool from "@/common/Tool";
+
+  Vue.use(Search)
+  Vue.use(Tab)
+  Vue.use(Tabs)
+
+  export default {
+    name: "articleList",
+    data () {
+      return {
+        sourceChannel: tool.globalData,
+        topPanel: {
+          back: true,
+          titles: "获客文章",
+        },
+        userName: "",
+        greetings: "",
+        dataFlag: "",
+        isLoad: "",
+        articleClassList: [],
+        articleList: [],
+        search_val: '',
+        total: 0,
+        articleId: '',
+        offset: tool.pagination.pageoffset,
+        limit: tool.pagination.pagesize
+      }
+    },
+    computed: {
+      ...mapGetters(["user"]),
+    },
+    components: {
+      'top-panel': TopPanel,
+    },
+    beforeCreate: function() {
+      document.getElementsByTagName("body")[0].className = "bg3";
+    },
+    created () {
+      this.getArticleOneData()
+    },
+    mounted() {
+      window.addEventListener("scroll", this.handleScroll);
+    },
+    methods: {
+      getArticleOneData() {
+        let _data = {
+          params: {
+            saasId: tool.app.saasId,
+            platformId: tool.app.platformId,
+            groupType: 'article',
+            status: '1'
+          }
+        };
+        api_article.lmGroupListOneLevel(_data).then((res) => {
+          if (res.status == tool.rtCode.status) {
+            this.articleClassList = res.lmGroupList
+            if (this.articleClassList.length>0) {
+              this.articleId = this.articleClassList[0].id
+              this.getInfoList()
+            }
+          }
+        });
+      },
+      getInfoList() {
+        let _data = {
+          params: {
+            saasId: tool.app.saasId,
+            platformId: tool.app.platformId,
+            id: this.articleId,
+            showDeptCode: 1000000,
+            offset: this.offset,
+            limit: this.limit
+          }
+        }
+        api_article.lmGroupArticleList(_data).then((data) => {
+          if (data.status == tool.rtCode.status) {
+            this.isLoad = false
+            this.total = data.total
+            if (this.offset === 0 || this.articleList.length === 0) {
+              this.articleList = data.articleList ? data.articleList : []
+              if (this.productList.length < this.total) {
+                this.queryLoading = false
+              }
+            } else {
+              this.productList = this.productList.concat(data.productList)
+            }
+            this.allLoaded = this.productList.length >= this.total
+            if (this.allLoaded) {
+              this.queryLoading = true
+            }
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        });
+      },
+      handleClickTab (index) {
+        if (this.articleClassList[index].id !== this.articleId) {
+          this.articleId = this.articleClassList[index].id
+          this.getInfoList()
+        }
+      },
+      getReadNum(id) {
+        let _data = {
+          saasId: tool.app.saasId,
+          articleID: id,
+          platformId: '5e00309b49ce4011a924a7ceb6740af8' // tool.app.platformId,
+        };
+        api_article.increaseReadCount(_data).then((res) => {
+          if (res.status == tool.rtCode.status) {
+          }
+        });
+      },
+      goInfoDetail(item) {
+        this.getReadNum(item.id);
+        this.$router.push({name: "articleDetail", params: {id: item.id}});
+      },
+      handleSearch () {
+        this.getInfoList()
+      },
+      handleClear () {
+        this.getInfoList()
+      },
+      handleScroll() {
+        if (scroll.getScrollTop() + scroll.getClientHeight() > scroll.getScrollHeight() - 5) {
+          if (this.articleList.length == this.articleTotal) return;
+          if (!this.isLoad) {
+            this.isLoad = true;
+            this.loadMore();
+          }
+        }
+      },
+      loadMore() {
+        this.offset += this.offset
+        this.getInfoList();
+      }
+    },
+    beforeDestroy: function() {
+      document.body.removeAttribute("class", "bg3")
+    },
+    destroyed() {
+      window.removeEventListener('scroll', this.handleScroll)
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

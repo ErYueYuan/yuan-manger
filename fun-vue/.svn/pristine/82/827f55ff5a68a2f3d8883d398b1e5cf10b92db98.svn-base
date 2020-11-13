@@ -1,0 +1,158 @@
+<template>
+  <div>
+    <div id="courseTag" class="swiper-container">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" v-for="(tags, index) in courseClassTag" :key="index" @click="handleChangeTag(tags, index)">
+          <div class="pad8-1"><span class="hx-bt3 bt2 f2" :class="courseTagId===tags.id?'active':''">{{tags.groupName}}</span></div>
+        </div>
+      </div>
+    </div>
+    <section class="blk-cont no-md">
+      <ul class="cont-blk icon-wrap clearfix">
+        <li
+          class="li-p bg7 posi2 clearfix"
+          v-for="(course,index) in courseList"
+          :key="index"
+          @click="goInfoDetail(course)"
+        >
+          <div class="ek f-left posi2">
+            <img class="lazy-p" :src="course.coverImage" alt="pic" />
+          </div>
+          <div class="info-blk no-m">
+            <div class="box">
+              <h3 class="no-p1 f3 c44">{{course.title}}</h3>
+              <p class="subtit no-in f1 c222">{{course.simple}}</p>
+            </div>
+            <div class="f1 time">
+              <b class="icon1"></b>
+              {{course.readCount}}观看
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+</template>
+
+<script>
+  import { api_system, api_article } from "@/api/index"
+  import * as tool from "@/common/Tool"
+  import Swiper from 'swiper'
+  import 'swiper/css/swiper.min.css'
+  import 'swiper/js/swiper.min.js'
+  import DataSource from "@/common/DataSource"
+
+  export default {
+    name: "ExcellentCourse",
+    data () {
+      return {
+        courseClassTag: [],
+        courseTagId: '',
+        courseList: [],
+        total: 0,
+        offset: tool.pagination.pageoffset,
+        limit: tool.pagination.pagesize,
+        isLoad: true,
+        allLoaded: false,
+        queryLoading: true,
+      }
+    },
+    created () {
+      this.getCoursesTagData()
+    },
+    methods: {
+      initSwiper () {
+        const swiper = new Swiper('#courseTag', {
+          freeMode: true,
+          freeModeMomentumRatio: 0.5,
+          slidesPerView: 4,
+          speed:300,//滑动开始到滑动结束的时间
+          observer:true,//修改swiper自己或子元素时，自动初始化swiper
+          observeParents:true,//修改swiper的父元素时，自动初始化swiper
+          autoplayDisableOnInteraction:false,//用户操作swiper之后是否禁止autoplay
+        });
+      },
+      getCoursesTagData () {
+        let _data = {
+          params: {
+            saasId: tool.app.saasId,
+            platformId: tool.app.platformId,
+            groupType: 'course',
+            status: '1'
+          }
+        };
+        api_article.lmGroupListOneLevel(_data).then((res) => {
+          if (res.status == tool.rtCode.status) {
+            this.courseClassTag = res.lmGroupList
+            console.log(this.courseClassTag)
+            if (this.courseClassTag.length>0) {
+              this.courseTagId = DataSource.get('courseTagId', 2) || this.courseClassTag[0].id
+              this.getInfoList()
+            }
+            this.initSwiper()
+          }
+        });
+      },
+      handleChangeTag (tags, index) {
+        if (this.courseTagId !== tags.id) {
+          this.courseList = []
+          this.offset = tool.pagination.pageoffset
+          this.courseTagId = tags.id
+          DataSource.set('courseTagId', this.courseTagId, 2)
+          this.getInfoList()
+        }
+      },
+      getInfoList () {
+        let _data = {
+          params: {
+            saasId: tool.app.saasId,
+            platformId: tool.app.platformId,
+            id: this.courseTagId,
+            showDeptCode: 1000000,
+            offset: this.offset,
+            limit: this.limit
+          }
+        }
+        api_article.lmGroupArticleList(_data).then((data) => {
+          if (data.status == tool.rtCode.status) {
+            this.isLoad = false
+            this.total = data.total
+            if (this.offset === 0 || this.courseList.length === 0) {
+              this.courseList = data.articleList ? data.articleList : []
+              if (this.courseList.length < this.total) {
+                this.queryLoading = false
+              }
+            } else {
+              this.courseList = this.courseList.concat(data.articleList)
+            }
+            this.allLoaded = this.courseList.length >= this.total
+            if (this.allLoaded) {
+              this.queryLoading = true
+            }
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        });
+      },
+      goInfoDetail (item) {
+        this.getReadNum(item.id);
+        this.$router.push({name: "articleDetail", params: {id: item.id}});
+      },
+      getReadNum(id) {
+        let _data = {
+          saasId: tool.app.saasId,
+          articleID: id,
+          platformId: '5e00309b49ce4011a924a7ceb6740af8' // tool.app.platformId,
+        };
+        api_article.increaseReadCount(_data).then((res) => {
+          if (res.status == tool.rtCode.status) {
+          }
+        });
+      },
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

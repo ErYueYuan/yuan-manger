@@ -1,0 +1,208 @@
+<template>
+  <div>
+    <div class="fun-top-panel bg7  ">
+      <span class="mess-back " @click="goBack"><div class="cont"></div></span>
+      <span class="title c3 f3 dblock2 t-center ">会话消息</span>
+      <div class="f2 c8 right" @click="$router.push({path: '/systemNews'})"><span class="fun-icon icon-mess"></span></div>
+    </div>
+
+    <div class="chat-member bg3">
+      <div id="chatMem" class="swiper-container border-b1">
+        <div class="swiper-wrapper">
+          <!-- 推荐 -->
+          <div class="swiper-slide active mh100">
+            <div class="img-box posi2">
+              <img src="@/assets/img/index/bar_bg.png" />
+              <b class="state s1" title="微信"></b>
+            </div>
+            <span>范晓华</span>
+          </div>
+          <div class="swiper-slide mh100">
+            <div class="img-box posi2">
+              <img src="@/assets/img/index/bar_bg.png" />
+              <b class="state s2" title="公众号"></b>
+            </div>
+            <span>范晓华</span>
+          </div>
+          <div class="swiper-slide mh100">
+            <div class="img-box posi2">
+              <img src="@/assets/img/index/bar_bg.png" />
+              <b class="state s1" title="微信"></b>
+            </div>
+            <span>范晓华</span>
+          </div>
+          <div class="swiper-slide mh100">
+            <div class="img-box posi2">
+              <img src="@/assets/img/index/bar_bg.png" />
+              <b class="state s2" title="公众号"></b>
+            </div>
+            <span>范晓华</span>
+          </div>
+          <div class="swiper-slide mh100">
+            <div class="img-box posi2">
+              <img src="@/assets/img/index/bar_bg.png" />
+              <b class="state s1" title="微信"></b>
+            </div>
+            <span>范晓华</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="main-container chatting mar3-7 posi2 clearfix">
+      <div class="fun-icon icon-add-friend" title="添加好友"></div>
+      <van-tabs @click="handleTabsClick" title-active-color="#FD5147" color="#FD5147">
+        <van-tab title="实时会话">
+          <section class="bg7">
+            <div class="blk-cont-box mar6-2  posi2  border-t" v-for="(item, index) in conversation" :key="index" @click="goMessWindow(item)">
+              <div class="img-box2 posi2">
+                <img src="@/assets/img/index/bar_bg.png" />
+                <b class="state s1" title="微信"></b>z
+              </div>
+              <div class="right-box rb1 posi2 c-p" >
+                <h3 class="f2 c6 mar7-2">{{item.name}}<span class="f-right f1 c4">{{item.modifydate}}</span>
+                </h3>
+                <div class="f2 c5 ">
+                  <span>{{item.content}}</span>
+                </div>
+              </div>
+            </div>
+          </section>
+          <van-empty v-if="conversation.length === 0" description="暂无消息" />
+        </van-tab>
+        <van-tab title="通讯录">
+          <div class="main-top  bg7  border-t">
+            <section class="f-flex pad48-1 ">
+              <div class="sear-bb ">
+                <div class=" new-search ns clearfix">
+                  <section class="sear-c posi2 clearfix">
+                    <form action="" class="input-search-form" id="search_from">
+                      <input type="search" input="" autocomplete="off" placeholder="输入关键字搜索" ng-model="search.text" class="f2 ">
+                    </form>
+                    <button class="sea-btn" ng-click="searchLike()"><span class="gg-search"></span></button>
+                  </section>
+                </div>
+              </div>
+              <div class="cancel-b t-center f2 c8 lh-44"><button class=" ek-btn-4 mar3 f1 ">群发</button></div>
+            </section>
+          </div>
+          <section class="">
+            <div class="pad5-9 bg7 border-b1">
+              <h3 class="ek-com-tit tri2 up f3 c6 "><b class="b2"></b>群组</h3>
+            </div>
+            <div class="pad5-9 bg7 ">
+              <div class="ek-com-tit f3 c6"><b class="b3"><img src="@/assets/img/index/bar_bg.png" /></b>用户交流群(64)</div>
+              <div class="ek-com-tit f3 c6"><b class="b3"><img src="@/assets/img/index/bar_bg.png" /></b>工作群(50）</div>
+            </div>
+            <section class="cus-list">
+              <div class="tit f3 bg10 t-left c4">A</div>
+              <div class="list bg7 border-b1 ">
+                <div class="img-box ">
+                  <img src="@/assets/img/index/bar_bg.png">
+                </div>
+                <h3 class="right-box f3 c6 ">范晓华</h3>
+              </div>
+              <div class="list bg7 border-b1 ">
+                <div class="img-box ">
+                  <img src="@/assets/img/index/bar_bg.png">
+                </div>
+                <h3 class="right-box f3 c6 ">范晓华</h3>
+
+              </div>
+              <div class="list bg7 border-b1 ">
+                <div class="img-box ">
+                  <img src="@/assets/img/index/bar_bg.png">
+                </div>
+                <h3 class="right-box f3 c6 ">范晓华</h3>
+              </div>
+            </section>
+          </section>
+        </van-tab>
+      </van-tabs>
+    </div>
+    <footer-panel footer="mess"></footer-panel>
+  </div>
+</template>
+
+<script>
+  import Vue from 'vue'
+  import { mapGetters } from 'vuex'
+  import * as tool from '@/common/Tool'
+  import { FooterPanel } from '@/components/index'
+  import { api_mess } from '@/api/index'
+  import Swiper from 'swiper'
+  import 'swiper/css/swiper.min.css'
+  import 'swiper/js/swiper.min.js'
+  import { Empty, Tab, Tabs } from 'vant'
+
+  Vue.use(Empty)
+  Vue.use(Tab)
+  Vue.use(Tabs)
+
+  export default {
+    name: "MessList",
+    data () {
+      return {
+        conversation: []
+      }
+    },
+    components: {
+      'footer-panel': FooterPanel
+    },
+    computed: {
+      ...mapGetters(['user']),
+    },
+    beforeCreate: function() {
+      document.getElementsByTagName("body")[0].className = "bg3";
+    },
+    created () {
+      this.getMessList()
+    },
+    mounted () {
+      this.initSwiper()
+    },
+    methods: {
+      initSwiper () {
+        const swiper = new Swiper('#chatMem', {
+          direction: 'vertical',
+          freeMode: true,
+          freeModeMomentumRatio: 0.5,
+          slidesPerView: 4.5,
+          speed:300,//滑动开始到滑动结束的时间
+          observer:true,//修改swiper自己或子元素时，自动初始化swiper
+          observeParents:true,//修改swiper的父元素时，自动初始化swiper
+          autoplayDisableOnInteraction:false,//用户操作swiper之后是否禁止autoplay
+        })
+      },
+      getMessList () {
+        const _data = {
+          saasId: tool.app.saasId,
+          userId: this.user.userInfo.userId
+        }
+        api_mess.getAllClientNewTalk(_data).then(data => {
+          if (data.status === tool.rtCode.status) {
+            this.conversation = data.funRealTimeMessageDTOList
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        })
+      },
+      handleTabsClick () {
+
+      },
+      goMessWindow (it) {
+        this.$router.push({path: '/messWindow/' + it.clientId + '/' + it.openid + '/' + it.appId})
+      },
+      goBack () {
+        this.$router.back()
+      }
+    },
+    beforeDestroy: function() {
+      document.body.removeAttribute("class", "bg7")
+    },
+  }
+</script>
+
+<style scoped>
+  .mh100{max-height: 100px;}
+</style>

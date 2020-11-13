@@ -1,0 +1,320 @@
+<template>
+    <div class="bg7">
+        <div class="fun-top-panel bg-my  ">
+            <span class="mess-back " @click="goBack()"><div class="cont-wh"></div></span>
+            <span class="title c7 f4 dblock2 t-center ">个人信息</span>
+        </div>
+
+        <div class="main-container mar1  clearfix">
+            <div class="my-n-txtbox s-bg posi2">
+                <div class="add-btn c7 t-center f1 c-p" style="border-radius: 6px 0 0 15px;" @click="addRecord()">新增跟进记录</div>
+                <div class="top-one  clearfix" >
+                    <div class=" pad3 right-box posi2 c7 " >
+                        <h3 class=" f3 c-p"><span>{{nikeName}}</span>
+                        </h3>
+                        <div class="f2 c7 per-info mar3 ">
+                            <b class="one"></b>来源：
+                            <span v-if="getSource == 1">系统分配</span>
+                            <span v-if="getSource == 2">主动取数</span>
+                            <span v-if="getSource == 3">自建客户</span>
+                            <span v-if="getSource == 4">成交客户</span>
+                        </div>
+                        <!-- <div class="f2 c7 per-info  ">
+                            <b class="two"></b>客户号：CC0157941027
+                        </div> -->
+                        <div class="f2 c7 per-info  ">
+                            <b class="three"></b>客户等级：
+                            <span class="stars-box2" v-if="customerStar == 1"><i></i></span>
+                            <span class="stars-box2" v-if="customerStar == 2"><i></i><i></i></span>
+                            <span class="stars-box2" v-if="customerStar == 3"><i></i><i></i><i></i></span>
+                            <span class="stars-box2" v-if="customerStar == 4"><i></i><i></i><i></i><i></i></span>
+                            <span class="stars-box2" v-if="customerStar == 5"><i></i><i></i><i></i><i></i><i></i></span>
+                        </div>
+                    </div>
+                    <div class="img-box  posi2">
+                        <img v-if="!!sex && sex == 1" src="../../assets/img/szxx/me.png" />
+                        <img v-if="!!sex && sex == 0" src="../../assets/img/szxx/dau.png" />
+                    </div>
+                </div>
+            </div>
+
+            <div class=" mar3-5 clearfix">
+                <section class="b-radius1 pad1-3 bg7 clearfix">
+                    <div id="proNav" class="swiper-container border-b1">
+                        <div class="swiper-wrapper f-flex" style="overflow-x: scroll;">
+                            <van-tabs title-active-color="#ee0a24" v-model="active" @click="handleClickTag">
+                                <van-tab
+                                    :scrollspy="true"
+                                    v-for="(article, index) in tabList"
+                                    :key="index"
+                                    :title="article.tagName">
+                                </van-tab>
+                            </van-tabs>
+                        </div>
+                    </div>
+
+                    <!-- 历史方案 -->
+                    <div>
+                        <section class="mar3-2">
+                            <div class="b-sh1   bg7  mar7-3">
+                                <section class="blk-cont2020  ">
+                                    <ul class="cont-blk  icon-wrap ">
+                                        <li class="li-p6  posi2 clearfix">
+                                        <div class="product2020 f-left posi2">
+                                            <img class="lazy-p" src="https://www.baoxian.com/product_file/ERiskPic/100901007.jpg" alt="pic">
+                                        </div>
+                                        <div class="info-blk  ">
+                                            <h3 class=" mess f3 c44 ">华夏福两全保险家庭保障方</h3>
+                                            <p class="f2 c4  mar444 mess">家庭保障方案</p>
+                                            <div class="t-left f2 c4 mar2">
+                                                编码: JHS2020071251083
+                                            </div>
+                                            <div class="t-left c4 f2 ">
+                                                首期保费:<span class="c9">2192.00元</span>
+                                            </div>
+                                        </div>
+                                        </li>
+                                    </ul>
+                                    <div class="t-right mar6-2 pad6-1 border-t">
+                                        <button class=" ek-btn-4 min-w f1 " >编辑</button>
+                                        <button class=" ek-btn-3 min-w f1">删除</button>
+                                    </div>
+                                </section>
+                            </div>
+
+                            <div class="b-sh1   bg7  mar7-3">
+                                <section class="blk-cont2020  ">
+                                    <ul class="cont-blk  icon-wrap ">
+                                        <li class="li-p6  posi2 clearfix">
+                                        <div class="product2020 f-left posi2">
+                                            <img class="lazy-p" src="https://www.baoxian.com/product_file/ERiskPic/100901007.jpg" alt="pic">
+                                        </div>
+                                        <div class="info-blk  ">
+                                            <h3 class=" mess f3 c44 ">华夏福两全保险家庭保障方</h3>
+                                            <p class="f2 c4  mar444 mess">家庭保障方案</p>
+                                            <div class="t-left f2 c4 mar2">
+                                                编码: JHS2020071251083
+                                            </div>
+                                            <div class="t-left c4 f2 ">
+                                                首期保费:<span class="c9">2192.00元</span>
+                                            </div>
+                                        </div>
+                                        </li>
+                                    </ul>
+                                    <div class="t-right mar6-2 pad6-1 border-t">
+                                        <button class=" ek-btn-4 min-w f1 " >编辑</button>
+                                        <button class=" ek-btn-3 min-w f1">删除</button>
+                                    </div>
+                                </section>
+                            </div>
+
+                            <div class="b-sh1   bg7  mar7-3">
+                                <section class="blk-cont2020  ">
+                                    <ul class="cont-blk  icon-wrap ">
+                                        <li class="li-p6  posi2 clearfix">
+                                        <div class="product2020 f-left posi2">
+                                            <img class="lazy-p" src="https://www.baoxian.com/product_file/ERiskPic/100901007.jpg" alt="pic">
+                                        </div>
+                                        <div class="info-blk  ">
+                                            <h3 class=" mess f3 c44 ">华夏福两全保险家庭保障方</h3>
+                                            <p class="f2 c4  mar444 mess">家庭保障方案</p>
+                                            <div class="t-left f2 c4 mar2">
+                                                编码: JHS2020071251083
+                                            </div>
+                                            <div class="t-left c4 f2 ">
+                                                首期保费:<span class="c9">2192.00元</span>
+                                            </div>
+                                        </div>
+                                        </li>
+                                    </ul>
+                                    <div class="t-right mar6-2 pad6-1 border-t">
+                                        <button class=" ek-btn-4 min-w f1 " >编辑</button>
+                                        <button class=" ek-btn-3 min-w f1">删除</button>
+                                    </div>
+                                </section>
+                            </div>
+                        </section>
+                    </div>
+
+                </section>
+            </div>
+        </div>
+
+        <div class="in-nav-bot posi1 " style="bottom: 0px;">
+            <div class=" c-p "><b class="one"></b><p class="f1 t-center c6">客户沟通</p></div>
+            <div class=" c-p pad0">
+                <b class="two"></b><p class="f1 t-center c6">电话</p>
+            </div>
+            <div class=" c-p pad0">
+                <b class="three"></b><p class="f1 t-center c6">制作方案</p>
+            </div>
+            <div class="bbtn t-right c-p">
+                <span class="hx-bt3 bt1 f3 ">投保</span>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    import Vue from 'vue'
+    import { mapGetters } from 'vuex'
+    import * as tool from '@/common/Tool'
+    import { api_sell } from '@/api/index'
+    import DataSource from '@/common/DataSource'
+    import '@vant/touch-emulator'
+    import { Popup, Picker, Tab, Tabs } from 'vant'
+    // import Rules from './Rules'
+    // import Works from './Works'
+    // import Visitor from './Visitor'
+    // import Performance from './Performance'
+
+    Vue.use(Popup)
+    Vue.use(Picker)
+    Vue.use(Tab)
+    Vue.use(Tabs)
+
+    export default {
+        name: "historyList",
+        data () {
+            return {
+                clientId: this.$route.params.q,//客户id
+                clientNewId: this.$route.params.r,
+                nikeName: "",
+                sex: "",//1男，0女，2未知
+                getSource: "",
+                customerStar: "",
+                cerCode: "",
+                customerDetail: [],
+                familyList: [],//家庭成员列表
+                relation: 0,//家庭成员列表初始化展示项
+                relationFlag: "01",
+                otherInfo: true,
+                funProductTagDTOList: [],//已购产品标签列表
+                funProductDTOList: [],//已购产品列表
+                productTag: 'B',//已购产品标签初始化展示项,B:寿险产品E:互助产品:F:理财产品
+                funFollowUpDTOList: [],//跟进列表
+                portraitTagsName: [],//客户画像里的标签
+                portraitSex: "",
+                portraitAge: "",
+                addFriendsTime: "",
+                interactNum: "",
+                visitTime: "",
+                funVisitTrailDTO: [],
+                tabList: [
+                    {
+                        id: '0',
+                        innerCode: '0',
+                        tagName: '基本信息'
+                    },
+                    {
+                        id: '1',
+                        innerCode: '1',
+                        tagName: '订单'
+                    },
+                    {
+                        id: '2',
+                        innerCode: '2',
+                        tagName: '轨迹'
+                    },
+                    {
+                        id: '3',
+                        innerCode: '3',
+                        tagName: '跟进'
+                    },
+                    {
+                        id: '4',
+                        innerCode: '4',
+                        tagName: '历史方案'
+                    },
+                    {
+                        id: '5',
+                        innerCode: '5',
+                        tagName: '已购产品'
+                    }
+                ],
+                tagIndex: '0',
+                active: 4,
+                proposalList: [],
+            }
+        },
+        computed: {
+            ...mapGetters(['user']),
+        },
+        components: {
+
+        },
+        created () {
+            this.queryBasicIntroduction();//基本介绍
+            this.queryProposalList();//历史方案列表
+        },
+        methods: {
+
+            handleClickTag (index, title) {
+                // if (this.tagIndex !== this.tabList[index].innerCode) {
+                    this.tagIndex = this.tabList[index].innerCode
+                    // this.offset = 0
+                    if (this.tagIndex == '0') {
+                        this.$router.push({ path: '/customerDetail/' + this.clientId + '/' + this.clientNewId});
+                    } else if (this.tagIndex == '1') {
+                        this.$router.push({ path: '/orderList/' + this.clientId + '/' + this.clientNewId});
+                    } else if (this.tagIndex == '2') {
+                        this.$router.push({ path: '/trailList/' + this.clientId + '/' + this.clientNewId});
+                    } else if (this.tagIndex == '3') {
+                        this.$router.push({ path: '/followList/' + this.clientId + '/' + this.clientNewId});
+                    } else if (this.tagIndex == '5') {
+                        this.$router.push({ path: '/payProductList/' + this.clientId + '/' + this.clientNewId});
+                    }
+                // }
+            },
+
+            queryBasicIntroduction () {
+                const _data = {
+                    saasId: tool.app.saasId,
+                    clientNewidId: this.clientNewId
+                }
+                api_sell.queryBasicIntroduction(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.nikeName = data.nikeName;
+                        this.sex = data.sex;
+                        this.getSource = data.getSource;
+                        this.customerStar = data.customerStar;
+                        this.cerCode = data.cerCode;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            queryProposalList () {
+                const _data = {
+                    agentCode: "800000198",
+                    saasId: tool.app.saasId,
+                    platformId: "f2ce8561055a40d5a5e7dcdffde1e8bc",
+                    params: {
+                        "limit": 10,
+                        "offset": 0
+                    }
+                }
+                api_sell.queryProposalList(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.proposalList = data.proposalList;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            addRecord () {
+                this.$router.push({ path: '/followRecord/' + this.clientNewId + '/add'});
+            },
+
+            goBack () {
+                this.$router.push({ path: '/sellList/' + "1"});
+            },
+
+
+        }
+    }
+</script>
+<style scoped>
+
+</style>

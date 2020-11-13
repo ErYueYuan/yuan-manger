@@ -1,0 +1,504 @@
+<template>
+    <div class="bg3">
+        <div class="fun-top-panel  bg7" @click="goBack()">
+            <span class="mess-back "><div class="cont"></div></span>
+            <span class="title c6 f4 dblock2 t-center ">{{fromType == 'edit' ? '编辑跟进记录' : '新增跟进记录'}}</span>
+        </div>
+
+        <div class="main-container mar1  clearfix">
+            <div class=" bg7 b-radius2">
+                <section class="pad5-4">
+                    <div class="timer-box f2-1">
+                        <dl class="per-box52 no-p border-b" @click="showCallbackTime('follow')" style="width: 94%;margin-left: 15px;">
+                            <dt class="c4 f3-1">请选择跟进时间</dt>
+                            <dd class="t-right c6 f3 c2 arrow"><input type="text" class="ca-input t-right" style="width: 100%;" disabled :value="followList.followTime"></dd>
+                        </dl>
+                    </div>
+                </section>
+            </div>
+            <div class="mar3-2">
+                <section class=" bg7 pad5-4">
+                    <h3 class="f3-1 pad6-2 mar0 t-left c6 bold">跟进内容<span class="f2 c8">&nbsp;&nbsp;*</span></h3>
+                    <div>
+                        <section class="tab-box">
+                            <label v-for="(item, index) in followContentList" :key="index">
+                                <input class="hide" type="checkbox" name="b" v-model="followContents" :value="item.value"><span :class="activeClickList.indexOf(index) !== -1 ? 'active' : ''" style="padding: 6px 10px;" @click="followClick(index)">{{item.name}}</span>
+                            </label>
+                        </section>
+                        <div class="mar3-2">
+                            <textarea class="ca-input95 f3" placeholder="输入详细内容" maxlength="100" v-model="followList.followContentDetail"></textarea>
+                        </div>
+                    </div>
+                </section>
+
+                <section class=" bg7 mar3-2 pad1-3">
+                    <dl id="followResult" class="per-box52" @click="showVisitList('funzg_follow_up_result')" style="padding:0;height:auto;">
+                        <dt class="c6 f3-1" style="font-weight: bold;">跟进结果<span class="f2 c8">&nbsp;&nbsp;*</span></dt>
+                        <dd class="t-right c6 f3 c2 arrow"><input type="text" class="ca-input t-right" placeholder="请选择" disabled :value="followList.funFollowUpResultName"></dd>
+                    </dl>
+                    <div class="border-t" v-show="isGiveUp">
+                        <div class="f2 c5 pad6-2">放弃类</div>
+                        <section class="type-box">
+                            <div id="fType" class="swiper-container">
+                                <div class="swiper-wrapper f-flex">
+                                    <div class="swiper-slide" style="width: auto;display: inline-block; opacity: 100%;"  v-for="(item, index) in followGiveUpList" :key="index"  :class="followList.giveUpDetail == item.value ? 'active' : ''">
+                                        <label>
+                                            <b class="b1" v-show="item.value == '0'"></b>
+                                            <b class="b2" v-show="item.value == '1'"></b>
+                                            <b class="b3" v-show="item.value == '2'"></b>
+                                            <b class="b4" v-show="item.value == '3'"></b>
+                                            <b class="b5" v-show="item.value == '4'"></b>
+                                            <input type="radio" name="a" class="hide" v-model="followList.giveUpDetail"  :value="item.value"  @change="getGiveRadioVal(item.value)"><span>{{item.name}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+
+                <section class=" bg7 mar3-2 pad5-9">
+                    <h3 class="c6 f3-1 pad6-2 bold">客户需求评估</h3>
+                    <section class="tab-box1" >
+                      <span class=" active c-p" v-for="(item, index) in customerTagsSelectedList" :key="index" ><div>{{item.tagName}}</div></span>
+                        <span class=" active c-p" v-for="(item, index) in customTags" :key="index + 'A'"><div>{{item}}</div></span>
+                        <span class="edit c-p" @click="editLabel()">
+                          <div><i></i>编辑</div>
+                        </span>
+                    </section>
+                </section>
+
+                <section class=" bg7 mar3-2 pad1-3">
+                    <h3 class="c6 f3-1 ek-com-tit border-b bold">回访计划</h3>
+                    <dl id="followResult" class="per-box52  border-b" @click="showVisitList('fun_visit_type')" style="padding:0;height:auto;">
+                        <dt class="c6 f3-1">回访类型</dt>
+                        <dd class="t-right c6 f3 c2 arrow"><input type="text" class="ca-input t-right" placeholder="请选择" disabled :value="followList.callbackTypeName"></dd>
+                    </dl>
+                    <dl class="per-box52 no-p border-b" @click="showCallbackTime('callBack')">
+                        <dt class="c6 f3-1">回访时间</dt>
+                        <dd class="t-right c6 f3 c2 arrow"><input type="text" class="ca-input t-right" placeholder="请选择" disabled :value="followList.callbackTime"></dd>
+                    </dl>
+                    <div class="pad6-2">
+                        <textarea class="ca-input95 f3" placeholder="请输入回访内容" maxlength="100" v-model="followList.callbackContent"></textarea>
+                    </div>
+                </section>
+            </div>
+            <div class="posi5 pad5-8" @click="saveRecord()">
+                <button type="button" class="hx-bt3 t-center">{{fromType == 'edit' ? '保存' : '创建'}}</button>
+            </div>
+        </div>
+
+        <van-popup v-model="showVisit" round position="bottom" :style="{height: '50%'}">
+            <van-picker
+                show-toolbar
+                :value-key="contentValueKey"
+                :columns="addList"
+                @cancel="showVisit = false"
+                @confirm="selectContent"
+                :style="{width: '100%'}"
+            />
+        </van-popup>
+
+        <van-popup
+            v-model="callbackTimeShow"
+            position="bottom"
+            :style="{height:'50%'}"
+            round
+        >
+            <van-datetime-picker
+                @confirm="confirm"
+                @cancel="callbackTimeShow = false"
+                v-model="currentDate"
+                type="datetime"
+                title="选择时间"
+                :min-date="minDate"
+                :max-date="maxDate"
+                :formatter="formatter"
+            />
+        </van-popup>
+
+    </div>
+</template>
+<script>
+    import Vue from 'vue'
+    import { mapGetters } from 'vuex'
+    import * as tool from '@/common/Tool'
+    import { api_sell } from '@/api/index'
+    import DataSource from '@/common/DataSource'
+    import '@vant/touch-emulator'
+    import { Popup, DatetimePicker, Picker } from 'vant'
+    import Vd from '@/common/Validator'
+
+    Vue.use(Popup)
+    Vue.use(DatetimePicker)
+    Vue.use(Picker)
+
+    export default {
+        name: "followRecord",
+        data () {
+            return {
+                customerClientId: this.$route.params.p,
+                resultId: this.$route.params.q,
+                followUpId: this.$route.params.r,
+                fromType: this.$route.params.s,//add新增，edit编辑
+
+
+                followContentList: [],//跟进内容
+                followResultList: [],//跟进结果
+                followGiveUpList: [],//放弃跟进类型
+                followVisitList: [],//回访类型
+                followList: {},
+                isGiveUp: false,
+                showVisit: false,
+                callbackTimeShow: false,
+                currentDate: new Date(),
+                minDate: new Date(1870, 0, 1),
+                maxDate: new Date(2170, 0, 1),
+                timeType: "",
+                followContents: [],
+                customerTagsSelectedList: [],
+                selectedTagList: [],
+                activeClickList: [],
+                customTags: [],
+                contentValueKey: 'name',
+                addList: [], //存放跟进结果和回访类型
+
+                detailValue: "",
+            }
+        },
+        computed: {
+            ...mapGetters(['user']),
+        },
+        components: {
+
+        },
+        created () {
+            // console.log('跟进记录  this.$route.params',this.$route.params)
+            this.followContent();//跟进内容
+            this.queryCustomerTags();//已选标签
+            this.followResult();//跟进结果
+            this.followVisitType();//回访类型
+
+            if (this.fromType == 'add') {
+                let date = new Date();
+                let year = date.getFullYear();
+                let month = date.getMonth() + 1;
+                let strDate = date.getDate();
+                let strHour = date.getHours().toString();
+                let strMinute = date.getMinutes().toString();
+                strHour = strHour < 10 ? ('0' + strHour) : strHour;
+                strMinute = strMinute < 10 ? ('0' + strMinute) : strMinute;
+                if (month >= 1 && month <= 9) {
+                    month = "0" + month;
+                }
+                if (strDate >= 0 && strDate <= 9) {
+                    strDate = "0" + strDate;
+                }
+                let currentdate = year + '-' + month + '-' + strDate + ' ' + strHour + ':' + strMinute;
+                this.followList.followTime = currentdate;
+
+                if (DataSource.get('addList', 2)) {
+                    this.followList = DataSource.get('addList', 2);
+                }
+                if (DataSource.get('contentClick', 2)) {
+                    this.activeClickList = DataSource.get('contentClick', 2);
+                }
+
+            }
+        },
+        methods: {
+
+            followClick (ind) {
+                let activeIndex = this.activeClickList.indexOf(ind)
+                if (activeIndex !== -1) { // -1未选中
+                  this.activeClickList.splice(activeIndex, 1)
+                } else {
+                  this.activeClickList.push(ind)
+                }
+            },
+
+            showCallbackTime (type) {
+                this.timeType = type;
+                if (type == 'follow') {
+                    if (this.fromType == 'add') {
+                        this.callbackTimeShow = true;
+                    } else if (this.fromType == 'edit') {
+                        this.callbackTimeShow = false;
+                    }
+                } else {
+                    this.callbackTimeShow = true;
+                }
+            },
+
+            showVisitList (type) {
+                this.showVisit = true;
+                if (type == 'fun_visit_type') {
+                    this.addList = this.followVisitList;
+                } else if (type == 'funzg_follow_up_result') {
+                    this.addList = this.followResultList;
+                }
+            },
+            selectContent (values, index) {
+                if (values.type == "fun_visit_type") {
+                    this.followList.callbackType = values.value;
+                    this.followList.callbackTypeName = values.name;
+                    this.showVisit = false;
+                } else if (values.type == "funzg_follow_up_result") {
+                    this.followList.funFollowUpResult = values.value;
+                    this.followList.funFollowUpResultName = values.name;
+                    this.showVisit = false;
+                    if (values.value == '3') {
+                        this.followGiveUp();//放弃跟进类型
+                        this.isGiveUp = true;
+                    } else {
+                        this.isGiveUp = false;
+                    }
+                }
+            },
+
+            confirm(val) {
+                let year = val.getFullYear()
+                let month = val.getMonth() + 1
+                let day = val.getDate()
+                let hour = val.getHours().toString();
+                let minute = val.getMinutes().toString();
+                hour = hour < 10 ? ('0' + hour) : hour;
+                minute = minute < 10 ? ('0' + minute) : minute;
+                if (month >= 1 && month <= 9) { month = `0${month}` }
+                if (day >= 1 && day <= 9) { day = `0${day}` }
+                let value = `${year}-${month}-${day} ${hour}:${minute}`;
+                if (this.timeType == 'follow') {
+                    this.followList.followTime = value;
+                } else if (this.timeType == 'callBack') {
+                    this.followList.callbackTime = value;
+                }
+                this.callbackTimeShow = false;
+            },
+            formatter(type, value) {
+                if (type === 'year') {
+                    return `${value}年`
+                } else if (type === 'month') {
+                    return `${value}月`
+                } else if (type === 'day') {
+                    return `${value}日`
+                }
+                return value
+            },
+
+            getGiveRadioVal (val) {
+                this.followList.giveUpDetail = val;
+                // this.detailValue = this.followList.giveUpDetail;
+            },
+
+            getFollowInfo () {
+                const _data = {
+                    saasId: tool.app.saasId,
+                    followUpId: this.followUpId
+                }
+                api_sell.getFollowInfo(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.followList.followTime = data.followTime;
+                        this.followList.followContentDetail = data.followContentDetail;
+                        this.followList.callbackTime = data.callbackTime;
+                        this.activeClickList = data.followContents;
+                        this.followList.funFollowUpResult = data.funFollowUpResult;
+                        this.followResultList.forEach(item=>{
+                            if(item.value == data.funFollowUpResult){
+                                this.followList.funFollowUpResultName = item.name;
+                            }
+                        })
+                        this.followList.callbackType = data.callbackType;
+                        this.followVisitList.forEach(item=>{
+                            if(item.value == data.callbackType){
+                                this.followList.callbackTypeName = item.name;
+                            }
+                        })
+                        this.followList.callbackContent = data.callbackContent;
+
+                        this.detailValue = data.giveUpDetail;
+
+                        this.followGiveUpList.forEach(item=>{
+                            if(item.value == data.giveUpDetail){
+                                this.followList.giveUpDetail = item.value;
+                            }
+                        })
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            queryCustomerTags () {
+                let that = this;
+                const _data = {
+                    saasId: tool.app.saasId,
+                    resultId: this.resultId
+                }
+                api_sell.queryCustomerTags(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.customerTagsSelectedList = data.customerTagsSelectedDTOList;
+                        this.customTags = data.customTags;
+                        this.customerTagsSelectedList.forEach(function (item) {
+                            that.selectedTagList.push(item.tagCode)
+                        })
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            followContent () {
+                const _data = {type: 'funzg_follow_content/' + tool.app.platformCode + '/' + tool.app.saasId}
+                api_sell.sysDict(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.followContentList = data.params.dicts;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            followResult () {
+                const _data = {type: 'funzg_follow_up_result/' + tool.app.platformCode + '/' + tool.app.saasId}
+                api_sell.sysDict(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.followResultList = data.params.dicts;
+                        if (this.fromType == 'edit') {
+                            this.getFollowInfo();
+                        }
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            followGiveUp () {
+                const _data = {type: 'funzg_give_up_detail/' + tool.app.platformCode + '/' + tool.app.saasId}
+                api_sell.sysDict(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.followGiveUpList = data.params.dicts;
+                        if (this.fromType == 'edit') {
+                            this.getFollowInfo();
+                        }
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            followVisitType () {
+                const _data = {type: 'fun_visit_type/' + tool.app.platformCode + '/' + tool.app.saasId}
+                api_sell.sysDict(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.followVisitList = data.params.dicts;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            editLabel () {
+                DataSource.set('addList', this.followList, 2);//点击编辑按钮跳转页面时，把该页面已填数据进行缓存
+                DataSource.set('contentClick', this.activeClickList, 2);
+
+                if (this.fromType == 'add') {
+                    this.$router.push({ name: 'editLabel',params: {
+                        r: this.resultId,
+                        s: '0'
+                    } })
+                } else if (this.fromType == 'edit') {
+                    this.$router.push({ name: 'editLabel',params: {
+                        r: this.resultId,
+                        s: this.followUpId
+                    } })
+                }
+            },
+
+            saveRecord () {
+                if (this.activeClickList.length === 0 && !this.followList.followContentDetail) {
+                    tool.toastMessage("请选择跟进内容", "error");
+                    return false
+                }
+                if (this.fromType == 'add') {
+                    if (!this.followList.funFollowUpResult) {
+                        tool.toastMessage("请选择跟进结果", "error");
+                        return false
+                    }
+                    const _data = {
+                        saasId: tool.app.saasId,
+                        agentUserId: this.user.userInfo.userId,
+                        resultId: this.resultId,
+                        followTime: this.followList.followTime ? this.followList.followTime + ':00' : '',//new Date(this.followList.followTime).getTime()  时间戳
+                        followContents: this.activeClickList,//this.followContents
+                        followContentDetail: this.followList.followContentDetail,
+                        tagCodes: this.selectedTagList,
+                        customTags: this.customTags,
+                        funFollowUpResult: this.followList.funFollowUpResult,
+                        giveUpDetail: this.followList.giveUpDetail,
+                        callbackType: this.followList.callbackType,
+                        callbackTime: this.followList.callbackTime ? this.followList.callbackTime + ':00' : '',
+                        callbackContent: this.followList.callbackContent
+                    }
+
+                    api_sell.addFollowUp(_data).then(data => {
+                        if (data.status == tool.rtCode.status) {
+                            this.$router.push({ name: 'followList',params: {
+                                q: this.customerClientId,
+                                r: this.resultId
+                            } })
+                            
+                            DataSource.set('addList', "", 2);// 新增成功后清空缓存数据
+                        } else {
+                            tool.toastMessage(data.message, 'error');
+                        }
+                    })
+
+                } else if (this.fromType == 'edit') {
+                    if (!!this.followList.funFollowUpResult) {
+                        tool.toastMessage("请选择跟进结果", "error");
+                        return false
+                    }
+                    this.editFollowUp();
+                }
+            },
+
+            editFollowUp () {
+                const _data = {
+                    saasId: tool.app.saasId,
+                    followUpId: this.followUpId,
+                    resultId: this.resultId,
+                    followContents: this.activeClickList,
+                    followContentDetail: this.followList.followContentDetail,
+                    tagCodes: this.selectedTagList,
+                    customTags: this.customTags,
+                    funFollowUpResult: this.followList.funFollowUpResult,
+                    giveUpDetail: this.followList.giveUpDetail,
+                    callbackType: this.followList.callbackType,
+                    callbackTime: this.followList.callbackTime ? this.followList.callbackTime + ':00' : '',
+                    callbackContent: this.followList.callbackContent
+                }
+                api_sell.editFollowUp(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.$router.push({ name: 'followList',params: {
+                            q: this.customerClientId,
+                            r: this.resultId
+                        } })
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            goBack () {
+                this.$router.go(-1);
+            },
+
+
+
+
+        }
+    }
+</script>
+<style scoped>
+
+</style>

@@ -1,0 +1,46 @@
+var api = require('../api');
+
+module.exports = {
+  login: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'funzg', 'funapi/funzg/funapp/funUser/login', req.body)
+  },
+  bindWx: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'funzg', 'funapi/funzg/funapp/funUser/bind4WX', req.body)
+  },
+  register: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'funzg', 'funapi/channel/uChannelRegister/register', req.body)
+  },
+  jsapiticket: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'funzg', 'funzgapi/funapi/meek/config/jsapiticket', req.body)
+  },
+  retrievePassword: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'funzg', 'funapi/user/uUserRegister/ecloudRetrievePassword', req.body)
+  },
+  statusMove: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'funzg', 'funapi/funzg/funUserSign/statusMove', req.body)
+  },
+  getTargetPrem: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'funzg', 'funapi/funzg/funapp/target/getTargetPrem', req.body)
+  },
+  getSameDayTarget: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'funzg', 'funapi/funzg/funapp/target/getSameDayTarget', req.body)
+  },
+  getUserSignStatuss: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'funzg', 'funapi/funzg/funUserSign/getUserSignStatuss', req.body)
+  },
+  signStatusMove: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'funzg', 'funapi/funzg/funUserSign/statusMove', req.body)
+  },
+  queryCustomerStatusCount: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'funzg', 'funapi/funzg/funapp/digitalMarketing/queryCustomerStatusCount', req.body)
+  },
+  getCustomerProgress: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'funzg', 'funapi/funzg/funapp/homePage/getCustomerProgress', req.body)
+  },
+  getMessageChat: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'funzg', 'funapi/funzg/funapp/homePage/getMessageChat', req.body)
+  },
+  getMonthStatistics: function(req, res, next) {
+    api.fetch(req, res, 'POST', 'funzg', 'funapi/funzg/funapp/homePage/getMonthStatistics', req.body)
+  },
+}

@@ -1,0 +1,24 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0;minimum-scale=1.0, maximum-scale=1.0">
+<title>业绩统计</title>
+  <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/css/common.css">
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+
+
+</head>
+
+<body class="bg3">
+
+<div class="tab-diy bg7">
+  <div class="cont">
+    <div class="input-box"><input type="text" class="ca-input3 t-right" placeholder="最多6个字" value="" ></div>
+    <div class="txt f3 c8 t-center c-p">确认</div>
+  </div>
+</div>
+</body>
+</html>

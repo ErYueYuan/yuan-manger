@@ -1,0 +1,75 @@
+export default [
+  {
+    path: '/resetPwd',
+    name: 'resetPwd',
+    meta: {title: '修改密码'},
+    component: () => import(/* webpackChunkName: "login" */ '@/views/setting/ResetPassword')
+  },
+  {
+    path: '/my',
+    name: 'my',
+    meta: {title: '我的'},
+    component: () => import(/* webpackChunkName: "login" */ '@/views/my/My')
+  },
+  {
+    path: '/articleList',
+    name: 'articleList',
+    meta: {title: '获课文章'},
+    component: () => import(/* webpackChunkName: "login" */ '@/views/article/ArticleList')
+  },
+  {
+    path: '/articleDetail/:id',
+    name: 'articleDetail',
+    meta: {title: '文章详情'},
+    component: () => import(/* webpackChunkName: "login" */ '@/views/article/ArticleDetail')
+  },
+  {
+    path: '/coursesList',
+    name: 'coursesList',
+    meta: {title: '学习课堂'},
+    component: () => import(/* webpackChunkName: "login" */ '@/views/courses/CoursesList')
+  },
+  {
+    path: '/userSetting',
+    name: 'userSetting',
+    meta: {title: '个人设置'},
+    component: () => import(/* webpackChunkName: "login" */ '@/views/my/userSetting'),
+  },
+  {
+    path: '/amendPassword',
+    name: 'amendPassword',
+    meta: {title: '修改密码'},
+    component: () => import(/* webpackChunkName: "login" */ '@/views/my/amendPassword'),
+  },
+  {
+    path: '/myRecord',
+    name: 'myRecord',
+    meta: {title: '我的档案'},
+    component: () => import(/* webpackChunkName: "login" */ '@/views/my/myRecord'),
+  },
+  {
+    path: '/repository',
+    name: 'repository',
+    meta: {title: '知识库'},
+    component: () => import(/* webpackChunkName: "login" */ '@/views/my/Repository'),
+  },
+  {
+    path: '/client',
+    name: 'client',
+    meta: {title: '我的客户'},
+    component: () => import(/* webpackChunkName: "login" */ '@/views/my/Client'),
+  }, 
+  {
+    path: '/searchclient',
+    name: 'searchclient',
+    meta: {title: '客户搜索'},
+    component: () => import(/* webpackChunkName: "login" */ '@/views/my/SearchClient'),
+  },
+  {
+    path: '/achieveclient',
+    name: 'achieveclient',
+    meta: {title: '成交客户'},
+    component: () => import(/* webpackChunkName: "login" */ '@/views/my/AchieveClient'),
+  },
+]
+

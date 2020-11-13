@@ -1,0 +1,273 @@
+<template>
+  <div class="bg7">
+    <top-panel :topPanel="topPanel"></top-panel>
+    <div class="main-container mar1 clearfix">
+      <div class="index-top4">
+        <h3 class="ek-com-tit2 c6 f3">业绩走势
+          <span class="f-right dblock">
+            <van-button
+              :type="type==1?'danger':'default'"
+              plain
+              size="mini"
+              @click="type=1,getAchieveTrend()"
+            >标保</van-button>
+            <van-button
+              :type="type==2?'danger':'default'"
+              plain
+              size="mini"
+              @click="type=2,getAchieveTrend()"
+            >保费</van-button>
+            <van-button
+              :type="type==3?'danger':'default'"
+              plain
+              size="mini"
+              @click="type=3,getAchieveTrend()"
+            >推广费</van-button>
+          </span>
+        </h3>
+        <!-- <div class="c6 f2 pad4-1">客户进展</div> -->
+        <!-- <div><img src="@/assets/img/index/chart1.png" /></div> -->
+        <div
+          style="height:250px;width:100%;"
+          ref="perEchart"
+        ></div>
+        <div class="more-box f2 c4 t-center c-p">
+          <!-- <b></b>查看更多 -->
+        </div>
+      </div>
+      <div class="index-top4">
+        <h3 class="ek-com-tit2 c6 f3">业绩查询 <span class="f-right dblock">
+            <van-button
+              :type="datetype=='M'?'danger':'default'"
+              plain
+              size="mini"
+              @click="datetype='M',getSameDayTarget(),getPremAchieve()"
+            >本月</van-button>
+            <van-button
+              :type="datetype=='D'?'danger':'default'"
+              plain
+              size="mini"
+              @click="datetype='D',getSameDayTarget()"
+            >今日</van-button>
+          </span></h3>
+        <div class="bg4 b-radius3 message-box mar7-1">
+          <ul class="mar6-4 pad6-1 border-b">
+            <li>
+              <div class="f3 c5 c4 t-center">{{ sameDayTarget || 0}}</div>
+              <div class="t-center f1 ">新增标保</div>
+              <div class="t-center f1 ">(万元)</div>
+            </li>
+            <li>
+              <div class="f3 c5 c4 t-center">{{sameDayPrem|| 0}}</div>
+              <div class="t-center f1 ">新增保费</div>
+              <div class="t-center f1 ">(万元)</div>
+            </li>
+            <li>
+              <div class="f3 c5 c4 t-center">{{ policy|| 0}}</div>
+              <div class="t-center f1 ">新增保单</div>
+              <div class="t-center f1 ">(份)</div>
+
+            </li>
+            <li>
+              <div class="f3 c5 c4 t-center">{{extension || 0}}</div>
+              <div class="t-center f1 ">预计佣金</div>
+              <div class="t-center f1 ">(元)</div>
+            </li>
+          </ul>
+        </div>
+        <div class="bg4 b-radius3 message-box mar7-1">
+          <div class="border-b1 f1-2 pad5-3">{{achieveDate}}</div>
+          <div class="border-b1" v-for="(item,index) in list" :key="index">
+          <strong class="f2-1 pad5-3">{{item.productName}}</strong>
+          <ul class="mar6-4 pad6-1 border-b">
+            <li>
+              <div class="f3 c5 c4 t-center">{{item.holderName}}</div>
+              <div class="t-center f1 ">投保人</div>
+            </li>
+            <li>
+              <div class="f3 c5 c4 t-center">{{item.paidPrem || 0}}</div>
+              <div class="t-center f1 ">保费(万元)</div>
+            </li>
+            <li>
+              <div class="f3 c5 c4 t-center">{{item.standPrem || 0}}</div>
+              <div class="t-center f1 ">标保(份)</div>
+            </li>
+            <li>
+              <div class="f3 c5 c4 t-center">{{item.spreadPrem || 0}}</div>
+              <div class="t-center f1 ">推广费(元)</div>
+            </li>
+          </ul>
+         </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import Vue from 'vue'
+import { TopPanel } from '@/components/index'
+import { api_my } from '@/api/index'
+import { mapGetters } from 'vuex'
+import * as tool from '@/common/Tool'
+import echarts from 'echarts'
+import { Button } from 'vant';
+Vue.use(Button)
+export default {
+  name: 'performance',
+  computed: {
+    ...mapGetters(['user'])
+  },
+  data() {
+    return {
+      topPanel: {
+        back: true,
+        titles: "我的业绩",
+        home: true
+      },
+      MessageChat: {},
+      monthStatistics: {},
+      type: 1,
+      policy: '',
+      sameDayTarget: '',
+      extension: '',
+      sameDayPrem: '',
+      achieveData: '',
+      list: [],
+      datetype: 'M',
+      prem: [],
+      date: [],
+      achieveDate:''
+    }
+  },
+  components: {
+    'top-panel': TopPanel,
+  },
+  created() {
+    this.getAchieveTrend();
+    this.getSameDayTarget();
+    this.getPremAchieve()
+  },
+  mounted() {
+    this.$nextTick(function () {
+      this.initChart();
+    });
+
+  },
+  methods: {
+    goBack() {
+      this.$router.go(-1);
+    },
+    getAchieveTrend() {
+      let _data = {
+        "agentCode": this.user.userInfo.agentcode,
+        "saasId": this.user.saasId,
+        "premType": this.type,//1:标保，2:保费,3:推广费
+      }
+      api_my.getAchieveTrend(_data).then(res => {
+        if (res.status == tool.rtCode.status) {
+          let achieveData = res.achieveData
+          if (this.type == 1) {
+            this.prem = achieveData.paidPrem
+            this.date = achieveData.orderDate
+          } else if (this.type == 2) {
+            this.prem = achieveData.standPrem
+            this.date = achieveData.orderDate
+          } else if (this.type == 3) {
+            this.prem = achieveData.promotionExpenses
+            this.date = achieveData.orderDate
+          }
+          this.initChart()
+        } else {
+          tool.toastMessage(res.message, 'error')
+        }
+      })
+    },
+    getSameDayTarget() {
+      let _data = {
+        "agentCode": this.user.userInfo.agentcode,
+        "saasId": this.user.saasId,
+        "dateFlag": this.datetype
+      }
+      api_my.getSameDayTarget(_data).then(res => {
+        if (res.status == tool.rtCode.status) {
+          this.policy = res.policy
+          this.sameDayTarget = res.sameDayTarget
+          this.extension = res.extension
+          this.sameDayPrem = res.sameDayPrem
+        } else {
+          tool.toastMessage(res.message, 'error')
+        }
+      })
+    },
+    getPremAchieve() {
+      let _data = {
+        "agentCode": this.user.userInfo.agentcode,
+        "saasId": this.user.saasId,
+        "startDate": ""
+      }
+      let date = new Date();
+      let year = date.getFullYear();
+      let month = date.getMonth() + 1;
+      let day = date.getDate();
+      if (month >= 1 && month <= 9) { month = `0${month}`}
+      if (day >= 1 && day <= 9) { day = `0${day}` }
+      let times = `${year}-${month}`;
+      if (this.datetype == "M") {
+        _data.startDate = times;
+        this.achieveDate = times;
+      } 
+      api_my.getPremAchieve(_data).then(res => {
+        if (res.status == tool.rtCode.status) {
+          this.list = res.funUserPremDTOList
+        } else {
+          tool.toastMessage(res.message, 'error')
+        }
+      })
+    },
+    initChart() {
+      const chart = echarts.init(this.$refs.perEchart)
+      chart.clear() //清除旧数据
+      chart.setOption({
+        title: {
+          text: '',
+          subtext: '单位：万元',
+        },
+        tooltip: {
+          show: false
+        },
+        xAxis: {
+          data: this.date
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            type: 'bar',
+            data: this.prem,
+            itemStyle: {
+              normal: {
+                color: '#FF9300',
+                barBorderRadius: [5, 5, 0, 0],
+                label: {
+                  show: true, //开启显示
+                  position: 'top', //在上方显示
+                  textStyle: { //数值样式
+                    fontSize: 13
+                  }
+                }
+              }
+            },
+          },
+        ]
+      }
+      )
+    }
+
+  }
+}
+</script>
+
+<style>
+</style>

@@ -1,0 +1,177 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0;minimum-scale=1.0, maximum-scale=1.0">
+<title>我的</title>
+  <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../assets/css/common.css">
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/responsive.css">
+
+
+</head>
+
+<body class="bg7">
+<div class="fun-top-panel bg-my  ">
+  <span class="mess-back "><div class="cont-wh"></div></span>
+  <span class="title c7 f4 dblock2 t-center ">我的</span>
+</div>
+<div class="main-container mar1 clearfix">
+
+  <div class="my-n-txtbox ">
+    <div class="top-one  clearfix" >
+      <div class=" pad3 right-box posi2 c7 c-p" >
+        <h3 class=" f3 ">范晓华<b title="编辑"></b></span>
+        </h3>
+        <div class="f2 c7 mar7-2">
+          <b class="no"></b><span>工号：</span><span>112345666</span>
+        </div>
+        <div class=" f2 c7">
+          <b class="company"></b><span>公司：</span><span>重庆分公司</span>
+        </div>
+      </div>
+
+      <div class="img-box  posi2">
+        <img src="../../assets/img/index/bar_bg.png" />
+        <h3 class="state f2 c-p">TSR</h3>
+      </div>
+    </div>
+    <section class="my2020-nav-top bg7 " >
+      <ul class=" f2 row">
+        <li class="col-6 t-center " >
+          <b class="f3 c6">30人/￥6000</b>
+          <div class="t-center f2 c5">客户/成本</div>
+        </li>
+        <li class="col-5 t-center none">
+          <b class="f3 c6">￥31567.00</b>
+          <div class="t-center f2 c5">钱包</div>
+        </li>
+      </ul>
+    </section>
+  </div>
+  <div class="ek-com-tit pad1-3">我的获客工具<span class="f-right f2 c55 c-p"><b class="b1"></b>设置二维码</span></div>
+  <section class="pad1-3">
+    <div class="bg7  b-sh1 new-nav-box tools">
+      <ul class="clearfix">
+        <li class="  f2 pad1" >
+        <span class="one"></span>团队
+      </li>
+        <li class=" f2 pad1" ng-click="href('/userAchievement')">
+          <span class="two"></span>业绩
+        </li>
+        <li class=" f2 pad1" ng-click="href('/customerP/BD')">
+          <span class="three"></span>保单
+        </li>
+        <li class="f2 pad1" ng-click="href('/meeting')">
+          <span class="four"></span>会议签到
+        </li>
+        <li class=" f2 pad1" >
+          <span class="five"></span>团队
+        </li>
+        <li class=" f2 pad1" ng-click="href('/userAchievement')">
+          <span class="six"></span>业绩
+        </li>
+        <li class="f2 pad1" ng-click="href('/customerP/BD')">
+          <span class="seven"></span>保单
+        </li>
+        <li class="f2 pad1" ng-click="href('/meeting')">
+          <span class="eight"></span>会议签到
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="ek-com-tit pad1-3">工作助手</div>
+  <section class="pad1-3">
+    <div class="bg7  b-sh1 new-nav-box tools">
+      <ul class="clearfix">
+        <li class="  f2 pad1" >
+          <span class="nine"></span>团队
+        </li>
+        <li class=" f2 pad1" ng-click="href('/userAchievement')">
+          <span class="ten"></span>业绩
+        </li>
+        <li class=" f2 pad1" ng-click="href('/customerP/BD')">
+          <span class="eleven"></span>保单
+        </li>
+        <li class="f2 pad1" ng-click="href('/meeting')">
+          <span class="twelve"></span>会议签到
+        </li>
+        <li class=" f2 pad1" >
+          <span class="thirteen"></span>团队
+        </li>
+        <li class=" f2 pad1" ng-click="href('/userAchievement')">
+          <span class="fourteen"></span>业绩
+        </li>
+        <li class="f2 pad1" ng-click="href('/customerP/BD')">
+          <span class="fifteen"></span>保单
+        </li>
+        <li class="f2 pad1" ng-click="href('/meeting')">
+          <span class="sixteen"></span>会议签到
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="ek-com-tit pad1-3">我的数据</div>
+  <section class="pad1-3">
+    <div class="bg7  b-sh1 new-nav-box tools">
+      <ul class="clearfix">
+        <li class="  f2 pad1" >
+          <span class="seventeen"></span>团队
+        </li>
+        <li class=" f2 pad1" ng-click="href('/userAchievement')">
+          <span class="eighteen"></span>业绩
+        </li>
+        <li class=" f2 pad1" ng-click="href('/customerP/BD')">
+          <span class="nineteen"></span>保单
+        </li>
+      </ul>
+    </div>
+  </section>
+
+
+
+</div>
+
+
+    <div class="fun-panel clearfix">
+      <div class="f-left  blk active">
+        <span class="icon one"></span>
+        <div class="f0 txt t-center">首页</div>
+      </div>
+      <div class="f-left  blk">
+        <span class="icon two"></span>
+        <div class="f0 txt t-center">数字行销</div>
+      </div>
+      <div class="f-left  blk ">
+        <span class="icon three"></span>
+        <div class="f0 txt t-center">会话消息</div>
+      </div>
+      <div class="f-left  blk ">
+        <span class="icon four"></span>
+        <div class="f0 txt t-center">交易服务</div>
+      </div>
+      <div class="f-left  blk ">
+        <span class="icon five"></span>
+        <div class="f0 txt t-center">我的</div>
+      </div>
+    </div>
+
+<div class="posi4 bg7 b-radius1">
+  <div class="new-nav-box">
+    <ul>
+      <li class="setting setting1 border-b1 f3-1 c6">修改密码</li>
+      <li class="setting setting2 border-b1 f3-1 c6">修改手势</li>
+      <li class="setting setting3 border-b1 f3-1 c6">班次</li>
+      <li class="setting setting4 border-b1 f3-1 c6">功能自检</li>
+      <li class="setting setting5 border-b1 f3-1 c6">知识库</li>
+    </ul>
+  </div>
+  <div class="pad5-1 mar3-7">
+    <button type="button" class="hx-bt3 t-center">退出登录</button>
+  </div>
+</div>
+</body>
+</html>

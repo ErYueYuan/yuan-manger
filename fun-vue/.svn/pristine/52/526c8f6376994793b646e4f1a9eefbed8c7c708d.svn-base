@@ -1,0 +1,152 @@
+<template>
+    <div @click="goBack()">
+        <div class="fun-top-panel" @click="goBack()">
+            <span class="mess-back "><div class="cont-wh"></div></span>
+            <span class="title c7 f4 dblock2 t-center ">客户画像</span>
+        </div>
+        <div class="main-container mar1  bot1 ">
+            <div class="portrayal-top posi2-1">
+                <div class="sex posi2"><img src="../../assets/img/hx/male.png" /></div><!--男士-->
+                <!--<div class="sex posi2"><img src="../../assets/img/hx/famale.png" /></div>女士-->
+                <div class="tab-self">
+                <div class="tab f1 c7 o-p4 clearfix"><span class="f-left">三口之家</span><span class="f-right">产品咨询</span></div><!--自定义标签"c12"-->
+                <div class="tab   f1 c7 o-p4 clearfix"><span class="f-left">三口之家</span><span class="f-right">产品咨询</span></div>
+                <div class="tab  f1 c7 o-p4 clearfix"><span class="f-left c12">三口之家</span><span class="f-right">产品咨询</span></div>
+                <div class="tab  f1 c7 o-p4 clearfix"><span class="f-left">三口之家</span><span class="f-right">产品咨询</span></div>
+                  <div class="tab  f1 c7 o-p4 clearfix"><span class="f-left">三口之家</span><span class="f-right c12">产品咨询</span></div>
+                  <div class="tab   f1 c7 o-p4 clearfix"><span class="f-left">三口之家</span><span class="f-right">产品咨询</span></div>
+                  <div class="tab  f1 c7 o-p4 clearfix"><span class="f-left">三口之家</span><span class="f-right">产品咨询</span></div>
+                  <div class="tab  f1 c7 o-p4 clearfix"><span class="f-left">三口之家</span><span class="f-right c12">产品咨询</span></div>
+                  <div class="tab  f1 c7 o-p4 clearfix"><span class="f-left">三口之家</span><span class="f-right">产品咨询</span></div>
+                  <div class="tab  f1 c7 o-p4 clearfix"><span class="f-left">三口之家</span><span class="f-right">产品咨询</span></div>
+                </div>
+                <div class="t-center c7 f2-1 info">女 / 28岁</div>
+            </div>
+
+            <div class="posi2-1 mar3-5 bg7  b-radius1">
+                <section class=" pad1-3 fun-info-b1">
+                   <!-- <div class="floor2 no-p">
+                        <span><div>高预算</div></span>
+                        <span><div>高预算</div></span>
+                        <span><div>高预算</div></span>
+                        <span><div>高预算</div></span>
+                        <span><div>高预算</div></span>
+                        <span><div>高预算</div></span>
+                        <span><div>高预算</div></span>
+                        <span><div>高预算</div></span>
+                        <span class="edit c-p"><div><i></i>编辑</div></span>
+                    </div>-->
+                    <section class="clearfix">
+                        <h3 class="portrayal-tit1 pt1 mar3-6" title="基本信息"></h3>
+                        <section class="hx-tag clearfix">
+                            <div class="f-left mar5-1">
+                                <span>婚姻状况：未婚</span>
+                            </div>
+                            <div class="f-left mar5-1">
+                                <span>职业情况：医生</span>
+                            </div>
+                            <div class="f-left mar5-1">
+                                <span>区域：北京</span>
+                            </div>
+                        </section>
+                        <h3 class="portrayal-tit1 pt2 mar3-6" title="客户意愿"></h3>
+                        <section class="hx-tag clearfix">
+                            <div class="f-left mar5-1">
+                                <span>登录平台：C站</span>
+                            </div>
+                            <div class="f-left mar5-1">
+                                <span>使用平台工具：风险测评</span>
+                            </div>
+                            <div class="f-left mar5-1">
+                                <span>区域：北京</span>
+                            </div>
+                        </section>
+                        <h3 class="portrayal-tit1 pt3 mar3-6" title="客户能力"></h3>
+                        <section class="hx-tag clearfix">
+                            <div class="f-left mar5-1">
+                                <span>登录平台：C站</span>
+                            </div>
+                            <div class="f-left mar5-1">
+                                <span>使用平台工具：风险测评</span>
+                            </div>
+                            <div class="f-left mar5-1">
+                                <span>区域：北京</span>
+                            </div>
+                            <div class="f-left mar5-1">
+                                <span>登录平台：C站</span>
+                            </div>
+                            <div class="f-left mar5-1">
+                                <span>使用平台工具：风险测评</span>
+                            </div>
+                            <div class="f-left mar5-1">
+                                <span>区域：北京</span>
+                            </div>
+                        </section>
+                        <h3 class="portrayal-tit1 pt4 mar3-6" title="持有状态"></h3>
+                        <section class="hx-tag clearfix">
+                            <div class="f-left mar5-1">
+                                <span>登录平台：C站</span>
+                            </div>
+                            <div class="f-left mar5-1">
+                                <span>使用平台工具：风险测评</span>
+                            </div>
+                            <div class="f-left mar5-1">
+                                <span>区域：北京</span>
+                            </div>
+                            <div class="f-left mar5-1">
+                                <span>登录平台：C站</span>
+                            </div>
+                            <div class="f-left mar5-1">
+                                <span>使用平台工具：风险测评</span>
+                            </div>
+                            <div class="f-left mar5-1">
+                                <span>区域：北京</span>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    import Vue from 'vue'
+    import { mapGetters } from 'vuex'
+    import * as tool from '@/common/Tool'
+    import { api_sell } from '@/api/index'
+    import DataSource from '@/common/DataSource'
+    import '@vant/touch-emulator'
+
+    export default {
+        name: "portraitDetail",
+        data () {
+            return {
+                q: this.$route.params.q,
+            }
+        },
+        computed: {
+            ...mapGetters(['user']),
+        },
+        components: {
+
+        },
+        beforeCreate: function() {
+            document.getElementsByTagName("body")[0].className = "fun-top-zhx";
+        },
+        created () {
+
+        },
+        methods: {
+            goBack () {
+                this.$router.go(-1);
+            },
+        },
+        beforeDestroy: function() {
+            DataSource.del('messPath', 2)
+            document.body.removeAttribute("class", "fun-top-zhx")
+        },
+    }
+</script>
+<style scoped>
+
+</style>

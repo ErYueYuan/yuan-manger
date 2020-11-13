@@ -1,0 +1,14 @@
+export default [
+  {
+    path: '/messList',
+    name: 'messList',
+    meta: {title: '会话消息'},
+    component: () => import(/* webpackChunkName: "login" */ '@/views/mess/MessList')
+  },
+  {
+    path: '/messWindow/:id',
+    name: 'messWindow',
+    meta: {title: '会话消息'},
+    component: () => import(/* webpackChunkName: "login" */ '@/views/mess/MessWindow')
+  }
+]

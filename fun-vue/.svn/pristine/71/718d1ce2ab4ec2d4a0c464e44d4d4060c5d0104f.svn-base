@@ -1,0 +1,426 @@
+<template>
+    <div class="bg7">
+        <div class="fun-top-panel bg-my  ">
+            <span class="mess-back " @click="goBack()"><div class="cont-wh"></div></span>
+            <span class="title c7 f4 dblock2 t-center ">个人信息</span>
+        </div>
+
+        <div class="main-container mar1  clearfix">
+            <div class="my-n-txtbox s-bg posi2">
+                <div class="add-btn c7 t-center f1 c-p" style="border-radius: 6px 0 0 15px;">新增跟进记录</div>
+                <div class="top-one  clearfix" >
+                    <div class=" pad3 right-box posi2 c7 " >
+                        <h3 class=" f3 c-p"><span>{{nikeName}}</span>
+                        </h3>
+                        <div class="f2 c7 per-info mar3 ">
+                            <b class="one"></b>来源：
+                            <span v-if="getSource == 1">系统分配</span>
+                            <span v-if="getSource == 2">主动取数</span>
+                            <span v-if="getSource == 3">自建客户</span>
+                            <span v-if="getSource == 4">成交客户</span>
+                        </div>
+                        <!-- <div class="f2 c7 per-info  ">
+                            <b class="two"></b>客户号：CC0157941027
+                        </div> -->
+                        <div class="f2 c7 per-info  ">
+                            <b class="three"></b>客户等级：
+                            <span class="stars-box2" v-if="customerStar == 1"><i></i></span>
+                            <span class="stars-box2" v-if="customerStar == 2"><i></i><i></i></span>
+                            <span class="stars-box2" v-if="customerStar == 3"><i></i><i></i><i></i></span>
+                            <span class="stars-box2" v-if="customerStar == 4"><i></i><i></i><i></i><i></i></span>
+                            <span class="stars-box2" v-if="customerStar == 5"><i></i><i></i><i></i><i></i><i></i></span>
+                        </div>
+                    </div>
+                    <div class="img-box  posi2">
+                        <img v-if="!!sex && sex == 1" src="../../assets/img/szxx/me.png" />
+                        <img v-if="!!sex && sex == 0" src="../../assets/img/szxx/dau.png" />
+                    </div>
+                </div>
+            </div>
+
+            <div class=" mar3-5 clearfix">
+                <section class="b-radius1 pad1-3 bg7 clearfix">
+                    <div id="proNav" class="swiper-container border-b1">
+                        <div class="swiper-wrapper f-flex">
+                            <!-- 推荐 -->
+                            <div class="swiper-slide " style="display: inline-block;">
+                                <div class="fun-info-p5 pro active" >
+                                    <label class="f3-1"><b>基本信息</b></label>
+                                </div>
+                            </div>
+                            <div class="swiper-slide "  style="display: inline-block;">
+                                <div class="fun-info-p5 pro" >
+                                    <label class="f3-1"><b>订单</b></label>
+                                </div>
+                            </div>
+                            <div class="swiper-slide " style="display: inline-block;">
+                                <div class="fun-info-p5 pro">
+                                    <label class="f3-1"><b>轨迹</b></label>
+                                </div>
+                            </div>
+                            <div class="swiper-slide " style="display: inline-block;">
+                                <div class="fun-info-p5 pro" >
+                                    <label class="f3-1"><b>跟进</b></label>
+                                </div>
+                            </div>
+                            <div class="swiper-slide " style="display: inline-block;">
+                                <div class="fun-info-p5 pro">
+                                    <label class="f3-1"><b>历史方案</b></label>
+                                </div>
+                            </div>
+                             <div class="swiper-slide " style="display: inline-block;">
+                                <div class="fun-info-p5 pro">
+                                    <label class="f3-1"><b>已购产品</b></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg7 mar3-2 pad1-3 b-sh1 fun-info-b1">
+                            <h3 class="tit f3 c6">客户画像</h3>
+                            <div class="floor1 posi2">
+                                <div class="avator"><img src="../../assets/img/szxx/me.png" /></div>
+                                <span>女</span>
+                                <span>38岁</span>
+                                <span>三口之家</span>
+                                <span>产品咨询</span>
+                            </div>
+                            <div class="floor2">
+                                <span>高预算</span>
+                                <span>高预算</span>
+                                <span>高预算</span>
+                                <span class="edit c-p" @click="editLabel()"><i></i>编辑</span>
+                            </div>
+                            <h3 class="tit f3 c6 mar3-2">互动情况</h3>
+                            <ul class="ul01">
+                                <li>消息沟通：9月13日添加为好友，已产生25条信息互动</li>
+                                <li>最近轨迹：2020-08-08  10:11 查看产品链接 </li>
+                                <li>回访预约时间：2020-08-08  10:11 </li>
+                            </ul>
+                                <h3 class="tit f3 c6 mar3-2">历史方案<span class="f-right f1 c4">查看更多</span></h3>
+                                <section class="blk-cont2020  ">
+                                <ul class="cont-blk  icon-wrap ">
+                                    <li class="li-p5  posi2 clearfix">
+                                    <div class="product2020 f-left posi2">
+                                        <img class="lazy-p" src="https://www.baoxian.com/product_file/ERiskPic/100901007.jpg" alt="pic">
+                                        <span class="state"><i class="t1"></i>网销</span>
+                                    </div>
+                                    <div class="info-blk  ">
+                                        <h3 class=" mess f3 c44 ">信泰如意尊终身寿险</h3>
+                                        <p class="f2 mess">锁定利率，高额航空意外，定向传承</p>
+                                        <p class="f2 mar2  mess">编码: JHS2020071251083</p>
+                                        <p class="f2 mess">首期保费：<span class="c8">5000￥起</span></p>
+                                    </div>
+                                    </li>
+                                </ul>
+                                </section>
+                    </div>
+                    
+                    <div class="ek-com-tit">详细信息</div>
+                    <section class="member-box bg7  b-sh5">
+                        <div id="pMember" class="swiper-container">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide dblock active">
+                                    <img src="../../assets/img/szxx/me.png"/>
+                                    <span>本人</span>
+                                    <div class="bar" title="当前"></div>
+                                </div>
+
+                                <div class="swiper-slide dblock">
+                                    <img src="../../assets/img/szxx/papa.png"/>
+                                    <span>爸爸</span>
+                                    <div class="bar" title="当前"></div>
+                                </div>
+
+                                <div class="swiper-slide dblock">
+                                    <img src="../../assets/img/szxx/mama.png"/>
+                                    <span>妈妈</span>
+                                    <div class="bar" title="当前"></div>
+                                </div>
+
+                                <div class="swiper-slide dblock">
+                                    <img src="../../assets/img/szxx/papa.png"/>
+                                    <span>哥哥</span>
+                                    <div class="bar" title="当前"></div>
+                                </div>
+
+                                <div class="swiper-slide dblock">
+                                    <img src="../../assets/img/szxx/add.png"/>
+                                    <span title="添加"><span style="opacity: 0;">添加</span>&nbsp;</span>
+                                    <div class="bar" title="当前"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 基本信息，有选择框 -->
+                    <section class="mar3-6 bg7  b-sh1">
+                        <section class="pad1">
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">姓名</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请输入姓名" value="" v-model="cname" >
+                                </dd>
+                            </dl>
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">手机号码</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请输入手机号码" value="" v-model="mobile" >
+                                </dd>
+                            </dl>
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">出生日期</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="" value="" v-model="birthday ">
+                                </dd>
+                            </dl>
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">年龄</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请输入年龄" value=""  ><!-- v-model="age" -->
+                                </dd>
+                            </dl>
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">国籍</dt>
+                                <dd class="t-right f3 c5 arrow">{{nationality}}</dd>
+                            </dl>
+                            <dl class="per-box bg7">
+                                <dt class="c6 f3-1">婚姻</dt>
+                                <dd class="t-right f3 c5 arrow">{{marriage}}</dd>
+                            </dl>
+                        </section>
+                    </section>
+
+                    <!-- 证件类型，有个选择框 -->
+                    <section class="mar3-6 bg7  b-sh1">
+                        <section class="pad1">
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">证件类型</dt>
+                                <dd class="t-right f3 c5 arrow">{{cerType}}</dd>
+                            </dl>
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">证件有效期</dt>
+                                <dd class="t-right f3 c5 arrow">请选择证件有效期</dd>
+                            </dl>
+                            <dl class="per-box bg7">
+                                <dt class="c6 f3-1">证件号码</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请输入证件号码" value="" v-model="cerCode" >
+                                </dd>
+                            </dl>
+                        </section>
+                    </section>
+
+                    <!-- 行业，有选择框 -->
+                    <section class="mar3-6 bg7  b-sh1">
+                        <section class="pad1">
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">行业</dt>
+                                <dd class="t-right f3 c5 arrow">请选择行业</dd>
+                            </dl>
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">职业</dt>
+                                <dd class="t-right f3 c5 arrow">请选择职业</dd>
+                            </dl>
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">电子邮箱</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请输入家庭成员保单上的电子邮箱" value="" v-model="email ">
+                                </dd>
+                            </dl>
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">手机号码</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请输入家庭成员保单上的手机号码" value="" v-model="mobile">
+                                </dd>
+                            </dl>
+                            <dl class="per-box bg7">
+                                <dt class="c6 f3-1">税收居民</dt>
+                                <dd class="t-right f3 c5 arrow">请选择税收居民身份</dd>
+                            </dl>
+                        </section>
+                    </section>
+
+                    <!-- 常住城市，有个选择框 -->
+                    <section class="mar3-6 bg7  b-sh1">
+                        <section class="pad1">
+                            <dl class="per-box pb2 bg7 border-b1">
+                                <dt class="c6 f3-1">常住城市</dt>
+                                <dd class="t-right f3 c5 arrow">省-市-县</dd>
+                            </dl>
+                            <dl class="per-box line2 bg7 border-b1">
+                                <dt class="c6 f3-1">详细地址</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input addr form-control h44 t-left" placeholder="请输入详细地址" value="" v-model="address">
+                                </dd>
+                            </dl>
+                            <dl class="per-box bg7">
+                                <dt class="c6 f3-1">邮政编码</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请输入邮政编码" value="" v-model="postalcode">
+                                </dd>
+                            </dl>
+                        </section>
+                    </section>
+
+                    <br>
+                </section>
+            </div>
+        </div>
+
+        <div class="in-nav-bot posi1 " >
+            <div class=" c-p "><b class="one"></b><p class="f1 t-center c6">客户沟通</p></div>
+            <div class=" c-p pad0">
+                <b class="two"></b><p class="f1 t-center c6">电话</p>
+            </div>
+            <div class=" c-p pad0">
+                <b class="three"></b><p class="f1 t-center c6">制作方案</p>
+            </div>
+            <div class="bbtn t-right c-p">
+                <span class="hx-bt3 bt1 f3 ">投保</span>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    import Vue from 'vue'
+    import { mapGetters } from 'vuex'
+    import * as tool from '@/common/Tool'
+    import { api_sell } from '@/api/index'
+    import DataSource from '@/common/DataSource'
+    import { Popup, Picker } from 'vant'
+    // import Rules from './Rules'
+    // import Works from './Works'
+    // import Visitor from './Visitor'
+    // import Performance from './Performance'
+
+    Vue.use(Popup)
+    Vue.use(Picker)
+
+    export default {
+        name: "CustomerDetail",
+        data () {
+            return {
+                clientId: this.$route.params.q,//客户id
+                nikeName: "",
+                sex: "",//1男，0女，2未知
+                getSource: "",
+                customerStar: "",
+                detailList: [],
+                cname: "",
+                csex: "",
+                birthday: "",
+                age: "",
+                nationality: "",
+                marriage: "",
+                cerType: "",
+                cerCode: "",
+                occup: "",
+                occupname: "",
+                occupxtion: "",
+                occupxtionname: "",
+                email: "",
+                mobile: "",
+                province: "",
+                city: "",
+                county: "",
+                address: "",
+                postalcode: "",
+                familyList: [],//家庭成员列表
+                
+            }
+        },
+        computed: {
+            ...mapGetters(['user']),
+        },
+        components: {
+            // 'rules': Rules,
+            // 'works': Works,
+            // 'visitor': Visitor,
+            // 'performance': Performance
+        },
+        created () {
+            this.queryBasicIntroduction();//基本介绍
+            this.getCustomerDetail();//客户详情
+            this.getFamilyList();//家庭成员列表
+        },
+        methods: {
+            queryBasicIntroduction () {
+                const _data = {
+                    saasId: tool.app.saasId,
+                    clientNewidId: "fb27daf7aee911ea967f6c92bf603fec",//客户id
+                }
+                api_sell.queryBasicIntroduction(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.nikeName = data.nikeName;
+                        this.sex = data.sex;
+                        this.getSource = data.getSource;
+                        this.customerStar = data.customerStar;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+            getCustomerDetail () {
+                const _data = {
+                    saasId: tool.app.saasId,
+                    // clientId: this.clientId
+                    clientId: "062daa1e4d8a11e9967f6c92bf603f23"
+                }
+                api_sell.getCustomerDetail(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.cname = data.cname;
+                        this.csex = data.sex;
+                        this.birthday = data.birthday;
+                        this.age = data.age;
+                        this.nationality = data.nationality;//国籍
+                        this.marriage = data.marriage;//1-已婚;2-未婚;3-离异;4-再婚;5-丧偶
+                        this.cerType = data.cerType;
+                        this.cerCode = data.cerCode;
+                        this.occup = data.occup;
+                        this.occupname = data.occupname;
+                        this.occupxtion = data.occupxtion;
+                        this.occupxtionname = data.occupxtionname;
+                        this.email = data.email;
+                        this.mobile = data.mobile;
+                        this.province = data.province;
+                        this.city = data.city;
+                        this.county = data.county;
+                        this.address = data.address;
+                        this.postalcode = data.postalcode;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+            getFamilyList () {
+                const _data = {
+                    "agentCode": "310201480",
+                    // "clientId": this.clientId,
+                    "clientId": "db01e84366f811e9967f6c92bf603fec",
+                    "saasId": tool.app.saasId,
+                    "offset": 0,
+                    "limit": 10
+                }
+                api_sell.getFamilyList(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.familyList = data.familyList;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+            editLabel () {
+                this.$router.push({ path: '/editLabel/' + this.clientId});
+            },
+            goBack () {
+                this.$router.push({ path: '/sellList/' + "1"});
+            },
+            
+            
+        }
+    }
+</script>
+<style scoped>
+  
+</style>

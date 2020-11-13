@@ -1,0 +1,213 @@
+<template>
+    <div class="bg7">
+        <div class="main-top  bg7 b-radius2">
+            <section>
+                <form action="/">
+                    <van-search
+                        v-model="value"
+                        show-action
+                        placeholder="请输入客户姓名"
+                        shape="round"
+                        @search="onSearch"
+                        @cancel="goBack"
+                        @clear="clearList"
+                    />
+                </form>
+            </section>
+        </div>
+        <!-- 搜索历史 -->
+        <div class="main-container clearfix" v-if="!isShowResult">
+            <div class="pad5 f2-1 c5">搜索历史
+                <span class="f-right" @click="delHistory()">
+                    <b class="fun-icon icon-del " title="删除"></b>
+                </span>
+            </div>
+            <section class="tab-box2">
+                <span class=" c-p" v-for="(item, index) in historyList" :key="index" @click="queryHistory(item)">{{item}}</span>
+            </section>
+        </div>
+        <!-- 搜索结果 -->
+        <div class=" clearfix"  v-for="(item,index) in customerList" :key="index" v-show="isShowResult" @click="goDetail(item)">
+            <div class="b-sh1 pad5-5 bg7  mar6-1">
+                <div class="blk-cont-box posi2  ">
+                    <div class="img-box posi2">
+                        <img src="../../assets/img/index/bar_bg.png" />
+                        <b class="state c-p" v-show="item.getSource == 1">系统分配</b>
+                        <b class="state c-p" v-show="item.getSource == 2">主动取数</b>
+                        <b class="state c-p" v-show="item.getSource == 3">自建客户</b>
+                        <b class="state c-p" v-show="item.getSource == 4">成交客户</b>
+                    </div>
+                    <div class="right-box posi2  c-p" >
+                        <h3 class="f2 c6 mar7-2"><span>{{item.name}}</span></h3>
+                        <div class="f2 c4 ">
+                            <span>年龄：</span><span>{{item.age}}岁</span><b class="s-icon b3"></b><b class="s-icon b4"></b>
+                        </div>
+                        <div class=" f2 c4">
+                            <span>客户星级：</span>
+                            <span class="stars-box" v-if="item.customerStar == '1'"><i></i><i class="grey"></i><i class="grey"></i><i class="grey"></i><i class="grey"></i></span>
+                            <span class="stars-box" v-if="item.customerStar == '2'"><i></i><i></i><i class="grey"></i><i class="grey"></i><i class="grey"></i></span>
+                            <span class="stars-box" v-if="item.customerStar == '3'"><i></i><i></i><i></i><i class="grey"></i><i class="grey"></i></span>
+                            <span class="stars-box" v-if="item.customerStar == '4'"><i></i><i></i><i></i><i></i><i class="grey"></i></span>
+                            <span class="stars-box" v-if="item.customerStar == '5'"><i></i><i></i><i></i><i></i><i></i></span>
+                        </div>
+                        <div class=" f2 c4">
+                            <span>订单状态：</span><span>{{item.orderStatus}}</span>
+                        </div>
+                        <div class=" f2 c4">
+                            <span>创建时间：</span><span>{{item.date}}</span>
+                        </div>
+                        <div class="f1"><b class="ek-btn-5" v-if="!!item.activitySource">{{item.activitySource}}</b></div>
+                    </div>
+                    <b class="flag">客户行销</b>
+                    <van-empty v-show="total===0" description="暂无产品" />
+                </div>
+            </div>
+        </div>
+        <div class="f2 pad888" v-if="customerList.length>=total && customerList.length>0">
+            <div class="lzg-h-more posi2 t-center">
+                <span class="c5 bg8 posi2 c222">没有更多啦</span>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    import Vue from 'vue'
+    import { mapGetters } from 'vuex'
+    import * as tool from '@/common/Tool'
+    import { api_sell } from '@/api/index'
+    import DataSource from '@/common/DataSource'
+    import '@vant/touch-emulator'
+    import { Search, Empty } from 'vant'
+    import * as scroll from '@/common/Scroll'
+
+    Vue.use(Search)
+    Vue.use(Empty)
+
+    export default {
+        name: "SearchResult",
+        data () {
+            return {
+                value: '',
+                customerList: [],
+                historyCustomerList: [],
+                historyList: [],
+                total: 0,
+                isLoad: true,
+                allLoaded: false,
+                queryLoading: true,
+                offset: 0,
+                limit: 10,
+                isShowResult: false,
+            }
+        },
+        computed: {
+            ...mapGetters(['user']),
+        },
+        components: {
+
+        },
+        created () {
+            
+        },
+        mounted () {
+            this.getsource();
+            window.addEventListener('scroll', this.handleScroll)
+        },
+        methods: {
+            getsource() {
+                this.historyList =  DataSource.get('historyList',1) ? DataSource.get('historyList',1) : [];
+            },
+
+            handleScroll() {
+                if (scroll.getScrollTop() + scroll.getClientHeight() > (scroll.getScrollHeight() - 5)) {
+                    this.loadMore();
+                }
+            },
+
+            loadMore() {
+                if (this.queryLoading) {
+                    return
+                }
+                if (!this.isLoad) {
+                    this.isLoad = true;
+                    this.offset += 10;
+                    this.getCustomerList();
+                }
+            },
+
+            onSearch(val) {
+                this.getCustomerList(val);
+                let index = this.historyList.indexOf(val);
+                if (index == -1) { // -1 没有，有就返回索引值
+                    this.historyList.push(val);
+                    DataSource.set('historyList', this.historyList, 1);
+                }
+            },
+
+            getCustomerList (val) {
+                const _data = {
+                    saasId: tool.app.saasId,
+                    // agentUserId: this.user.userInfo.userId,
+                    agentUserId: "0003660579e611e9a021246e965b5bf8",
+                    offset: this.offset,
+                    limit: this.limit,
+                    name: !!val ? val : ""
+                }
+                api_sell.getCustomerList(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.isShowResult = true;
+                        this.isLoad = false;
+                        this.total = data.total;
+                        this.customerList = data.customerList;
+                        if (this.offset === 0 || this.customerList.length === 0) {
+                            this.customerList = data.customerList ? data.customerList : []
+                            if (this.customerList.length < this.total) {
+                                this.queryLoading = false;
+                            }
+                        } else {
+                            this.customerList = this.customerList.concat(data.customerList);
+                        }
+                        this.allLoaded = this.customerList.length >= this.total;
+                        if (this.allLoaded) {
+                            this.queryLoading = true;
+                        }
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            goDetail (item) {
+                this.$router.push({ path: '/customerDetail/' + item.clientId + '/' + item.clientNewId});
+            },
+
+            delHistory () {
+                this.historyList = [];
+                DataSource.set('historyList', '', 1);
+            },
+
+            queryHistory (name) {
+                this.getCustomerList(name);
+            },
+
+            clearList () {
+                this.isShowResult = false;
+            },
+
+            goBack () {
+                // this.$router.push({ path: '/sellList/1' });
+                this.$router.go(-1);
+            },
+
+
+
+
+        },
+        destroyed() {
+            window.removeEventListener('scroll', this.handleScroll)
+        },
+    }
+</script>
+<style scoped>
+
+</style>

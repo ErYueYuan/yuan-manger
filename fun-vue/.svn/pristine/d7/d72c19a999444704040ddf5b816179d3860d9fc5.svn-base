@@ -1,0 +1,352 @@
+<template>
+  <div class="bg3">
+    <div class="fun-top-panel bg7  ">
+      <span
+        class="mess-back "
+        @click="goBack"
+      >
+        <div class="cont"></div>
+      </span>
+      <span class="title c3 f3 dblock2 t-center ">{{'知识库'}}</span>
+    </div>
+    <div class="main-top p-fix bg7 b-radius2">
+      <section class="f-flex  border-b1">
+        <div class="sear-bb ">
+          <div class=" new-search ns2 clearfix">
+            <section class="sear-c posi2 clearfix">
+              <form
+                action=""
+                class="input-search-form"
+                id="search_from"
+              >
+                <van-search
+                  v-model="searchval"
+                  shape="round"
+                  background=""
+                  placeholder="请输入搜索关键词"
+                  @search="onSearch"
+                />
+              </form>
+            </section>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="main-container mar4-5 bg7 bot1 clearfix">
+      <section class="tab-box3">
+        <span
+          class="c-p"
+          v-for="(item,index) in tagList"
+          :key="index"
+          :class="tabnum == item.id?'active':''"
+          @click="getBtn(item.name,item.id)"
+        >{{item.name}}</span>
+      </section>
+      <section>
+        <van-collapse
+          v-if="ledgeExpList.length == 0"
+          v-model="activeName"
+          accordion
+        >
+          <van-collapse-item
+            v-for="(item,index) in list"
+            :key="index"
+            :title="index+1+'. '+item.className"
+            :name="item.id"
+            @click.native="getKnowledgeClassList(2,item.id)"
+          >
+            <van-collapse
+              v-model="chiildName"
+              accordion
+              v-if="twolist&&twolist.length >0"
+            >
+              <van-collapse-item
+                v-for="(item,index) in twolist"
+                :key="index"
+                :title="index+1+'. '+item.className"
+                :name="item.id"
+                @click.stop.native="getKnowledgeTitle(item.id)"
+              >
+                <!-- <div
+                  class="mar6-1 clearfix "
+                  v-for="(item, index) in lmKnowledgeList"
+                  :key="'i-' + index"
+                  :class="lmKnowledgeList.length-1 !== index ? 'border-b1 pad4-1' : ''"
+                >
+                  <p
+                    class="f2 c5 f-left mess"
+                    :class="repositoryPath?'w70':'w100'"
+                     @click.stop.prevent="goRepositoryDetail(item)"
+                  >{{item.title}}</p>
+                  <p
+                    class="f-right t-center send_mess"
+                    v-if="repositoryPath"
+                    @click.stop.prevent="sendMess(item)"
+                  >发送</p>
+                </div> -->
+                <van-collapse
+                  v-model="threename"
+                  accordion
+                >
+                  <van-collapse-item
+                    v-for="item in lmKnowledgeList"
+                    :key="item.knowledgeId"
+                    :title="item.title"
+                    :name="item.knowledgeId"
+                    @click.native="goRepositoryDetail(item)"
+                  >
+                    <div class="pad4-1 border-b1">
+                      <div v-if="content">
+                        <p
+                          class="f2 c5"
+                          v-html="content"
+                        ></p>
+                        <div class="t-right mar3">
+                          <button
+                          v-if="repositoryPath"
+                            class="ek-btn-4 min-w f1 mar5-2"
+                            @click="sendMess(item)"
+                          >发送</button>
+                        </div>
+                      </div>
+                    </div>
+                  </van-collapse-item>
+                </van-collapse>
+              </van-collapse-item>
+            </van-collapse>
+          </van-collapse-item>
+        </van-collapse>
+          <van-collapse
+                  v-model="chiildwName"
+                  accordion
+                >
+                  <van-collapse-item
+                    v-for="item in ledgeExpList"
+                    :key="item.knowledgeId"
+                    :title="item.title"
+                    :name="item.knowledgeId"
+                    @click.native="goRepositoryDetail(item)"
+                  >
+                    <div class="pad4-1 border-b1">
+                      <div v-if="content">
+                        <p
+                          class="f2 c5"
+                          v-html="content"
+                        ></p>
+                        <div class="t-right mar3">
+                          <button
+                          v-if="repositoryPath"
+                            class="ek-btn-4 min-w f1 mar5-2"
+                            @click="sendMess(item)"
+                          >发送</button>
+                        </div>
+                      </div>
+                    </div>
+                  </van-collapse-item>
+                </van-collapse>
+        <!-- <div class="main-container">
+          <div
+            class="mar6-1 clearfix "
+            v-for="(item, index) in ledgeExpList"
+            :key="'i-' + index"
+            :class="ledgeExpList.length-1 !== index ? 'border-b1 pad4-1' : ''"
+            @click.native="goRepositoryDetail(item)"
+          >
+            <p
+              class="f2 c5 f-left mess"
+              :class="repositoryPath?'w70':'w100'"
+            >{{item.title}}</p>
+            <p
+              class="f-right t-center send_mess"
+              v-if="repositoryPath"
+              @click.stop.prevent="sendMess(item)"
+            >发送</p>
+          </div>
+        </div> -->
+      </section>
+    </div>
+    <!-- <div class="t-center f3 c6 pad6">未找到答案？<span class="c8">去提问</span></div> -->
+  </div>
+</template>
+
+<script>
+import Vue from 'vue'
+import { mapGetters } from 'vuex'
+import { api_my } from '@/api/index'
+import * as tool from '@/common/Tool'
+import { Collapse, CollapseItem, Search, Button } from 'vant';
+import { TopPanel } from '@/components/index';
+Vue.use(Collapse);
+Vue.use(Button);
+Vue.use(CollapseItem);
+Vue.use(Search);
+export default {
+  data() {
+    return {
+      tabnum: 0,
+      searchval: '',
+      activeName: '1',
+      chiildName: '1',
+      chiildwName: '1',
+      threename: '1',
+      codeval: '',
+      list: [],
+      tagList: [],
+      ledgeExpList: [],
+      lmKnowledgeList: [],
+      twolist: [],
+      sourceChannel: tool.globalData,
+      topPanel: {
+        back: true,
+        titles: "知识库",
+        home: true
+      },
+      content:''
+    }
+  },
+  props: {
+    repositoryPath: String
+  },
+  computed: {
+    ...mapGetters(['user']),
+  },
+  components: {
+    'top-panel': TopPanel,
+  },
+  created() {
+    this.getKnowledgeClassList(1, 0);
+    this.getDefaultLabelList();
+  },
+  methods: {
+    getBtn(name, id) {
+      this.tabnum = id;
+      this.codeval = name
+      this.getKnowledgeListByLabel(name)
+    },
+    getKnowledgeClassList(val, id) {
+      let _data = {
+        "platformId": tool.app.platformId,
+        "saasId": this.user.userInfo.saasId,
+        "classLevel": val,
+        "parentId": id
+      }
+      api_my.getKnowledgeClassList(_data).then(res => {
+        if (res.status == tool.rtCode.status) {
+          val == 1 ? this.list = res.knowledgeClassList : this.twolist = res.knowledgeClassList
+        } else {
+          tool.toastMessage(res.message, 'error');
+        }
+      })
+    },
+    getKnowledgeTitle(id) {
+      let _data = {
+        "platformId": tool.app.platformId,
+        "saasId": this.user.userInfo.saasId,
+        "classId": id
+      }
+      api_my.getKnowledgeTitle(_data).then(res => {
+        if (res.status == tool.rtCode.status) {
+          this.lmKnowledgeList = res.lmKnowledgeList
+        } else {
+          tool.toastMessage(res.message, 'error');
+        }
+      })
+    },
+    getDefaultLabelList() {
+      let _data = {
+        saasId: this.user.userInfo.saasId
+      }
+      api_my.getDefaultLabelList(_data).then(res => {
+        if (res.status == tool.rtCode.status) {
+          this.tagList = res.lmKnowledgeDefaultLabelList
+        } else {
+          tool.toastMessage(res.message, 'error');
+        }
+      })
+    },
+    getKnowledgeListByLabel(name) {
+      let _data = {
+        "platformId": tool.app.platformId,
+        "saasId": this.user.userInfo.saasId,
+        "offset": 0,
+        "limit": 10,
+        "search": name,
+        "comcode": this.user.userInfo.deptCode1
+      }
+      api_my.getKnowledgeListByLabel(_data).then(res => {
+        this.ledgeExpList = res.knowledgeExpList
+        if (res.knowledgeExpList.length == 0) {
+          tool.toastMessage('没有相关索引', 'error');
+        }
+      })
+    },
+    onSearch() {
+      this.codeval = this.searchval
+      this.tabnum = 0;
+      this.getKnowledgeListByLabel(this.searchval);
+    },
+    goRepositoryDetail(it) {
+      this.getKnowledgeContent(it.knowledgeId)
+    },
+    getKnowledgeContent(id) {
+      let _data = {
+        id: id,
+        saasId: this.user.userInfo.saasId
+      }
+      api_my.getKnowledgeContent(_data).then(res => {
+        if (res.status == tool.rtCode.status) {
+          this.content = res.content
+        } else {
+          tool.toastMessage(res.message, 'error');
+        }
+      })
+    },
+    sendMess(it) {
+      let _data = {
+        id: it.knowledgeId,
+        saasId: tool.app.saasId
+      }
+      api_my.getKnowledgeContent(_data).then(data => {
+        if (data.status == tool.rtCode.status) {
+          const cont = {
+            content: data.content
+          }
+          this.$emit('sendRepository', cont)
+        } else {
+          tool.toastMessage(data.message, 'error')
+        }
+      })
+    },
+    goBack() {
+      if (this.repositoryPath) {
+        this.$emit('sendRepository')
+      } else {
+        this.$router.go(-1);
+      }
+    },
+  },
+}
+</script>
+
+<style scoped>
+.send_mess {
+  width: 20%;
+  border: 1px solid #fd5147;
+  border-radius: 10px;
+  color: #fd5147;
+  background: #fff;
+  line-height: 18px;
+}
+w70 {
+  width: 70%;
+}
+w100 {
+  width: 100%;
+}
+.tab-box3 {
+  justify-content: start;
+}
+.tab-box3 span {
+  margin: 0 2px 10px 2px;
+}
+</style>

@@ -1,0 +1,219 @@
+<template>
+  <div>
+    <top-panel :topPanel="topPanel" v-if="!sourceChannel.isWeiXin"></top-panel>
+    <div class="main-container clearfix" :class="!sourceChannel.isWeiXin?'mar1':''">
+      <form action="/">
+        <van-search
+          v-model="search_val"
+          placeholder="搜索词"
+          @search="handleSearch"
+          @clear="handleClear"
+        />
+      </form>
+      <div class="pad5-1 clearfix" v-if="bannerList.length>0">
+        <swiper :bannerList="bannerList"></swiper>
+      </div>
+      <div class="pad1-3">
+        <div class="row nav-bar3 ps b-radius2">
+          <div
+            class="col-4 t-left"
+            @click="getInfoList(article.id,0)"
+            v-for="(article,index) in articleClassList"
+            :key="index"
+          >
+            <span :class="{'active': dataFlag == article.id} ">{{article.className}}</span>
+          </div>
+        </div>
+      </div>
+      <section class="blk-cont no-md">
+        <ul class="cont-blk icon-wrap clearfix">
+          <li
+            class="li-p bg7 posi2 clearfix"
+            v-for="(article,index) in articleList"
+            :key="index"
+            @click="goInfoDetail(article)"
+          >
+            <div class="ek f-left posi2">
+              <img class="lazy-p" :src="article.coverImage" alt="pic" />
+            </div>
+            <div class="info-blk no-m">
+              <div class="box">
+                <h3 class="no-p1 f3 c44">{{article.title}}</h3>
+                <p class="subtit no-in f1 c222">{{article.simple}}</p>
+              </div>
+              <div class="f1 time">
+                <b class="icon1"></b>
+                {{article.readCount}}观看
+              </div>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</template>
+
+<script>
+  import Vue from 'vue'
+  import { Search } from 'vant'
+  import { mapGetters } from "vuex";
+  import { Swiper, TopPanel } from "@/components/index";
+  import { api_system, api_article } from "@/api/index";
+  import * as scroll from "@/common/Scroll";
+  import * as tool from "@/common/Tool";
+
+  Vue.use(Search)
+
+  export default {
+    name: "articleList",
+    data () {
+      return {
+        sourceChannel: tool.globalData,
+        topPanel: {
+          back: true,
+          titles: "获客文章",
+        },
+        bannerList: [],
+        userName: "",
+        greetings: "",
+        dataFlag: "",
+        isLoad: "",
+        articleClassList: [],
+        articleList: [],
+        search_val: ''
+      }
+    },
+    computed: {
+      ...mapGetters(["user"]),
+    },
+    components: {
+      'swiper': Swiper,
+      'top-panel': TopPanel,
+    },
+    created () {
+      this.getBannerData()
+      this.getArticleOneData()
+    },
+    mounted() {
+      window.addEventListener("scroll", this.handleScroll);
+    },
+    methods: {
+      getBannerData() {
+        var _data = {
+          limit: tool.pagination.pagesize, // 页面长度
+          offset: tool.pagination.pageoffset, // 页面偏移
+          type: "0", //广告类型:0-懒掌柜首页广告栏,1-产品广告栏,2-资讯广告栏,3-培训广告位,4-理赔广告栏,5-DDSS广告栏，6-e管家首页广告位，7-财富精选广告位
+          comcode: "1000000",
+          platformId: 'f2ce8561055a40d5a5e7dcdffde1e8bc', // tool.app.platformId, //区分项目
+        };
+        api_system.advertismentList4Front(_data).then((res) => {
+          if (res.status == tool.rtCode.status) {
+            this.bannerList = res.advertismentList;
+          }
+        });
+      },
+      getArticleOneData() {
+        let _data = {
+          platformId: '5e00309b49ce4011a924a7ceb6740af8', // tool.app.platformId,
+          saasId: tool.app.saasId,
+          classLevel: "0", //0 查询所有一级分类
+          className: "财富精选",
+        };
+        api_article.articleClassList(_data).then((res) => {
+          if (res.status == tool.rtCode.status) {
+            if (res.articleClassList.length > 0) {
+              this.oneId = res.articleClassList[0].id;
+              this.getArticleTwoData();
+            }
+          }
+        });
+      },
+      getArticleTwoData() {
+        let _data = {
+          platformId: '5e00309b49ce4011a924a7ceb6740af8', //tool.app.platformId,
+          saasId: tool.app.saasId,
+          classId: this.oneId,
+          classLevel: "1", //1 查询所有二级级分类
+        };
+        api_article.articleClassList(_data).then((res) => {
+          if (res.status == tool.rtCode.status) {
+            if (res.articleClassList.length > 0) {
+              this.articleClassList = res.articleClassList;
+              this.getInfoList(this.articleClassList[0].id, 0);
+            }
+          }
+        });
+      },
+      getInfoList(classID, offset) {
+        if (offset == "0") {
+          this.articleList = [];
+        }
+        this.dataFlag = classID;
+        let _data = {
+          platformId: '5e00309b49ce4011a924a7ceb6740af8', // tool.app.platformId,
+          comCode: "1000000",
+          oneLevel: this.oneId,
+          classid: this.dataFlag,
+          params: {
+            limit: 8, // 页面长度
+            offset: offset ? offset : 0, //页数
+          },
+          saasId: tool.app.saasId,
+          title: this.search_val
+        };
+        api_article.articleManagerList(_data).then((res) => {
+          if (res.status == tool.rtCode.status) {
+            this.isLoad = false;
+            this.articleTotal = res.total;
+            if (!this.articleList) {
+              this.articleList = res.articleList;
+            } else {
+              this.articleList = this.articleList.concat(res.articleList);
+            }
+          }
+        });
+      },
+      getReadNum(id) {
+        let _data = {
+          saasId: tool.app.saasId,
+          articleID: id,
+          platformId: '5e00309b49ce4011a924a7ceb6740af8' // tool.app.platformId,
+        };
+        api_article.increaseReadCount(_data).then((res) => {
+          if (res.status == tool.rtCode.status) {
+          }
+        });
+      },
+      goInfoDetail(item) {
+        this.getReadNum(item.id);
+        this.$router.push({name: "articleDetail", params: {id: item.id}});
+      },
+      handleSearch () {
+        this.getInfoList(this.dataFlag, 0)
+      },
+      handleClear () {
+        this.getInfoList(this.dataFlag, 0)
+      },
+      handleScroll() {
+        if (scroll.getScrollTop() + scroll.getClientHeight() > scroll.getScrollHeight() - 5) {
+          if (this.articleList.length == this.articleTotal) return;
+          if (!this.isLoad) {
+            this.isLoad = true;
+            this.loadMore();
+          }
+        }
+      },
+      loadMore() {
+        let offset = this.articleList.length;
+        this.getInfoList(this.dataFlag, offset);
+      }
+    },
+    destroyed() {
+      window.removeEventListener('scroll', this.handleScroll)
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

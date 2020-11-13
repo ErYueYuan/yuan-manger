@@ -1,0 +1,24 @@
+import * as API from './'
+
+export default {
+  // 服务状态
+  chOrderStatus: (params, loadings) => {
+    if (process.env.NODE_ENV === 'development') { //本地环境
+      return API.GET('/fzgzidian/sysDict/childDictList/ch_order_status', params, loadings)
+    } 
+  },
+  //险种信息
+  chRiskType: (params, loadings) => {
+    if (process.env.NODE_ENV === 'development') { //本地环境
+      return API.GET('/fzgzidian/sysDict/childDictList/ch_risk_type', params, loadings)
+    } 
+  },
+  //列表
+  orderList: (params, loadings) => {
+    if (process.env.NODE_ENV === 'development') { //本地环境
+      return API.POST('/fzgapi//funOrder/orderList', params, loadings)
+    } 
+  },
+
+
+}

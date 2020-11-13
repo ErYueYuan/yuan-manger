@@ -1,0 +1,259 @@
+<template>
+    <div class="bg3">
+        <div class="fun-top-panel  bg7 ">
+            <span class="mess-back " @click="goBack()"><div class="cont"></div></span>
+            <span class="title c6 f4 dblock2 t-center ">编辑信息</span>
+        </div>
+
+        <div class="main-container mar1  clearfix">
+            <div class=" mar3-5 ">
+                <section class=" pad1-3  ">
+                    <section class="mar3-6 bg7  b-sh1">
+                        <section class="pad1">
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">姓名</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请输入姓名" v-model="customerDetail.cname">
+                                </dd>
+                            </dl>
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">性别</dt>
+                                <dd class="t-right f3 c5 arrow">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请选择性别" v-model="customerDetail.sex" >
+                                </dd>
+                            </dl>
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">手机号</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请输入手机号" v-model="customerDetail.mobile" >
+                                </dd>
+                            </dl>
+                        </section>
+                    </section>
+                     <!-- 出生日期 -->
+                    <section class="mar3-6 bg7  b-sh1">
+                        <section class="pad1">
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">出生日期</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请选择" value="">
+                                </dd>
+                            </dl>
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">年龄</dt>
+                                <dd class="t-right f3 c5 arrow">{{customerDetail.age}}</dd>
+                            </dl>
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">国籍</dt>
+                                <dd class="t-right f3 c5 arrow">请选择</dd>
+                            </dl>
+                            <dl class="per-box bg7">
+                                <dt class="c6 f3-1">婚姻</dt>
+                                <dd class="t-right f3 c5 arrow">请选择</dd>
+                            </dl>
+                        </section>
+                    </section>
+                    <!-- 证件类型 -->
+                    <section class="mar3-6 bg7  b-sh1">
+                        <section class="pad1">
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">证件类型</dt>
+                                <dd class="t-right f3 c5 arrow">身份证</dd>
+                            </dl>
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">证件有效期</dt>
+                                <dd class="t-right f3 c5 arrow">请选择</dd>
+                            </dl>
+                            <dl class="per-box bg7">
+                                <dt class="c6 f3-1">证件号码</dt>
+                                <dd class="t-right f3 c5 arrow">{{customerDetail.cerCode}}</dd>
+                            </dl>
+                        </section>
+                    </section>
+                    <!-- 行业 -->
+                    <section class="mar3-6 bg7  b-sh1">
+                        <section class="pad1">
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">行业</dt>
+                                <dd class="t-right f3 c5 arrow">身份证</dd>
+                            </dl>
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">职业</dt>
+                                <dd class="t-right f3 c5 arrow">请选择与您的关系</dd>
+                            </dl>
+                            <dl class="per-box bg7">
+                                <dt class="c6 f3-1">公司名称</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请输入姓名" value="">
+                                </dd>
+                            </dl>
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">电子邮箱</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请输入姓名" v-model="customerDetail.email">
+                                </dd>
+                            </dl>
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">手机号码</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请输入姓名" v-model="customerDetail.mobile">
+                                </dd>>
+                            </dl>
+                            <dl class="per-box bg7 border-b1">
+                                <dt class="c6 f3-1">税收居民</dt>
+                                <dd class="t-right f3 c5 arrow">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请选择" v-model="customerDetail.cname">
+                                </dd>
+                            </dl>
+                        </section>
+                    </section>
+                     <!-- 常住城市 -->
+                    <section class="mar3-6 bg7  b-sh1">
+                        <section class="pad1">
+                            <dl class="per-box pb2 bg7 border-b1">
+                                <dt class="c6 f3-1">常住城市</dt>
+                                <dd class="t-right f3 c5 ">{{customerDetail.provinceName}} - {{customerDetail.cityName}} - {{customerDetail.countyName}}
+                                    <!-- <input type="text" class="ca-input form-control h44 t-right" placeholder="请选择" > -->
+                                </dd>
+                            </dl>
+                            <dl class="per-box line2 bg7 border-b1">
+                                <dt class="c6 f3-1">详细地址</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请输入详细地址" v-model="customerDetail.address">
+                                </dd>
+                            </dl>
+                            <dl class="per-box bg7">
+                                <dt class="c6 f3-1">邮政编码</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请输入邮政编码" v-model="customerDetail.postalcode">
+                                </dd>
+                            </dl>
+                        </section>
+                    </section>
+                     <!-- 家庭地址城市 -->
+                    <section class="mar3-6 bg7  b-sh1">
+                        <section class="pad1">
+                            <dl class="per-box pb2 bg7 border-b1">
+                                <dt class="c6 f3-1">家庭地址城市</dt>
+                                <dd class="t-right f3 c5 ">{{customerDetail.provinceName}} - {{customerDetail.cityName}} - {{customerDetail.countyName}}
+                                    <!-- <input type="text" class="ca-input form-control h44 t-right" placeholder="请选择" v-model="customerDetail.provinceName - customerDetail.cityName - customerDetail.countyName"> -->
+                                </dd>
+                            </dl>
+                            <dl class="per-box line2 bg7 border-b1">
+                                <dt class="c6 f3-1">家庭详细地址</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请输入详细地址" v-model="customerDetail.address">
+                                </dd>
+                            </dl>
+                            <dl class="per-box bg7">
+                                <dt class="c6 f3-1">邮政编码</dt>
+                                <dd class="t-right f3 c5 ">
+                                    <input type="text" class="ca-input form-control h44 t-right" placeholder="请输入邮政编码" v-model="customerDetail.postalcode">
+                                </dd>
+                            </dl>
+                        </section>
+                    </section><br>
+
+                </section>
+            </div>
+        </div>
+        <div class="posi5 pad5-8 bg7" @click="save()">
+            <button type="button" class="hx-bt3 t-center">保存</button>
+        </div>
+    </div>
+</template>
+<script>
+    import Vue from 'vue'
+    import { mapGetters } from 'vuex'
+    import * as tool from '@/common/Tool'
+    import { api_sell } from '@/api/index'
+    import DataSource from '@/common/DataSource'
+    import { Popup, Picker } from 'vant'
+    // import Rules from './Rules'
+    // import Works from './Works'
+    // import Visitor from './Visitor'
+    // import Performance from './Performance'
+
+    Vue.use(Popup)
+    Vue.use(Picker)
+
+    export default {
+        name: "EditCustomerDetail",
+        data () {
+            return {
+                clientId: this.$route.params.q,
+                clientNewId: this.$route.params.r,
+                customerDetail: [],
+            }
+        },
+        computed: {
+            ...mapGetters(['user']),
+        },
+        components: {
+            // 'rules': Rules,
+            // 'works': Works,
+            // 'visitor': Visitor,
+            // 'performance': Performance
+        },
+        created () {
+            this.getCustomerDetail();
+        },
+        methods: {
+
+             getCustomerDetail (clientId) {
+                const _data = {
+                    saasId: tool.app.saasId,
+                    clientId: this.clientId
+                }
+                api_sell.getCustomerDetail(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.customerDetail = data.customerDetail;
+                        this.customerDetail.cname = data.customerDetail.cname;
+                        this.customerDetail.sex = data.customerDetail.sex;
+                        this.customerDetail.birthday = data.customerDetail.birthday;
+                        this.customerDetail.age = data.customerDetail.age;
+                        this.customerDetail.nationality = data.customerDetail.nationality;//国籍
+                        this.customerDetailmarriage = data.customerDetail.marriage;//1-已婚;2-未婚;3-离异;4-再婚;5-丧偶
+                        this.customerDetail.cerType = data.customerDetail.cerType;
+                        this.customerDetail.cerCode = data.customerDetail.cerCode;
+                        this.customerDetail.cerTypeName = data.customerDetail.cerTypeName;
+                        this.customerDetail.cerValidDateType = data.customerDetail.cerValidDateType;//长短期有效
+                        this.customerDetail.occup = data.customerDetail.occup;
+                        this.customerDetail.occupname = data.customerDetail.occupname;
+                        this.customerDetail.occupxtion = data.customerDetail.occupxtion;
+                        this.customerDetail.occupxtionname = data.customerDetail.occupxtionname;
+                        this.customerDetail.email = data.customerDetail.email;
+                        this.customerDetail.mobile = data.customerDetail.mobile;
+                        this.customerDetail.province = data.customerDetail.province;
+                        this.customerDetail.city = data.customerDetail.city;
+                        this.customerDetail.county = data.customerDetail.county;
+                        this.customerDetail.provinceName = data.customerDetail.provinceName;
+                        this.customerDetail.cityName = data.customerDetail.cityName;
+                        this.customerDetail.countyName = data.customerDetail.countyName;
+                        this.customerDetail.address = data.customerDetail.address;
+                        this.customerDetail.postalcode = data.customerDetail.postalcode;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+           
+            save () {
+                // 点击【保存】保存更改信息，跳转回客户详情主页
+                this.$router.push({ path: '/customerDetail' + this.clientId});
+            },
+
+
+            goBack () {
+                this.$router.push({ path: '/customerDetail/' + this.clientId + '/' + this.clientNewId});
+            },
+
+            
+            
+            
+        }
+    }
+</script>
+<style scoped>
+  
+</style>

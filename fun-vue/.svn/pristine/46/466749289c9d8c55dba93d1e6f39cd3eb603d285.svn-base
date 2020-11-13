@@ -1,0 +1,120 @@
+<template>
+  <div>
+    <div class="ek-top-panel bg4">
+      <top-panel :topPanel="topPanel" v-if="!sourceChannel.isWeiXin"></top-panel>
+      <div class="main-container clearfix" :class="!sourceChannel.isWeiXin?'mar1':''">
+        <section class="pad5 e-article-box">
+          <div class>
+            <h3 class="f7">{{info.title}}</h3>
+            <sub class="f2 clearfix c4">
+              作者：{{info.authorname}}
+              <span class="f-right">{{info.publishDate}}</span>
+            </sub>
+          </div>
+          <div class="f3" v-html="info.text"></div>
+        </section>
+      </div>
+    </div>
+    <div class="e-arti-bot posi1">
+      <div class="row">
+        <div class="col-2 c-p">
+          <b class="b1"></b>
+          <p class="f1 t-center c5">观看{{info.readCount}}</p>
+        </div>
+        <div class="col-8 c-p"></div>
+        <!-- <div class="col-2">
+       <b class="fav on"></b> on 开关
+       <p class="f1 t-center c5">点赞</p>
+        </div>-->
+        <div class="col-2 c-p" @click="goShare()">
+          <b class="share"></b>
+          <p class="f1 t-center c5">分享</p>
+        </div>
+      </div>
+    </div>
+    <div class="share-sign" v-if="shareMask">
+      <img src="@/assets/img/share2.png" />
+    </div>
+  </div>
+</template>
+
+<script>
+  import { api_article } from "@/api/index";
+  import * as tool from "@/common/Tool";
+  import { TopPanel } from "@/components/index";
+  import wxApi from '@/assets/js/wxapi.js'
+
+  export default {
+    name: "ArticleDetail",
+    data () {
+      return {
+        sourceChannel: tool.globalData,
+        shareMask: false,
+        topPanel: {
+          back: true,
+          titles: "文章详情",
+        },
+        id: this.$route.params.id,
+        info: "",
+      }
+    },
+    components: {
+      "top-panel": TopPanel,
+    },
+    created() {
+      this.getDetail();
+    },
+    methods: {
+      getDetail() {
+        var _data = {
+          saasId: tool.app.saasId,
+          id: this.id,
+          platformId: tool.app.platformId,
+        };
+        api_article.getArticleDetail(_data).then((res) => {
+          if (res.status == tool.rtCode.status) {
+            this.info = res.articleDetail;
+          }
+        });
+      },
+      goShare(){
+        if (tool.globalData.isWeiXin) {
+          this.shareManager(this.id)
+        } else {
+          tool.toastMessage('网页端暂不支持分享', 'error')
+        }
+      },
+      shareManager (id) {
+        let that = this
+        let option = {}
+        option.title = that.info.title
+        option.link = window.location.href.split('/funzg')[0] + 'funzg/wx/articleDetail-' + id
+        option.imgUrl = that.info.coverImage
+        option.desc = '点击查看详情'
+        wxApi.wxShare(option)
+        that.maskTip()
+      },
+      maskTip () {
+        this.shareMask = true
+        setTimeout(() => {
+          this.shareMask = false
+        }, 5000)
+      },
+    },
+    beforeRouteLeave (to, from, next) {
+      if (to.name == 'articleList') {
+        if (!to.meta.keepAlive) {
+          to.meta.keepAlive = true
+        }
+      } else {
+        to.meta.keepAlive = false
+        this.$destroy()
+      }
+      next()
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

@@ -1,0 +1,13 @@
+var api = require('../api');
+
+module.exports = {
+    getCustomerCost: function (req, res, next) {
+        api.fetch(req, res, 'POST', 'fzg', 'funapp/pageContent/getCustomerCost', req.body)
+    },
+    getPageContent: function (req, res, next) {
+        api.fetch(req, res, 'POST', 'fzg', 'funapp/pageContent/getPageContent', req.body)
+    },
+    ecloudRetrievePassword: function (req, res, next) {
+        api.fetch(req, res, 'POST', 'amendPass', 'user/uUserRegister/ecloudRetrievePassword', req.body)
+    },
+}

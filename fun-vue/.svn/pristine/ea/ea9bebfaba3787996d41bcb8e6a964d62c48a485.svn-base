@@ -1,0 +1,13 @@
+var api = require('../api');
+
+module.exports = {
+  productTag: function (req, res, next) {
+    api.fetch(req, res, 'POST', 'channels', '/product/tag', req.body)
+  },
+  productList: function (req, res, next) {
+    api.fetch(req, res, 'POST', 'channels', '/product/list', req.body)
+  },
+  visitorProductList: function(req, res, next){
+    api.fetch(req, res, 'POST', 'cbs', '/melzg/product/visitor/list',req.body);
+  },
+}

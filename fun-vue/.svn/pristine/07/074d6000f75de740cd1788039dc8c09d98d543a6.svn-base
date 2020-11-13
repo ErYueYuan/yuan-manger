@@ -1,0 +1,280 @@
+<template>
+    <div class="bg3">
+        <div class="fun-top-panel  bg7 ">
+            <span class="mess-back " @click="goBack()"><div class="cont"></div></span>
+            <span class="title c6 f4 dblock2 t-center ">家庭成员</span>
+        </div>
+
+        <div class="main-container mar1  clearfix">
+            <div class="mar3-2">
+                <section class=" bg7 pad5-3">
+                    <div class="f2 t-center c4 mar7-2"><b class="fun-icon icon-l"></b>已选标签<b class="fun-icon icon-r"></b></div>
+                    <div class="fun-info-b1">
+                        <section class="floor2" style="display: inline;">
+                            <span class="posi2 " style="padding: 5px 10px;" v-for="(item, pindex) in customerTagsSelectedList" :key="pindex">{{item.tagName}}<b class="cls c-p" title="关闭" @click="delLabel(item.tagCode)"></b></span>
+                            <span class="posi2" style="padding: 5px 10px;" v-for="(item, index) in customTags" :key="index">{{item}}<b class="cls c-p" title="关闭" @click="delSelfLabel(item)"></b></span>
+                            <span class="edit c-p" style="padding: 5px 10px;" @click="selfEdit()"><i></i>自定义</span>
+                        </section>
+                    </div>
+                </section>
+
+                <section class=" bg7 mar3-2 pad5-3">
+                    <div class="f2 t-center c4 mar7-2"><b class="fun-icon icon-l"></b>常用标签<b class="fun-icon icon-r"></b></div>
+                    <div class="c5 f2-1">客户需求</div>
+                    <div class="sel-b3">
+                        <label v-for="(item, index) in demand1" :key="index + 'A'"><!-- 单选 -->
+                            <input type="radio" name="intention" v-model="intentionRadioVal" :value="item.tagCode"  @change="getIntRadioVal"><b>{{item.tagName}}</b>
+                        </label>
+                        <label v-for="(item, index) in demand2" :key="index + 'B'"><!-- 多选 -->
+                            <input type="checkbox" name="intention" v-model="intentionCheckVal" :value="item.tagCode" ><b>{{item.tagName}}</b>
+                        </label>
+                    </div>
+
+                    <div class="c5 f2-1">客户能力</div>
+                    <div class="sel-b3">
+                        <label v-for="(item, index) in ability1" :key="index + 'C'">
+                            <input type="radio" name="demand" v-model="demandRadioVal" :value="item.tagCode" @change="getDemRadioVal"><b>{{item.tagName}}</b>
+                        </label>
+                        <label v-for="(item, index) in ability2" :key="index + 'D'">
+                            <input type="checkbox" name="demand" v-model="demandCheckVal" :value="item.tagCode" ><b>{{item.tagName}}</b>
+                        </label>
+                    </div>
+
+                    <div class="c5 f2-1">客户意愿</div>
+                    <div class="sel-b3">
+                        <label v-for="(item, index) in intention1" :key="index + 'E'">
+                            <input type="radio" name="ability" v-model="abilityRadioVal" :value="item.tagCode" @change="getAbiRadioVal"><b>{{item.tagName}}</b>
+                        </label>
+                        <label v-for="(item, index) in intention2" :key="index + 'F'">
+                            <input type="checkbox" name="ability" v-model="abilityCheckVal" :value="item.tagCode" ><b>{{item.tagName}}</b>
+                        </label>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="posi5 pad5-8 " @click="saveLabel()">
+            <button type="button" class="hx-bt3 t-center">保存</button>
+        </div>
+
+        <!-- 弹出框 -->
+        <van-dialog
+            v-model="show"
+            title="自定义标签"
+            show-cancel-button
+            :beforeClose="chargeBtn"
+        >
+        <!--输入框-->
+            <van-field
+                v-model="message"
+                rows="1"
+                autosize
+                label="标签"
+                type="textarea"
+                placeholder="请输入标签内容"
+                maxlength="8"
+            />
+        </van-dialog>
+        <!-- end -->
+    </div>
+</template>
+<script>
+    import Vue from 'vue'
+    import { mapGetters } from 'vuex'
+    import * as tool from '@/common/Tool'
+    import { api_sell } from '@/api/index'
+    import DataSource from '@/common/DataSource'
+    import { Popup, Picker, Dialog, Field } from 'vant'
+    // import Rules from './Rules'
+    // import Works from './Works'
+    // import Visitor from './Visitor'
+    // import Performance from './Performance'
+
+    Vue.use(Popup)
+    Vue.use(Picker)
+    Vue.use(Dialog)
+    Vue.use(Field)
+
+    export default {
+        name: "EditLabel",
+        data () {
+            return {
+                show: false,
+                message: '',
+                customTags: [],
+
+
+                clientId: this.$route.params.q,
+                clientNewId: this.$route.params.r,
+                customerTagsSelectedList: [],
+                intention1: [],
+                intention2: [],
+                demand1: [],
+                demand2: [],
+                ability1: [],
+                ability2: [],
+                radioVal: [],
+                intentionRadioVal: [],
+                demandRadioVal: [],
+                abilityRadioVal: [],
+                intentionCheckVal: [],
+                demandCheckVal: [],
+                abilityCheckVal: [],
+                selectedTagList: [],
+                selfTag: [
+                    {
+                        tagName: "",
+                        tagCode: ""
+                    }
+                ],
+            }
+        },
+        computed: {
+            ...mapGetters(['user']),
+        },
+        components: {
+            // 'rules': Rules,
+            // 'works': Works,
+            // 'visitor': Visitor,
+            // 'performance': Performance
+        },
+        created () {
+            this.queryCustomerTags();
+            this.getTags();
+        },
+        methods: {
+           
+            queryCustomerTags () {
+                let that = this;
+                const _data = {
+                    saasId: tool.app.saasId,
+                    // clientNewidId: this.clientNewId
+                    clientNewidId: "fb27daf7aee911ea967f6c92bf603fec"
+                }
+                api_sell.queryCustomerTags(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.customerTagsSelectedList = data.customerTagsSelectedDTOList;
+                        this.customerTagsSelectedList.forEach(function (item) {
+                            that.selectedTagList.push(item.tagCode)
+                        })
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            getTags () {
+                const _data = {
+                    saasId:tool.app.saasId
+                }
+                api_sell.getTags(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.intention1 = data.resultTags[0].intention1;
+                        this.intention2 = data.resultTags[0].intention2;
+
+                        this.demand1 = data.resultTags[1].demand1;
+                        this.demand2 = data.resultTags[1].demand2;
+
+                        this.ability1 = data.resultTags[2].ability1;
+                        this.ability2 = data.resultTags[2].ability2;
+
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                });
+            },
+
+            //单选框取值
+            getIntRadioVal () {
+                
+            },
+            getDemRadioVal () {
+                
+            },
+            getAbiRadioVal () {
+                
+            },
+
+            delLabel (tagCode) {
+                let that = this;
+                let newArray = [];
+                let newArrayCode = [];
+                // that.selectedTagList.forEach(function(item){
+                //     if(item == tagCode){
+                //         that.selectedTagList.splice(item.tagCode,1);
+                //         // that.customerTagsSelectedList = that.selectedTagList;
+                //     }
+                // })
+                for (let i=0;i<that.customerTagsSelectedList.length;i++){
+                    if (that.customerTagsSelectedList[i].tagCode != tagCode) {
+                        newArray.push(that.customerTagsSelectedList[i])
+                        newArrayCode.push(that.customerTagsSelectedList[i].tagCode)
+                        that.customerTagsSelectedList = newArray;
+                        that.selectedTagList = newArrayCode
+                    }
+                }
+            },
+
+            delSelfLabel (item) {
+                let newArraySelf = [];
+                for (let j=0;j<this.customTags.length;j++) {
+                    if (this.customTags[j] != item) {
+                        newArraySelf.push(this.customTags[j])
+                        this.customTags = newArraySelf;
+                    }
+                }
+            },
+
+            selfEdit () {
+                this.show = true;
+            },
+
+            chargeBtn (action, done) {
+                if(action === 'cancel'){
+                    done();
+                }else if(action === 'confirm'){
+                    this.show = false;
+                    this.customTags.push(this.message);
+                }
+                this.message='';
+                done();
+            },
+
+            saveLabel () {
+                // console.log('删除后的已选：',this.selectedTagList)
+                
+                this.radioVal = this.radioVal.concat(this.intentionRadioVal).concat(this.demandRadioVal).concat(this.abilityRadioVal).concat(this.intentionCheckVal).concat(this.demandCheckVal).concat(this.abilityCheckVal).concat(this.selectedTagList);
+                
+                const _data = {
+                    followUpId: "aed34e80f9e94b76be0e1a7546213b15",
+                    // followUpId: "",
+                    saasId: tool.app.saasId,
+                    tagCodes: this.radioVal,
+                    customTags: this.customTags,
+                    // clientNewidId: this.clientId,
+                    clientNewidId: "fb27daf7aee911ea967f6c92bf603fec"
+                }
+                api_sell.editCustomerTags(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        // this.$router.push({ path: '/customerDetail/' + this.clientId + '/' + this.clientNewId});
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+
+
+            goBack () {
+                this.$router.push({ path: '/customerDetail/' + this.clientId + '/' + this.clientNewId});
+            },
+
+            
+            
+            
+        }
+    }
+</script>
+<style scoped>
+  
+</style>

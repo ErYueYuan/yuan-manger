@@ -1,0 +1,96 @@
+<template>
+    <div class="bg7">
+        <div class="fun-top-panel bg7  " @click="goBack()">
+            <span class="mess-back "><div class="cont"></div></span>
+            <span class="title c33 f4 dblock2 t-center ">订单轨迹</span>
+        </div>
+
+        <div class="main-container mar1-1  clearfix">
+            <section class="border-t pad5-11">
+                <div class="logistics">
+                    <ul>
+                        <li v-for="(item,index) in ciOrderLogList" :key="index">
+                            <h3 class="f3 c6">{{item.info}}</h3>
+                            <div class="f2 c5">{{item.createdate}}</div>
+                            <p  class="f1  c4">{{item.description}}</p>
+                        </li>
+                    </ul>
+
+                    <!-- <van-steps direction="vertical" :active="2" active-color="#FD5147">
+                        <van-step>
+                            <h3>【城市】物流状态1</h3>
+                            <p>2016-07-12 12:40</p>
+                        </van-step>
+                        <van-step>
+                            <h3>【城市】物流状态2</h3>
+                            <p>2016-07-11 10:00</p>
+                        </van-step>
+                        <van-step>
+                            <h3>快件已发货</h3>
+                            <p>2016-07-10 09:30</p>
+                        </van-step>
+                    </van-steps> -->
+                <van-empty v-show="status=='FAILED'" description="暂无订单轨迹数据" />
+                </div>
+            </section>
+        </div>
+
+    </div>
+</template>
+<script>
+    import Vue from 'vue'
+    import { mapGetters } from 'vuex'
+    import * as tool from '@/common/Tool'
+    import { api_sell } from '@/api/index'
+    import DataSource from '@/common/DataSource'
+    import '@vant/touch-emulator'
+    import { Step, Steps, Empty } from 'vant'
+
+    Vue.use(Step)
+    Vue.use(Steps)
+    Vue.use(Empty)
+
+    export default {
+        name: "orderLogList",
+        data () {
+            return {
+                orderSn: this.$route.params.q,
+                ciOrderLogList: [],//存放订单轨迹状态
+                status:'SUCCESS',
+            }
+        },
+        computed: {
+            ...mapGetters(['user']),
+        },
+        components: {
+
+        },
+        created () {
+            this.queryOrderLog();//订单轨迹
+        },
+        methods: {
+
+            queryOrderLog () {
+                // const _data = {type: this.orderSn + '/' + this.user.userInfo.agentcode}
+                const _data = {type: '2020000041007578/' + '520101251'}
+                api_sell.queryOrderLog(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.ciOrderLogList = data.ciOrderLogList;
+                    } else {
+                        this.status = 'FAILED';
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            goBack () {
+                this.$router.go(-1);
+            },
+
+
+        }
+    }
+</script>
+<style scoped>
+
+</style>

@@ -1,0 +1,28 @@
+import * as API from './'
+
+export default {
+  // 代理人对应客户会话列表
+  getAllClientNewTalk: (params, loadings) => {
+    if (process.env.NODE_ENV === 'development') { //本地环境
+      return API.POST('/funzgapi/funapi/funzg/funapp/timeConversation/getAllClientNewTalk', params, loadings)
+    } else {
+      return API.POST('/user/getAllClientNewTalk', params, loadings)
+    }
+  },
+  // 指定客户会话窗口列表
+  getOneTalkList: (params, loadings) => {
+    if (process.env.NODE_ENV === 'development') { //本地环境
+      return API.POST('/funzgapi/funapi/funzg/funapp/timeConversation/getOneTalkList', params, loadings)
+    } else {
+      return API.POST('/user/getOneTalkList', params, loadings)
+    }
+  },
+  // 实时会话接口
+  readTimeWindow: (params, loadings) => {
+    if (process.env.NODE_ENV === 'development') { //本地环境
+      return API.POST('/funzgapi/funapi/funzg/funapp/timeConversation/readTimeWindow', params, loadings)
+    } else {
+      return API.POST('/user/readTimeWindow', params, loadings)
+    }
+  },
+}

@@ -1,0 +1,217 @@
+<template>
+    <div>
+        <div class="posi2 mar3-5 bg7 b-radius1">
+            <section class="">
+                <div>
+                    <section class="mar3-2">
+                        <div class="b-sh1  pad5-5 bg7  mar7-3" v-for="(item, index) in funOrderList" :key="index">
+                            <section class="mar20 bg7 ">
+                                <div class="order-box-2020 " @click="orderDetail(item.ordersn)">
+                                    <h3 class="  order-tit posi2 f3 c3">
+                                        <div class="col-9 pad0 tit mess">{{item.productName}}</div>
+                                        <span class="status f1 ts3">{{orderSta(item.orderStatus)}}</span>
+                                        <span class="status f1 ts4" >客户录入单</span>
+                                        <div class="col-12 f2 c4 t-left time">创建时间：{{item.createdate | dataFormat('yyyy-MM-dd hh:mm:ss')}}</div>
+                                    </h3>
+                                    <div class="order-box  clearfix posi2">
+                                        <section class="f2 pad0" >
+                                            <p class="order-info"><span class="p-tit">订单号</span><span class="c4">{{item.ordersn}}</span></p>
+                                            <p><span class="p-tit">投保人</span><span class="c4">{{item.policyholder}}</span></p>
+                                            <p><span class="p-tit">保费</span><span class="c4">{{item.totalAmount}}</span> </p>
+                                            <p class="order-memo clearfix border-t2"><span class="p-tit f-left">备注</span><span class="c222 mess5 memo"></span></p>
+                                        </section>
+                                    </div>
+                                </div>
+                                <div class="t-right  posi2 bg7">
+                                    <!-- <button class="f-left btn sxt-btn-3 showMoreBtn" title="展开剩余菜单" @click="openMenu()"></button>
+                                    <div class="sl-other-b " v-show="isMenu">
+                                        <b class="sl-trangle"></b>
+                                        <span>写备忘</span>
+                                    </div> -->
+                                    <button class=" ek-btn-3 f1" style="margin-right: 10px;" @click="goOrderLog(item.ordersn)">订单轨迹</button>
+                                    <!-- <button class=" ek-btn-4 f1" v-show="!enterStatusList[index]" @click="helpEntry(index)">协助录单</button>
+                                    <button class=" ek-btn-3 f1" v-show="enterStatusList[index]" @click="cancelHelp(index)" style="margin-right: 10px;">取消录入</button>
+                                    <button class=" ek-btn-4 f1" v-show="enterStatusList[index]" @click="toHelpEntry(item.ordersn)">继续录入</button> -->
+                                </div>
+                            </section>
+                        </div>
+                        <van-empty v-show="total===0" description="暂无订单" />
+                        <div class="f2 pad888" v-if="funOrderList.length>=total && funOrderList.length>0">
+                            <div class="lzg-h-more posi2 t-center">
+                                <span class="c5 bg7 posi2 c222">没有更多啦</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+        </div>
+    </div>
+</template>
+<script>
+    import Vue from 'vue'
+    import { mapGetters } from 'vuex'
+    import * as tool from '@/common/Tool'
+    import { api_sell } from '@/api/index'
+    import '@vant/touch-emulator'
+    import { Popup, Picker, Tab, Tabs, Empty } from 'vant'
+    import * as scroll from '@/common/Scroll'
+
+    Vue.use(Popup).use(Picker).use(Tab).use(Tabs).use(Empty)
+
+    export default {
+        name: "CustomerOrder",
+        props: {
+            customerClientId: {
+                type: String, //要求父组件数据传输类型
+                required: true  //必传
+            },
+            customerClientNewId: {
+                type: String, //要求父组件数据传输类型
+                required: true  //必传
+            },
+            customerResultId: {
+                type: String, //要求父组件数据传输类型
+                required: true  //必传
+            },
+        },
+        data() {
+            return {
+                isMenu: false,
+                funOrderList: [],
+                orderStatusName: "",
+                enterStatusList: [], // 存放录入按钮显示状态值
+                total: 0,
+                isLoad: true,
+                allLoaded: false,
+                queryLoading: true,
+                offset: 0,
+                limit: 10,
+                statusList: [],
+            }
+        },
+        computed: {
+            ...mapGetters(['user']),
+        },
+        beforeCreate: function() {
+            document.getElementsByTagName("body")[0].className = "bg3";
+        },
+        created() {
+            this.customerOrderList();//客户订单列表查询
+        },
+        methods: {
+            handleScroll() {
+                if (scroll.getScrollTop() + scroll.getClientHeight() > (scroll.getScrollHeight() - 5)) {
+                    this.loadMore();
+                }
+            },
+
+            loadMore() {
+                if (this.queryLoading) {
+                    return
+                }
+                if (!this.isLoad) {
+                    this.isLoad = true;
+                    this.offset += 10;
+                    this.customerOrderList();
+                }
+            },
+
+            customerOrderList () {
+                const _data = {
+                    saasId: tool.app.saasId,
+                    clientNewId: this.customerClientNewId,
+                    offset: this.offset,
+                    limit: this.limit
+                }
+                api_sell.customerOrderList(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.isLoad = false;
+                        this.total = data.total;
+                        for (let it of this.funOrderList) {
+                            this.enterStatusList.push(false)
+                        }
+                        this.queryOrderStatus();//订单状态查询
+                        if (this.offset === 0 || this.funOrderList.length === 0) {
+                            this.funOrderList = data.funOrderList ? data.funOrderList : []
+                            if (this.funOrderList.length < this.total) {
+                                this.queryLoading = false;
+                            }
+                        } else {
+                            this.funOrderList = this.funOrderList.concat(data.funOrderList);
+                        }
+                        this.allLoaded = this.funOrderList.length >= this.total;
+                        if (this.allLoaded) {
+                            this.queryLoading = true;
+                        }
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            queryOrderStatus () {
+                const _data = {type: 'fun_order_status/' + tool.app.platformCode + '/' + tool.app.saasId}
+                api_sell.sysDict(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.statusList = data.params.dicts;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            orderSta(val) {
+                let StatusName = '';
+                this.statusList.forEach(item => {
+                    if (item.value == val) {
+                        StatusName = item.name;
+                    }
+                })
+                return StatusName
+            },
+
+            orderDetail (ordersn) {
+                this.$router.push({ name: 'wdetails',params: {
+                    r: ordersn
+                } })
+            },
+
+            goOrderLog (ordersn) {
+                this.$router.push({ name: 'orderLogList',params: {
+                    q: ordersn
+                } })
+            },
+
+            // helpEntry (ind) {
+            //     this.$set(this.enterStatusList, ind, true)
+            // },
+
+            // cancelHelp (ind) {
+            //     this.$set(this.enterStatusList, ind, false)
+            // },
+
+            // toHelpEntry (ordersn) {
+            //     // 到可回溯的协助录单页
+            // },
+
+            // openMenu () {
+            //     this.isMenu = !this.isMenu;
+            // },
+
+            // goBack () {
+            //     this.$router.push({ name: 'sellList',params: {
+            //         q: '1'
+            //     } })
+            // },
+        },
+        beforeDestroy: function() {
+            document.body.removeAttribute("class", "bg3");
+        },
+        destroyed() {
+            window.removeEventListener('scroll', this.handleScroll)
+        },
+    }
+</script>
+<style scoped>
+
+</style>

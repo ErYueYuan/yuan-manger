@@ -1,0 +1,285 @@
+<template>
+    <div class="bg7">
+        <div class="fun-top-panel bg-my  ">
+            <span class="mess-back " @click="goBack()"><div class="cont-wh"></div></span>
+            <span class="title c7 f4 dblock2 t-center ">个人信息</span>
+        </div>
+
+        <div class="main-container mar1  clearfix">
+            <top-panel :customerid="customerid"></top-panel>
+
+            <div class="posi2 mar3-5 bg7  bg7 b-radius1">
+            <section class=" pad1-3  ">
+                    <div id="proNav" class="swiper-container border-b1">
+                        <div class="swiper-wrapper f-flex" style="overflow-x: scroll;">
+                            <van-tabs title-active-color="#ee0a24" v-model="active" @click="handleClickTag">
+                                <van-tab
+                                    :scrollspy="true"
+                                    v-for="(article, index) in tabList"
+                                    :key="index"
+                                    :title="article.tagName">
+                                </van-tab>
+                            </van-tabs>
+                        </div>
+                    </div>
+
+                    <!-- 跟进 -->
+                    <div>
+                        <section class="mar3-2">
+                            <div class="b-sh1  pad1-3 bg7  mar7-3">
+                                <div class="stu-tracks3 posi2 mar5">
+                                    <ul class="border-b1" style="padding: 10px 0;">
+                                        <li class="border-b1" v-for="(item, index) in funFollowUpDTOList" :key="index">
+                                            <div class="top f2 c8">{{item.followTime}}<span class="f-right ek-btn-7 f1 c-p" @click="editRecord(item.followUpId)">编辑跟进记录</span></div>
+                                            <div class=" blk  posi2 ">
+                                                <div class="f2 cont "><span class="tit">本次跟进内容</span><span class="txt">{{item.followContent}}</span></div>
+                                                <div class="f2 cont "><span class="tit">客户需求评估</span><span class="txt">{{item.tagName}}</span></div>
+                                                <div class="f2 cont "><span class="tit">跟进结果</span><span class="txt">{{item.followUpResult}}</span></div>
+                                                <div class="f2 cont "><span class="tit">回访时间</span><span class="txt">{{item.callbackTime}}</span></div>
+                                                <div class="f2 cont "><span class="tit">回访内容</span><span class="txt">{{item.callbackContent}}</span></div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <van-empty v-show="total===0" description="暂无跟进记录" />
+                            </div>
+                            <div class="f2 pad888" v-if="funFollowUpDTOList.length>=total && funFollowUpDTOList.length>0">
+                                <div class="lzg-h-more posi2 t-center">
+                                    <span class="c5 bg7 posi2 c222">没有更多啦</span>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                </section>
+            </div>
+        </div>
+
+        <footer-panel :customerid="customerid"></footer-panel>
+    </div>
+</template>
+<script>
+    import Vue from 'vue'
+    import { mapGetters } from 'vuex'
+    import * as tool from '@/common/Tool'
+    import { api_sell } from '@/api/index'
+    import DataSource from '@/common/DataSource'
+    import '@vant/touch-emulator'
+    import { Popup, Picker, Tab, Tabs, Empty } from 'vant'
+    import * as scroll from '@/common/Scroll'
+    import { CustomerTopPanel } from '@/components/index'
+    import { CustomerFooterPanel } from '@/components/index'
+
+    Vue.use(Popup)
+    Vue.use(Picker)
+    Vue.use(Tab)
+    Vue.use(Tabs)
+    Vue.use(Empty)
+
+    export default {
+        name: "followList",
+        data () {
+            return {
+                clientId: this.$route.params.q,//客户id
+                clientNewId: this.$route.params.r,
+                nikeName: "",
+                sex: "",//1男，0女，2未知
+                getSource: "",
+                customerStar: "",
+                cerCode: "",
+                customerDetail: [],
+                familyList: [],//家庭成员列表
+                relation: 0,//家庭成员列表初始化展示项
+                relationFlag: "01",
+                otherInfo: true,
+                funProductTagDTOList: [],//已购产品标签列表
+                funProductDTOList: [],//已购产品列表
+                productTag: 'B',//已购产品标签初始化展示项,B:寿险产品E:互助产品:F:理财产品
+                funFollowUpDTOList: [],//跟进列表
+                portraitTagsName: [],//客户画像里的标签
+                portraitSex: "",
+                portraitAge: "",
+                addFriendsTime: "",
+                interactNum: "",
+                visitTime: "",
+                funVisitTrailDTO: [],
+                tabList: [
+                    {
+                        id: '0',
+                        innerCode: '0',
+                        tagName: '基本信息'
+                    },
+                    {
+                        id: '1',
+                        innerCode: '1',
+                        tagName: '订单'
+                    },
+                    {
+                        id: '2',
+                        innerCode: '2',
+                        tagName: '轨迹'
+                    },
+                    {
+                        id: '3',
+                        innerCode: '3',
+                        tagName: '跟进'
+                    },
+                    {
+                        id: '4',
+                        innerCode: '4',
+                        tagName: '历史方案'
+                    },
+                    {
+                        id: '5',
+                        innerCode: '5',
+                        tagName: '已购产品'
+                    }
+                ],
+                tagIndex: '0',
+                active: 3,
+                total: 0,
+                isLoad: true,
+                allLoaded: false,
+                queryLoading: true,
+                offset: 0,
+                limit: 10,
+                customerid: this.$route.params.r,
+            }
+        },
+        computed: {
+            ...mapGetters(['user']),
+        },
+        components: {
+            'top-panel': CustomerTopPanel,
+            'footer-panel': CustomerFooterPanel,
+        },
+        created () {
+            this.queryBasicIntroduction();//基本介绍
+            this.queryFollowUpList();//跟进列表查询
+        },
+        mounted () {
+            window.addEventListener('scroll', this.handleScroll)
+        },
+        methods: {
+            handleScroll() {
+                if (scroll.getScrollTop() + scroll.getClientHeight() > (scroll.getScrollHeight() - 5)) {
+                    this.loadMore();
+                }
+            },
+            loadMore() {
+                if (this.queryLoading) {
+                    return
+                }
+                if (!this.isLoad) {
+                    this.isLoad = true;
+                    this.offset += 10;
+                    this.funFollowUpDTOList();
+                }
+            },
+
+            handleClickTag (index, title) {
+                this.tagIndex = this.tabList[index].innerCode
+                this.offset = 0;
+                if (this.tagIndex == '0') {
+                    this.$router.push({ name: 'customerDetail',params: {
+                        r: this.clientNewId
+                    } })
+                } else if (this.tagIndex == '1') {
+                    this.$router.push({ name: 'orderList',params: {
+                        q: this.clientId,
+                        r: this.clientNewId
+                    } })
+                } else if (this.tagIndex == '2') {
+                    this.$router.push({ name: 'trailList',params: {
+                        q: this.clientId,
+                        r: this.clientNewId
+                    } })
+                } else if (this.tagIndex == '4') {
+                    this.$router.push({ name: 'historyList',params: {
+                        q: this.clientId,
+                        r: this.clientNewId
+                    } })
+                } else if (this.tagIndex == '5') {
+                    this.$router.push({ name: 'payProductList',params: {
+                        q: this.clientId,
+                        r: this.clientNewId
+                    } })
+                }
+            },
+
+            queryBasicIntroduction () {
+                const _data = {
+                    saasId: tool.app.saasId,
+                    clientNewidId: this.clientNewId
+                }
+                api_sell.queryBasicIntroduction(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.nikeName = data.nikeName;
+                        this.sex = data.sex;
+                        this.getSource = data.getSource;
+                        this.customerStar = data.customerStar;
+                        this.cerCode = data.cerCode;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            queryFollowUpList () {
+                const _data = {
+                    agentUserId: this.user.userInfo.userId,
+                    saasId: tool.app.saasId,
+                    resultId: this.clientNewId
+                }
+                api_sell.queryFollowUpList(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.isLoad = false;
+                        this.total = data.total;
+                        // this.funFollowUpDTOList = data.funFollowUpDTOList;
+                        if (this.offset === 0 || this.funFollowUpDTOList.length === 0) {
+                            this.funFollowUpDTOList = data.funFollowUpDTOList ? data.funFollowUpDTOList : []
+                            if (this.funFollowUpDTOList.length < this.total) {
+                                this.queryLoading = false;
+                            }
+                        } else {
+                            this.funFollowUpDTOList = this.funFollowUpDTOList.concat(data.funFollowUpDTOList);
+                        }
+                        this.allLoaded = this.funFollowUpDTOList.length >= this.total;
+                        if (this.allLoaded) {
+                            this.queryLoading = true;
+                        }
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+            
+            editRecord (followUpId) {
+                // this.$router.push({ name: 'followRecord',params: {// clientId,resultId,followUpId,add
+                //     p: this.clientId,
+                //     q: this.clientNewId,
+                //     r: followUpId,
+                //     s: 'edit'
+                // } })
+                this.$router.push({ name: 'followRecord',params: {// resultId,followUpId,add
+                    q: this.clientNewId,
+                    r: followUpId,
+                    s: 'edit'
+                } })
+            },
+
+            goBack () {
+                this.$router.push({ name: 'sellList',params: {
+                    q: '1'
+                } })
+            },
+
+        },
+        destroyed() {
+            window.removeEventListener('scroll', this.handleScroll)
+        },
+    }
+</script>
+<style scoped>
+
+</style>

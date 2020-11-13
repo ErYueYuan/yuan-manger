@@ -1,0 +1,178 @@
+<template>
+  <div>
+    <div id="articleTag" class="swiper-container">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" v-for="(tags, index1) in articleClassList" :key="'as-' + index1" @click="handleChangeTag(tags, index)">
+          <div class="pad8-1"><span class="hx-bt3 bt2 f2" :class="articleId===tags.id?'active':''">{{tags.groupName}}</span></div>
+        </div>
+      </div>
+    </div>
+    <section class="blk-cont no-md">
+      <ul class="cont-blk icon-wrap clearfix">
+        <li
+          class="li-p bg7 posi2 clearfix"
+          v-for="(article,index1) in articleList"
+          :key="'a-' + index1"
+          @click="goInfoDetail(article)"
+        >
+          <div class="ek f-left posi2">
+            <img class="lazy-p" :src="article.coverImage" alt="pic" />
+          </div>
+          <div class="info-blk no-m">
+            <div class="box">
+              <h3 class="no-p1 f3 c44">{{article.title}}</h3>
+              <p class="subtit no-in f1 c222">{{article.simple}}</p>
+            </div>
+            <div class="f1 time">
+              <b class="icon1"></b>
+              {{article.readCount}}观看
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+</template>
+
+<script>
+  import { api_system, api_article } from "@/api/index"
+  import * as tool from "@/common/Tool"
+  import Swiper from 'swiper'
+  import 'swiper/css/swiper.min.css'
+  import 'swiper/js/swiper.min.js'
+  import DataSource from "@/common/DataSource"
+
+  export default {
+    name: "PopularArticle",
+    data () {
+      return {
+        articleClassList: [],
+        articleList: [],
+        articleId: '',
+        articleTotal: 0,
+        isLoad: true,
+        allLoaded: false,
+        queryLoading: true,
+        offset: tool.pagination.pageoffset,
+        limit: tool.pagination.pagesize
+      }
+    },
+    props: {
+      articlePage: {
+        type: Boolean, //要求父组件数据传输类型
+        required: true  //必传
+      }
+    },
+    created () {
+      this.getArticleOneData()
+    },
+    methods: {
+      initSwiper () {
+        const swiper = new Swiper('#articleTag', {
+          freeMode: true,
+          freeModeMomentumRatio: 0.5,
+          slidesPerView: 4,
+          speed:300,//滑动开始到滑动结束的时间
+          observer:true,//修改swiper自己或子元素时，自动初始化swiper
+          observeParents:true,//修改swiper的父元素时，自动初始化swiper
+          autoplayDisableOnInteraction:false,//用户操作swiper之后是否禁止autoplay
+        });
+      },
+      getArticleOneData() {
+        let _data = {
+          params: {
+            saasId: tool.app.saasId,
+            platformId: tool.app.platformId,
+            groupType: 'article',
+            status: '1'
+          }
+        };
+        api_article.lmGroupListOneLevel(_data).then((res) => {
+          if (res.status == tool.rtCode.status) {
+            this.articleClassList = res.lmGroupList
+            if (this.articleClassList.length>0) {
+              this.articleId = DataSource.get('articleId', 2) || this.articleClassList[0].id
+              this.getInfoList()
+            }
+            this.initSwiper()
+          }
+        });
+      },
+      getInfoList() {
+        let _data = {
+          params: {
+            saasId: tool.app.saasId,
+            platformId: tool.app.platformId,
+            id: this.articleId,
+            showDeptCode: 1000000,
+            offset: this.offset,
+            limit: this.limit
+          }
+        }
+        api_article.lmGroupArticleList(_data).then((data) => {
+          if (data.status == tool.rtCode.status) {
+            this.isLoad = false
+            this.articleTotal = data.total
+            if (this.offset === 0 || this.articleList.length === 0) {
+              this.articleList = data.articleList ? data.articleList : []
+              if (this.articleList.length < this.articleTotal) {
+                this.queryLoading = false
+              }
+            } else {
+              this.articleList = this.articleList.concat(data.articleList)
+            }
+            this.allLoaded = this.articleList.length >= this.articleTotal
+            if (this.allLoaded) {
+              this.queryLoading = true
+            }
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        });
+      },
+      goInfoDetail (item) {
+        this.getReadNum(item.id);
+        this.$router.push({name: "articleDetail", params: {id: item.id}});
+      },
+      getReadNum(id) {
+        let _data = {
+          saasId: tool.app.saasId,
+          articleID: id,
+          platformId: tool.app.platformId,
+        };
+        api_article.increaseReadCount(_data).then((res) => {
+          if (res.status == tool.rtCode.status) {
+          }
+        });
+      },
+      handleChangeTag (tags, index) {
+        if (this.articleId !== tags.id) {
+          this.articleList = []
+          this.offset = tool.pagination.pageoffset
+          this.articleId = tags.id
+          DataSource.set('articleId', this.articleId, 2)
+          this.getInfoList()
+        }
+      },
+      loadMore() {
+        this.offset += tool.pagination.pageoffset
+        this.getInfoList()
+      }
+    },
+    watch: {
+      articlePage () {
+        if (!this.articlePage) return
+        if (this.articleList.length == this.articleTotal) return
+        if (!this.isLoad) {
+          this.isLoad = true
+          this.loadMore()
+        }
+        this.$emit('articlePage')
+      }
+    },
+  }
+</script>
+
+<style scoped>
+
+</style>

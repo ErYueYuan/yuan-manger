@@ -1,0 +1,695 @@
+<template>
+  <div id="service">
+    <div class="fun-top-panel bg7">
+      <span class="mess-back ">
+        <div
+          class="cont"
+          @click="goBack"
+        ></div>
+      </span>
+      <span class="title c3 f3 dblock2 t-center ">交易服务</span>
+
+    </div>
+    <div class="main-top p-fix">
+      <section class="index-v20-top f-flex bg7 clearfix">
+        <div class="sear-bb">
+          <div class=" clearfix">
+            <section class="sear-c posi2 clearfix">
+              <!-- <form
+                action=""
+                class="input-search-form"
+                id="search_from"
+              > -->
+              <van-search
+                v-model="searchval"
+                shape="round"
+                background=""
+                placeholder="请输入搜索关键词"
+                @search="searchLike"
+              />
+              <!-- <input
+                  type="search"
+                  input
+                  autocomplete="off"
+                  placeholder="输入关键字搜索"
+                  class="f2 "
+                  v-model="searchval"
+                />
+              </form>
+              <button
+                class="sea-btn"
+                @click="searchLike()"
+              ><span class="gg-search"></span></button> -->
+            </section>
+          </div>
+        </div>
+        <div class="message-b f-right mar2">
+          <span
+            t-center
+            class="fun-icon icon-select mar3-2"
+            @click="show = true"
+            v-if="type==1"
+          ><b class="c-flag3"></b></span>
+          <van-popup
+            v-model="show"
+            round
+            position="bottom"
+          >
+            <div class="pop-box3 pb1">
+              <div class="pad6-1">
+                <van-form
+                  input-align="center"
+                  ref="vanform"
+                  name="forms"
+                >
+                  <div class="pad5-9 bg7 b-radius1 t-center">筛选</div>
+                  <div class=" ">
+                    <section class="pad5-5 bg7">
+                      <h3 class="f1 c6 l-h3">生效日期：</h3>
+                      <div class="row">
+                        <div class="col-6">
+                          <van-field
+                            readonly
+                            clickable
+                            name="datetimePicker"
+                            :value="effectivestart"
+                            placeholder="开始日期"
+                            @click="timerchang('effective',1)"
+                          />
+                        </div>
+                        <div class="col-6">
+                          <van-field
+                            readonly
+                            name="datetimePicker"
+                            :border="true"
+                            :value="effectiveEnd"
+                            placeholder="结束日期"
+                            @click="timerchang('effective',2)"
+                          />
+                        </div>
+                      </div>
+                      <h3 class="f1 c6 l-h3">下次缴费日期：</h3>
+                      <div class="row">
+                        <div class="col-6">
+                          <van-field
+                            readonly
+                            name="datetimePicker"
+                            :border="true"
+                            :value="nextPaystart"
+                            placeholder="开始日期"
+                            @click="timerchang('nextPay',1)"
+                          />
+
+                        </div>
+                        <div class="col-6">
+                          <van-field
+                            readonly
+                            name="datetimePicker"
+                            :border="true"
+                            :value="nextPayEnd"
+                            placeholder="结束日期"
+                            @click="timerchang('nextPay',2)"
+                          />
+                        </div>
+                      </div>
+                      <h3 class="f1 c6 l-h3">终止日期：</h3>
+                      <div class="row">
+                        <div class="col-6">
+                          <van-field
+                            readonly
+                            name="datetimePicker"
+                            :border="true"
+                            :value="expirystart"
+                            placeholder="开始日期"
+                            @click="timerchang('expiry',1)"
+                          />
+                        </div>
+                        <div class="col-6">
+                          <van-field
+                            readonly
+                            name="datetimePicker"
+                            :border="true"
+                            :value="expiryEnd"
+                            placeholder="结束日期"
+                            @click="timerchang('expiry',2)"
+                          />
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                  <div class="row mar0">
+                    <div class="col-6 c-p"><span
+                        class="hx-bt5  f3 "
+                        @click="clearnull"
+                      >重置</span></div>
+                    <div class="col-6 c-p"><span
+                        class="hx-bt3  f3 "
+                        @click="confirmtime"
+                      >确定</span></div>
+                  </div>
+                </van-form>
+              </div>
+            </div>
+          </van-popup>
+          <van-popup
+            v-model="timer"
+            round
+            position="bottom"
+            :style="{height:'50%'}"
+          >
+            <van-datetime-picker
+              @confirm="confirm"
+              @cancel="timer = false"
+              v-model="currentDate"
+              type="date"
+              title="选择年月日"
+              :formatter="formatter"
+            />
+          </van-popup>
+        </div>
+
+      </section>
+      <section class=" nav-bar  ps bg7 border-b1">
+        <div class="  t-center">
+          <span
+            class="f3-1 "
+            :class="type == 0 ?'active':''"
+            @click="changeState(0,'done')"
+          >未完成</span>
+        </div>
+        <div class="  t-center">
+          <span
+            class="f3-1"
+            :class="type == 1?'active':''"
+            @click="changeState(1,'done')"
+          >已完成</span>
+        </div>
+      </section>
+      <section class="bg7 fresh posi2 border-b1 clearfix">
+        <div class="border-t2 clearfix b-radius2 pad5-3">
+          <div
+            class="fresh box3"
+            style="padding:0;"
+          >
+            <div
+              class="sel-3 "
+              :class="sels == 1?'on':''"
+              @click="changeState(1,'sel')"
+            >
+              <div
+                class="abc "
+                :class="sels == 1?'abc_selected':''"
+              > {{statusName}}</div>
+            </div>
+            <div
+              class="sel-3"
+              :class="sels == 2?'on':''"
+              @click="changeState(2,'sel')"
+            >
+              <div
+                class="abc"
+                :class="sels == 2?'abc_selected':''"
+              > {{typeName}}</div>
+            </div>
+            <button
+              @click="resetLoad"
+              class="sea-btn"
+              v-if="type==0"
+            ><b></b></button>
+          </div>
+        </div>
+        <div class="box f1-2">
+          <div
+            class="sel-box"
+            :class="sels == 1?'sb2':''"
+            @click="changeState(1,'sel')"
+          >
+            <select
+              value="状态"
+              disabled
+            >
+            </select>
+          </div>
+          <div
+            class="sel-box mar5-2"
+            :class="sels == 2?'sb2':''"
+            @click="changeState(2,'sel')"
+          >
+
+            <select
+              value="险种"
+              disabled
+            >
+            </select>
+          </div>
+          <button
+            @click="resetLoad"
+            class="sea-btn"
+            v-if="type==0"
+          ><b></b></button>
+        </div>
+      </section>
+      <van-popup
+        v-model="selct"
+        round
+        position="bottom"
+        :style="{height:'50%'}"
+      >
+        <van-picker
+          v-if="sels==1"
+          title="状态"
+          show-toolbar
+          :columns="statusList"
+          @confirm="chooseState"
+          @cancel="selct=false"
+        />
+        <van-picker
+          v-if="sels==2"
+          title="险种"
+          show-toolbar
+          :columns="typeList"
+          @confirm="chooseState"
+          @cancel="selct=false"
+        />
+      </van-popup>
+    </div>
+    <div
+      class="mar4-4 clearfix"
+      :class="total===0?'':'main-container'"
+    >
+      <section class="mar3">
+        <template v-for="(item,index) in list">
+          <div
+            class="b-sh1  pad5-5 bg7 mar6-2 mar7-3"
+            :key="index"
+            v-if="type==0"
+          >
+            <section class="mar20 bg7 ">
+              <div
+                class="order-box-2020 "
+                @click="getDetails(item)"
+              >
+                <h3 class="  order-tit posi2 f3 c3">
+                  <div class="col-9 pad0 tit mess">{{item.productName}}</div>
+                  <span class="status f1 ts3" v-if="orderSta(item.orderStatus)!=''">{{orderSta(item.orderStatus)}}</span>
+                  <!--双录状态-->
+                  <div class="col-12 f2 c4 t-left time">创建时间：{{item.createdate}}</div>
+                </h3>
+
+                <div class="order-box  clearfix posi2">
+                  <section class="f2 pad0">
+                    <p class="order-info"><span class="p-tit">订单号</span><span class="c4">{{item.ordersn}}</span></p>
+                    <p><span class="p-tit">投保人</span><span class="c4">{{item.policyholder}}</span></p>
+                    <p><span class="p-tit">保费</span><span class="c4">35000</span> </p>
+                    <p class="order-memo clearfix border-t2"><span class="p-tit f-left">备注</span><span class="c222 mess5 memo"></span></p>
+                  </section>
+                </div>
+              </div>
+              <div class="t-right pad557 posi2 bg7">
+                <button
+                  class="f-left btn sxt-btn-3 mar5-2"
+                  title="展开剩余菜单"
+                  @click="showMenu(index)"
+                ></button>
+                <button
+                  class="ek-btn-3 f1 mar5-2"
+                  @click="goOrderMore(item)"
+                  v-if="indexs === index"
+                >更多操作</button>
+                <button
+                  class=" ek-btn-3 f1 mar5-2"
+                  @click="goOrderLog(item.ordersn)"
+                >订单轨迹</button>
+                <button
+                  class=" ek-btn-4 f1 mar5-2"
+                  @click="goDetail(item)"
+                >客户行销</button>
+                <button
+                  class=" ek-btn-4 f1 mar5-2"
+                  v-if="item.orderStatus == 10"
+                  @click="goOrderIn(item)"
+                >继续录入</button>
+                <!-- <button class=" ek-btn-3 wi1 f1">刷新</button> -->
+              </div>
+            </section>
+            <van-empty
+              v-show="total===0"
+              description="暂无产品"
+            />
+          </div>
+          <div
+            class="b-sh1  pad5-5 bg7 mar6-2 mar7-3"
+            :key="index"
+            v-else-if="type==1"
+          >
+            <section class="mar20 bg7">
+              <div
+                class="order-box-2020 "
+                @click.stop="getDetails(item)"
+              >
+                <h3 class="  order-tit posi2 f3 c3">
+                  <div class="col-9 pad0 tit mess">{{item.productName}}</div>
+                  <span class="status f1 ts4" v-if="orderSta(item.orderStatus)!=''">{{orderSta(item.orderStatus)}}</span>
+                  <!--双录状态-->
+                  <div class="col-12 f2 c4 t-left time">创建时间：{{item.createdate}}</div>
+                </h3>
+                <div class="order-box  clearfix posi2">
+                  <section class="f2 pad0">
+                    <p class="order-info"><span class="p-tit">订单号</span><span class="c4">{{item.ordersn}}</span></p>
+                    <p><span class="p-tit">险种</span><span class="c4">{{item.policyholder}}</span></p>
+                    <p><span class="p-tit">投保人</span><span class="c4">{{item.policyholder}}</span></p>
+                    <p><span class="p-tit">被保人</span><span class="c4">{{item.policyholder}}</span></p>
+                    <p><span class="p-tit">保费</span><span class="c4">35000</span> </p>
+                    <p class="order-memo clearfix border-t2"><span class="p-tit f-left">备注</span><span class="c222 mess5 memo"></span></p>
+                  </section>
+                </div>
+              </div>
+              <div class="t-right pad557 posi2 bg7">
+                <!--                <button class=" ek-btn-3 f1 mar5-2">写备忘</button>-->
+                <button
+                  class=" ek-btn-4 f1 mar5-2"
+                  @click="goDetail(item)"
+                >客户详情</button>
+              </div>
+            </section>
+
+          </div>
+        </template>
+        <div
+          class="f2 pad888"
+          v-if="list.length>=total && list.length>0"
+        >
+          <div class="lzg-h-more posi2 t-center">
+            <span class="c5 bg7 posi2 c222">没有更多啦</span>
+          </div>
+        </div>
+      </section>
+      <footer-panel footer="deal"></footer-panel>
+    </div>
+  </div>
+</template>
+
+<script>
+import Vue from 'vue'
+import { mapGetters } from 'vuex'
+import { FooterPanel } from '@/components/index'
+import { api_service } from '@/api/index'
+import * as scroll from '@/common/Scroll'
+import * as tool from '@/common/Tool'
+
+import {
+  Popup, DatetimePicker, DropdownMenu, DropdownItem,
+  Form, Field, Picker, Search, List, Empty
+} from 'vant';
+import RulesVue from '../home/Rules.vue'
+Vue.use(Picker)
+Vue.use(Empty)
+Vue.use(Search)
+Vue.use(Popup)
+Vue.use(Form)
+Vue.use(Field)
+Vue.use(List)
+Vue.use(DatetimePicker)
+Vue.use(DropdownMenu);
+Vue.use(DropdownItem);
+export default {
+  data() {
+    return {
+      searchval: '',//搜索值
+      sels: 1,
+      statusList: [],//状态列表
+      stateVal: '',//状态值
+      statusName: '状态',
+      typeList: [],//险种列表
+      typeVal: '',//险种值
+      typeName: '险种',
+      list: [],
+      total: 0,
+      offset: 0,
+      limit: 10,
+      isLoad: true,
+      allLoaded: false,
+      queryLoading: true,
+      type: 0,//未完成0完成1
+      show: false,
+      currentDate: new Date(),
+      timer: false,
+      effectivestart: '',
+      effectiveEnd: '',
+      nextPaystart: '',
+      nextPayEnd: '',
+      expirystart: '',
+      expiryEnd: '',
+      timetype: '',
+      timeNum: '',
+      selct: false,
+      showMore: false,
+      indexs: '',
+    }
+  },
+  created() {
+    this.chOrderStatus();
+    this.chRiskType();
+  },
+  computed: {
+    ...mapGetters(['user']),
+  },
+  mounted() {
+    this.orderList();
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  components: {
+    'footer-panel': FooterPanel,
+  },
+  methods: {
+    changeState(type, str) {
+      if (str == 'done') {
+        this.type = type;
+        this.orderList();
+      } else if (str == 'sel') {
+        this.selct = true;
+        this.sels = type;
+      }
+    },
+    chOrderStatus() {
+      api_service.chOrderStatus().then(data => {
+        let sList = [];
+        let json = {
+          text: '全部',
+          value: '',
+        }
+        sList.push(json);
+        data.forEach((item) => {
+          var obj = {
+            text: item.name,
+            value: item.value
+          }
+          sList.push(obj);
+        });
+        this.statusList = JSON.parse(JSON.stringify(sList));
+      })
+    },
+    chRiskType() {
+      api_service.chRiskType().then(data => {
+        let tList = [];
+        let json = {
+          text: '全部',
+          value: '',
+        }
+        tList.push(json);
+        data.forEach(item => {
+          var obj = {
+            text: item.name,
+            value: item.value
+          }
+          tList.push(obj);
+        });
+        this.typeList = JSON.parse(JSON.stringify(tList));
+      })
+    },
+    chooseState(picker) {
+      if (this.sels == 1) {
+        this.stateVal = picker.value;
+        this.statusName = picker.text
+        if (picker.value == '') {
+          this.statusName = '状态';
+        }
+      } else {
+        this.typeName = picker.text
+        this.typeVal = picker.value;
+        if (picker.value == '') { this.typeName = '险种' }
+      }
+      this.selct = false;
+      this.offset = 0;
+      this.orderList();
+    },
+    orderList() {
+      let _data = {
+        saasId: this.user.userInfo.saasId,
+        userId: this.user.userInfo.userId,
+        offset: this.offset,
+        limit: this.limit,
+        agentCode: this.user.userInfo.agentcode,
+        type: this.type,
+        search: this.searchval,
+        orderStatus: this.stateVal,
+        // policyStatus: this.typeVal,
+        source: '',
+      }
+      if (this.type == 1) {
+        _data.effectiveStartDate = this.effectivestart,
+          _data.effectiveEndDate = this.effectiveEnd,
+          _data.nextPayStartDate = this.nextPaystart,
+          _data.nextPayEndDate = this.nextPayEnd,
+          _data.expiryStartDate = this.expirystart,
+          _data.expiryEndDate = this.expiryEnd
+      }
+
+      api_service.orderList(_data).then(res => {
+        if (res.status == tool.rtCode.status) {
+          this.isLoad = false
+          this.total = res.total
+          if (this.offset === 0 || this.list.length === 0) {
+            this.list = res.funOrderList ? res.funOrderList : []
+            if (this.list.length < this.total) {
+              this.queryLoading = false
+            }
+          } else {
+            this.list = this.list.concat(res.funOrderList)
+          }
+          this.allLoaded = this.list.length >= this.total
+          if (this.allLoaded) {
+            this.queryLoading = true
+          }
+        } else {
+          tool.toastMessage(res.message, 'error')
+        }
+      })
+    },
+    goOrderLog(ordersn) {
+      this.$router.push({ name: 'orderLogList', params: { q: ordersn } });
+    },
+    searchLike() {
+      this.search = this.searchval;
+      this.orderList();
+    },
+    goDetail(item) {
+      this.$router.push({ name: 'customerDetail', params: { q: item.clientId, r: item.resultId } });
+    },
+    resetLoad() {
+      this.orderList();
+    },
+    timerchang(str, val) {
+      this.timetype = str;
+      this.timeNum = val;
+      this.timer = true;
+    },
+    confirm(val) {
+      let year = val.getFullYear()
+      let month = val.getMonth() + 1
+      let day = val.getDate()
+      if (month >= 1 && month <= 9) { month = `0${month}` }
+      if (day >= 1 && day <= 9) { day = `0${day}` }
+      let value = `${year}-${month}-${day}`
+      if (this.timetype == "effective") {
+        if (this.timeNum == "1") {
+          this.effectivestart = value;
+        } else {
+          this.effectiveEnd = value;
+        }
+      } else if (this.timetype == "nextPay") {
+        if (this.timeNum == "1") {
+          this.nextPaystart = value;
+        } else {
+          this.nextPayEnd = value;
+        }
+      } else if (this.timetype == "expiry") {
+        if (this.timeNum == "1") {
+          this.expirystart = value
+        } else {
+          this.expiryEnd = value;
+        }
+      }
+      this.timer = false;
+    },
+    confirmtime() {
+      this.orderList();
+      this.show = false;
+      this.clearnull();
+    },
+    formatter(type, value) {
+      if (type === 'year') {
+        return `${value}年`
+      } else if (type === 'month') {
+        return `${value}月`
+      } else if (type === 'day') {
+        return `${value}日`
+      }
+      return value
+    },
+    clearnull() {
+      this.effectivestart = '',
+        this.effectiveEnd = '',
+        this.nextPaystart = '',
+        this.nextPayEnd = '',
+        this.expirystart = '',
+        this.expiryEnd = '';
+    },
+    goBack() {
+      this.$router.go(-1)
+    },
+    loadMore() {
+      if (this.queryLoading) {
+        return
+      }
+      if (!this.isLoad) {
+        this.isLoad = true
+        this.offset += 10
+        this.orderList()
+      }
+    },
+    handleScroll() {
+      if (scroll.getScrollTop() + scroll.getClientHeight() > (scroll.getScrollHeight() - 5)) {
+        this.loadMore()
+      }
+    },
+    getDetails(item) {
+      this.type == 0 ? this.$router.push({ name: 'wdetails', params: { r: item.ordersn } }) : this.$router.push({ name: 'dealdetails', params: { r: item.agentCode, q: item.policyNo } })
+    },
+    goOrderMore(item) {
+      const channelUserId = this.user.userInfo.mobile || this.user.userInfo.agentcode
+      window.location.href = tool.app.lzgUrl + '#/channel/channelCode=' + tool.app.platformCode + '&channelUserId=' + channelUserId + '&productId=' + item.productCode + '&briskCode' + item.briskCode + '&supplierCode=' + item.insuranceCompanyCode + '&productType=' + item.source + '&orderSn=' + item.ordersn + '&opType=8&version=' + item.version
+    },
+    goOrderIn(item) {
+      const channelUserId = this.user.userInfo.mobile || this.user.userInfo.agentcode
+      window.location.href = tool.app.lzgUrl + '#/channel/channelCode=' + tool.app.platformCode + '&channelUserId=' + channelUserId + '&productId=' + item.productCode + '&briskCode' + item.briskCode + '&supplierCode=' + item.insuranceCompanyCode + '&productType=' + item.source + '&orderSn=' + item.ordersn + '&opType=2&version=' + item.version
+    },
+    showMenu(index) {
+      this.showMore = !this.showMore
+      if (this.showMore) {
+        this.indexs = index;
+      } else {
+        this.indexs = ''
+      }
+    },
+    orderSta(val) {
+      let StatusName = '';
+      this.statusList.forEach(item => {
+        if (item.value == val) {
+          StatusName = item.text;
+        }
+      })
+      return StatusName
+    }
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.handleScroll)
+  }
+}
+</script>
+
+<style scoped>
+.fresh .box .sel-box.sb2 {
+  color: #fff;
+}
+</style>

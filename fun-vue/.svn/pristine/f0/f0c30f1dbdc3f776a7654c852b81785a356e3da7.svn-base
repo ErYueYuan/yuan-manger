@@ -1,0 +1,7 @@
+var api = require('../api');
+
+module.exports = {
+  getOneTalkList: function (req, res, next) {
+    api.fetch(req, res, 'POST', 'fzg', 'funapp/timeConversation/getOneTalkList', req.body)
+  },
+}

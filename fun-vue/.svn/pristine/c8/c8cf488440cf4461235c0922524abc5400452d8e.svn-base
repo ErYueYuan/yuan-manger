@@ -1,0 +1,144 @@
+<template>
+  <div>
+    <top-panel :topPanel="topPanel" v-if="!sourceChannel.isWeiXin"></top-panel>
+    <div class="main-container clearfix" :class="!sourceChannel.isWeiXin?'mar1':''">
+      <div class="pad5-1 clearfix">
+        <div id="banner" class="swiper-container">
+          <div class="swiper-wrapper" style="max-height: 150px;">
+            <div class="swiper-slide" v-for="(item, index) in bannerList" :key="'cl' + index">
+              <img class="img" @click="swiperClick(item)" :src="item.posterImage"/>
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+      <div class="pad6">
+        <van-tabs v-model="page" @click="handleClickClass">
+          <van-tab title="精品课程">
+            <excellent-course class="mar3"
+                              :coursePage="coursePage"
+                              @coursePage="coursePageFun"></excellent-course>
+          </van-tab>
+          <van-tab title="热门文章">
+            <popular-article class="mar3"
+                             :articlePage="articlePage"
+                             @articlePage="articlePageFun"></popular-article>
+          </van-tab>
+        </van-tabs>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import Vue from 'vue'
+  import { Tab, Tabs, Tag } from 'vant'
+  import { mapGetters } from "vuex"
+  import { TopPanel } from "@/components/index"
+  import { api_system, api_article } from "@/api/index"
+  import * as tool from "@/common/Tool"
+  import * as scroll from "@/common/Scroll"
+  import Swiper from 'swiper'
+  import 'swiper/css/swiper.min.css'
+  import 'swiper/js/swiper.min.js'
+  import ExcellentCourse from './ExcellentCourse'
+  import PopularArticle from './PopularArticle'
+  import DataSource from "@/common/DataSource";
+
+  Vue.use(Tab)
+  Vue.use(Tabs)
+  Vue.use(Tag)
+
+  export default {
+    name: "CoursesList",
+    data () {
+      return {
+        sourceChannel: tool.globalData,
+        topPanel: {
+          back: true,
+          titles: "学习课堂",
+        },
+        bannerList: [],
+        isLoad: '',
+        page: DataSource.get('tagPage', 2) || 0, // 0-精品课程，1-热门文章
+        articlePage: false, //文章分页标识
+        coursePage: false //课程分页标识
+      }
+    },
+    components: {
+      'top-panel': TopPanel,
+      'excellent-course': ExcellentCourse,
+      'popular-article': PopularArticle
+    },
+    created () {
+      this.getBannerData()
+    },
+    mounted () {
+      window.addEventListener("scroll", this.handleScroll);
+    },
+    methods: {
+      initBannerSwiper() {
+        const swiper = new Swiper('#banner', {
+          autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+          },
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          observer: true,//修改swiper自己或子元素时，自动初始化swiper
+          observeParents: true//修改swiper的父元素时，自动初始化swiper
+        })
+      },
+      swiperClick (item) {
+        if (item.pageUrl) {
+          window.open(item.pageUrl)
+        }
+      },
+      getBannerData() {
+        var _data = {
+          limit: tool.pagination.pagesize, // 页面长度
+          offset: tool.pagination.pageoffset, // 页面偏移
+          type: "0", //广告类型:0-懒掌柜首页广告栏,1-产品广告栏,2-资讯广告栏,3-培训广告位,4-理赔广告栏,5-DDSS广告栏，6-e管家首页广告位，7-财富精选广告位
+          comcode: "1000000",
+          platformId: 'f2ce8561055a40d5a5e7dcdffde1e8bc' // tool.app.platformId, //区分项目
+        };
+        api_system.advertismentList4Front(_data).then((res) => {
+          if (res.status == tool.rtCode.status) {
+            this.bannerList = res.advertismentList;
+            this.initBannerSwiper()
+          }
+        });
+      },
+      handleClickClass (index, title) {
+        this.page = index
+        console.log(this.page)
+        DataSource.set('tagPage', this.page, 2)
+      },
+      handleScroll() {
+        if (scroll.getScrollTop() + scroll.getClientHeight() > scroll.getScrollHeight() - 5) {
+          if (this.page === 0) {
+            this.coursePage = true
+          } else if (this.page === 1) {
+            this.articlePage = true
+          }
+        }
+      },
+      coursePageFun () {
+        this.coursePage = false
+      },
+      articlePageFun () {
+        this.articlePage = false
+      }
+    },
+    destroyed() {
+      window.removeEventListener('scroll', this.handleScroll)
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

@@ -1,0 +1,6 @@
+//登录后用户信息
+export const LOGININFO = 'LOGININFO';
+export const USERSIGN = 'USERSIGN';
+export const USERMESS = 'USERMESS';
+export const USERHEAD = 'USERHEAD';
+

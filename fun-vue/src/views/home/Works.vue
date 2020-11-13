@@ -1,0 +1,331 @@
+<template>
+  <div>
+    <div class="index-top4">
+      <h3 class="ek-com-tit2 c6 f3">今日数据</h3>
+      <div class="c6 f2 pad4-1">客户进展</div>
+      <div class="mar7-1">
+        <div style="height:170px;width:100%;" ref="customerEchart"></div>
+      </div>
+
+      <div class="c6 f2 pad7-2">消息沟通</div>
+      <div class="bg4 b-radius3 message-box mar7-1">
+        <ul class=" pad6-1 border-b">
+          <li>
+            <h3 class="f3 c5 c4 t-left">{{MessageChat.sendMessage || 0}}<span>条</span></h3>
+            <div class="t-left f1 c4" ><b class="b1"></b>发送消息</div>
+          </li>
+          <li>
+            <h3 class="f3 c5 c4 t-left">{{MessageChat.receiveMessage || 0}}<span>条</span></h3>
+            <div class="t-left f1 c4" ><b class="b2"></b>接受信息</div>
+          </li>
+          <li>
+            <h3 class="f3 c5 c4 t-left">{{MessageChat.timeOutReply || 0}}<span>条</span></h3>
+            <div class="t-left f1 c4" ><b class="b3"></b>超时回复</div>
+          </li>
+        </ul>
+
+        <ul class=" pad6-1 ">
+          <li>
+            <h3 class="f3 c5 c4 t-left">{{MessageChat.noReply || 0}}<span>条</span></h3>
+            <div class="t-left f1 c4" ><b class="b4"></b>未回复&nbsp;&nbsp;</div>
+          </li>
+          <li>
+            <h3 class="f3 c5 c4 t-left">{{MessageChat.withDrawMessage || 0}}<span>条</span></h3>
+            <div class="t-left f1 c4" ><b class="b5"></b>撤回消息</div>
+          </li>
+          <li>
+            <h3 class="f3 c5 c4 t-left">{{MessageChat.avgResponseTime || 0}}<span>min</span></h3>
+            <div class="t-left f1 c4" ><b class="b6"></b>平均响应时长</div>
+          </li>
+        </ul>
+      </div>
+      <!--<div class="c6 f2 pad7-2">朋友圈互动</div>-->
+      <!--<div class="  message-box2 mar7-1">-->
+        <!--<ul class="  ">-->
+          <!--<li class="b-radius3 pad6-1 f1 mar7-2 bg4">-->
+            <!--<span class="or1"><b class="b1"></b></span>-->
+            <!--<span class="or2 c4">今日发圈数量</span>-->
+            <!--<span class="or3 f3 c5 t-center">28</span>-->
+            <!--<span class="or4 c4">主动点赞朋友</span>-->
+            <!--<span class="or5 f3 c5 t-center">28</span>-->
+          <!--</li>-->
+          <!--<li class="b-radius3 pad6-1 f1 mar7-2 bg4">-->
+            <!--<span class="or1"><b class="b2"></b></span>-->
+            <!--<span class="or2 c4">今日发圈数量</span>-->
+            <!--<span class="or3 f3 c5 t-center">28</span>-->
+            <!--<span class="or4 c4">主动点赞朋友</span>-->
+            <!--<span class="or5 f3 c5 t-center">28</span>-->
+          <!--</li>-->
+          <!--<li class="b-radius3 pad6-1 f1 mar7-2 bg4">-->
+            <!--<span class="or1"><b class="b3"></b></span>-->
+            <!--<span class="or2 c4">今日发圈数量</span>-->
+            <!--<span class="or3 f3 c5 t-center">28</span>-->
+            <!--<span class="or4 c4">主动点赞朋友</span>-->
+            <!--<span class="or5 f3 c5 t-center">28</span>-->
+          <!--</li>-->
+        <!--</ul>-->
+      <!--</div>-->
+    </div>
+    <div class="index-top4">
+      <h3 class="ek-com-tit2 c6 f3">本月统计</h3>
+      <div style="position: relative">
+        <div style="height:130px;width:100%;" ref="workEchart"></div>
+        <div style=" position: absolute; top: 0;right: 0;left: 0;right: 0;margin: auto;line-height: 135px;text-align: center;font-size: 26px;font-weight: bold;"><span>{{this.monthStatistics.workActiveDegree || '0'}}</span></div>
+      </div>
+
+      <div class="  message-box3 mar7-1">
+        <ul class="  ">
+          <li class="b-radius3 pad6-1 f2  ">
+            <span class="or1 c4 f2">深度互动比例</span>
+            <span class="or2 f2 c5 t-center ">{{monthStatistics.deepInteractionRate || 0}}</span>
+            <span class="or3 c4 t-right" v-if="monthStatistics.deepInteractionTag"><b class="t-center">{{monthStatistics.deepInteractionTag}}</b></span>
+          </li>
+          <li class="b-radius3 pad6-1 f2  ">
+            <span class="or1 c4 f2">成交比例</span>
+            <span class="or2 f2 c5 t-center ">{{monthStatistics.transactionRate || 0}}</span>
+            <span class="or3 c4 t-right" v-if="monthStatistics.transactionTag"><b class="t-center">{{monthStatistics.transactionTag}}</b></span>
+          </li>
+          <li class="b-radius3 pad6-1 f2  ">
+            <span class="or1 c4 f2">平均转换时长</span>
+            <span class="or2 f2 c5 t-center ">{{monthStatistics.avgConversionTime || 0}}天</span>
+            <span class="or3 c4 t-right" v-if="monthStatistics.avgConversionTimeTag"><b class="t-center">{{monthStatistics.avgConversionTimeTag}}</b></span>
+          </li>
+          <li class="b-radius3 pad6-1 f2  ">
+            <span class="or1 c4 f2">互动消息总数</span>
+            <span class="or2 f2 c5 t-center ">{{monthStatistics.messageNumber || 0}}条</span>
+            <span class="or3 c4 t-right" v-if="monthStatistics.messageNumberTag"><b class="t-center">{{monthStatistics.messageNumberTag}}</b></span>
+          </li>
+          <li class="b-radius3 pad6-1 f2  ">
+            <span class="or1 c4 f2">平均响应时长</span>
+            <span class="or2 f2 c5 t-center ">{{monthStatistics.avgResponseTime || 0}}min</span>
+            <span class="or3 c4 t-right" v-if="monthStatistics.avgResponseTimeTag"><b class="t-center">{{monthStatistics.avgResponseTimeTag}}</b></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import { mapGetters } from 'vuex'
+  import * as tool from '@/common/Tool'
+  import { api_user } from '@/api/index'
+  import echarts from 'echarts'
+
+  export default {
+    name: "Works",
+    data () {
+      return {
+        MessageChat: {},
+        monthStatistics: {}
+      }
+    },
+    computed: {
+      ...mapGetters(['user']),
+    },
+    created () {
+      this.getCustomerProgress()
+      this.getMessageChat()
+      this.getMonthStatistics()
+    },
+    methods: {
+      getCustomerProgress () {
+        const _data = {
+          saasId: tool.app.saasId,
+          userId: this.user.userInfo.userId,
+          platformId: tool.app.platformId,
+          agentCode: this.user.userInfo.agentcode || ''
+        }
+        api_user.getCustomerProgress(_data).then(data => {
+          if (data.status === tool.rtCode.status) {
+            const funHomePageDTO = data.funHomePageDTO,
+              progress = [funHomePageDTO.hdCustomer, funHomePageDTO.jhsCustomer, funHomePageDTO.orderCustomer, funHomePageDTO.cjCustomer, funHomePageDTO.lhCustomer]
+            this.initBarChart(progress)
+          }
+        })
+      },
+      getMessageChat () {
+        const _data = {
+          saasId: tool.app.saasId,
+          userId: this.user.userInfo.userId
+        }
+        api_user.getMessageChat(_data).then(data => {
+          if (data.status === tool.rtCode.status) {
+            this.MessageChat = data.funMessageChatDTO
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        })
+      },
+      getMonthStatistics () {
+        const _data = {
+          saasId: tool.app.saasId,
+          userId: this.user.userInfo.userId
+        }
+        api_user.getMonthStatistics(_data).then(data => {
+          if (data.status === tool.rtCode.status) {
+            this.monthStatistics = data.funMonthStatisticsDTO
+            this.initChart()
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        })
+      },
+      initBarChart (progress) {
+        let CW = document.body.offsetWidth || document.documentElement.clientWidth
+        const chart = echarts.init(this.$refs.customerEchart)
+        chart.clear() //清除旧数据
+        chart.resize({
+          width: CW - 60,
+        })
+        chart.setOption({
+          backgroundColor: '#f9fafd',
+          color: ['#fe961a'],
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+              type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            }
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          textStyle: {
+            color: '#666666',
+            fontSize: 12
+          },
+          xAxis: [
+            {
+              type: 'category',
+              data: ['互动客户', '提案客户', '订单客户', '成交客户', '被拉黑'],
+              axisTick: {
+                show: false
+              },
+              axisLabel: {
+                interval: 0,
+                margin: 10,
+                color: '#666666',
+                fontSize: 12
+              },
+              axisLine: {
+                lineStyle: {
+                  color: '#e1e2ec'
+                }
+              }
+            }
+          ],
+          yAxis: [
+            {
+              type: 'value',
+              axisLine: {
+                lineStyle: {
+                  color: '#e1e2ec'
+                }
+              },
+              axisLabel: {
+                color: '#999999',
+                fontSize: 12
+              },
+              axisTick:{       // y轴刻度线
+                "show":false
+              },
+              splitLine: {
+                show: false
+              },
+              interval: 5 // y轴跨度
+            }
+          ],
+          series: [
+            {
+              type: 'bar',
+              barWidth: '60%',
+              data: progress,
+              label: { // 图形上的文本标签
+                show: true,
+                position: 'top'
+              },
+              itemStyle: {    // 图形的形状
+                barBorderRadius: [5, 5, 0 ,0],
+                color: (params) => {
+                  const colorList = ["#fe961a", " #7595cf", "#60ace6", "#23b784", "#fd5147"]
+                  return colorList[params.dataIndex]
+                }
+              }
+            }
+          ]
+        })
+      },
+      initChart () {
+        let CW = document.body.offsetWidth || document.documentElement.clientWidth
+        const chart = echarts.init(this.$refs.workEchart)
+        chart.clear() //清除旧数据
+        chart.resize({
+          width: CW - 60,
+        })
+        chart.setOption({
+          backgroundColor: '#f9fafd',
+          title: {
+            text: "工作活跃指数",
+            textStyle: {
+              color: '#fb756e',
+              fontSize: 12,
+            },
+            backgroundColor: '#f8e8ea',
+            left: 'center',
+            top:100,
+            padding: [3, 5],
+            borderRadius: 5
+          },
+          series: [
+            {
+              type: 'pie',
+              startAngle: 0,
+              hoverAnimation: false,
+              radius: ["88%", "100%"],
+              center: ['50%', '70%'],
+              label: {
+                normal: {
+                  show: false,
+                  position: 'center'
+                }
+              },
+              data: [{
+                value: 100,
+                itemStyle: {
+                  normal: {
+                    color: "#f9fafd"
+                  }
+                }
+              },
+                {
+                  value: this.monthStatistics && this.monthStatistics.workActiveDegree ? this.monthStatistics.workActiveDegree : 0,
+                  itemStyle: {
+                    normal: {
+                      color: "#fd5147"
+                    }
+                  }
+
+                },
+                {
+                  value: this.monthStatistics && this.monthStatistics.workActiveDegree ? 100 - Number(this.monthStatistics.workActiveDegree) : 100,
+                  itemStyle: {
+                    normal: {
+                      color: "#fab6b3"
+                    }
+                  }
+                },
+              ]
+            }
+          ]
+        })
+      }
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

@@ -1,0 +1,85 @@
+<template>
+  <div class="bg7">
+    <div class="fun-top-panel bg-my">
+      <span
+        class="mess-back "
+        @click="goBack"
+      >
+        <div class="cont-wh"></div>
+      </span>
+      <span class="title c7 f4 dblock2 t-center ">设置</span>
+    </div>
+    <div class="posi4 bg7 b-radius1">
+      <div class="new-nav-box">
+        <ul>
+          <li class="setting setting1 border-b1 f3-1 c6" @click="$router.push({path:'/amendpassword'})">修改密码</li>
+          <li class="setting setting2 border-b1 f3-1 c6">关于我们</li>
+        </ul>
+        <div class="out-login border-b1 f3-1 c6  t-center" v-if="isWeiXin" @click="unbound">解绑微信</div>
+        <div class="out-login border-b1 f3-1 c6  t-center" v-if="!isWeiXin" @click="outLogin">退出登录</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import { mapGetters } from 'vuex'
+  import { api_user } from '@/api/index'
+  import * as tool from '@/common/Tool'
+  import DataSource from '@/common/DataSource'
+
+  export default {
+    computed: {
+      ...mapGetters(['user']),
+    },
+    data() {
+      return {
+        isWeiXin: tool.globalData.isWeiXin
+      }
+    },
+    components: {},
+    mounted() {
+
+    },
+    methods: {
+      goBack() {
+        this.$router.go(-1)
+      },
+      unbound() {
+        api_user.unbind4WX({
+          saasId: tool.app.saasId,
+          userId: this.user.userid,
+          openid: this.user.openid
+        })
+          .then(res => {
+            if (res.status == tool.rtCode.status) {
+              tool.toastMessage('解绑成功')
+            }
+          })
+      },
+      outLogin(){
+        DataSource.clear()
+        this.$router.push({ name: 'login' })
+      }
+    }
+  }
+</script>
+
+<style scoped>
+  .posi4 {
+    top: 55px;
+  }
+
+  .new-nav-box li.setting1:before {
+    top: 14px;
+    width: 16px;
+    height: 22px;
+  }
+
+  .out-login {
+    height: 52px;
+    line-height: 52px;
+    margin-bottom: 1px;
+    padding: 0 15px 0 42px;
+  }
+</style>

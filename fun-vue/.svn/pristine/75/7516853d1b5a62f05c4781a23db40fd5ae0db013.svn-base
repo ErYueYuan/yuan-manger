@@ -1,0 +1,56 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+@media only screen and (max-width: 340px){
+}
+
+@media only screen and (min-width:370px){
+
+}
+
+@media only screen and (min-width:500px) {
+
+}
+
+@media only screen and (min-width: 600px){
+
+
+}
+@media (min-width:640px)
+{
+    body{margin:0 auto;width:640px;text-align: left;}
+  .fun-top-panel,.fun-panel{width:640px;margin:0 auto;}
+  .sear-b.p-fix1,.oa-bot-fix{width:640px;margin:0 auto;}
+  .log-bot{width:400px;margin:0 auto;}
+  .oa-open{width:600px;margin:0 auto;}
+  .oa-panel{width:640px;margin:0 auto;}
+  .box-bot,.bt_certified2,.bt_certified{width:640px;margin:0 auto;}
+  .pop-box{ margin:0 auto;width:600px; text-align: left;}
+  .posi3,.posi4,.posi5,.main-top{margin:0 auto;width:640px;}
+  .nav-bar,.fresh.p-fix1{margin:0 auto;width:640px;}
+  .pop-box2{margin:0 auto;width:540px;}
+
+
+}
+
+
+
+/*
+@media only screen and (min-width: 340px){
+  .xt-xxb-bot{ background-color:#d00104;margin-top:96%;}
+}
+@media only screen and (min-width: 380px){
+  .xt-xxb-bot{ background-color:#d00104;margin-top:91%;}
+}
+
+@media only screen and (min-width: 500px){
+  .xt-xxb-bot{ background-color:#d00104;margin-top:80%;}
+}
+@media only screen and (min-width: 600px){
+  .xt-xxb-bot{ background-color:#d00104;margin-top:67%;}
+}
+*/
+
+/*@media only screen and (device-width: 375px) and (device-height:812px) and (-webkit-device-pixel-ratio:3) {  !*iphone X*!
+  .oa-panel{    padding-bottom:34px; box-sizing: content-box; }
+}*/

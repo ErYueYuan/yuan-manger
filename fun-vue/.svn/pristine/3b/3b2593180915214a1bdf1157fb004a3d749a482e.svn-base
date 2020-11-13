@@ -1,0 +1,119 @@
+﻿<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width; initial-scale=1.0;minimum-scale=1.0, maximum-scale=1.0">
+  <title>会话消息</title>
+  <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../assets/css/common.css">
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/responsive.css">
+
+
+</head>
+
+<body class="bg3">
+<div class="fun-top-panel bg7  ">
+    <span class="mess-back "><div class="cont"></div></span>
+    <span class="title c3 f3 dblock2 t-center ">会话消息</span>
+    <div class="f2 c8 right">客户主页</div>
+</div>
+
+<div class="main-container mar3-7 clearfix">
+  <div class="pad5-4 posi2 clearfix bg5 f2 c9 mess">
+    <b class="fun-icon icon-bell"></b>恭喜您，您的认证信息已审核通过！
+    <span class="f2 pad4-3 c-p f-right border-l">更多<b class="fun-icon icon-trans"></b></span>
+  </div>
+  <div class=" nav-bar ps mar3 bg7 border-t2 border-b">
+    <div class="  t-center">
+      <span class="f3 active">实时会话</span>
+    </div>
+    <div class="  t-center">
+      <span class="f3 ">访客雷达</span>
+    </div>
+  </div>
+  <section class="bg7">
+    <div class="blk-cont-box mar6-2  posi2  border-t">
+      <div class="img-box2 posi2">
+        <img src="../../assets/img/index/bar_bg.png" />
+        <b class="state s1" title="微信"></b>
+      </div>
+      <div class="right-box rb1 posi2 c-p" >
+        <h3 class="f2 c6 mar7-2">范晓华<b class="ek-btn-6 f1 mar5-2">首次</b><b class="ek-btn-5 f1 mar5-2">已有客户</b><span class="f-right f1 c4">2020-08-17  13:45</span>
+        </h3>
+        <div class="f2 c5 ">
+          <span>关注了您的公众号</span>
+        </div>
+      </div>
+    </div>
+    <div class="blk-cont-box mar6-2  posi2 border-t ">
+      <div class="img-box2 posi2">
+        <img src="../../assets/img/index/bar_bg.png" />
+        <b class="state s2" title="邮件"></b>
+      </div>
+      <div class="right-box rb1 posi2  c-p" >
+        <h3 class="f2 c6 mar7-2">范晓华</span>
+        </h3>
+        <div class="f2 c5 ">
+          <span>我想买一款定期寿险，能帮我做一份详细的保</span>
+        </div>
+      </div>
+    </div>
+    <div class="blk-cont-box bc1 bg7 posi2 border-t ">
+      <div class="img-box2 posi2">
+        <img src="../../assets/img/index/bar_bg.png" />
+        <b class="state s3" title=""></b>
+      </div>
+      <div class="right-box rb1 posi2  c-p" >
+        <h3 class="f2 c6 mar7-2">范晓华</span>
+        </h3>
+        <div class="f2 c5 ">
+          <span>我想买一款定期寿险，能帮我做一份详细的保</span>
+        </div>
+      </div>
+    </div>
+    <div class="blk-cont-box bc1 bg7 posi2 border-t ">
+      <div class="img-box2 posi2">
+        <img src="../../assets/img/index/bar_bg.png" />
+        <b class="state s4" title=""></b>
+      </div>
+      <div class="right-box rb1 posi2  c-p" >
+        <h3 class="f2 c6 mar7-2">范晓华</span>
+        </h3>
+        <div class="f2 c4 ">
+          <span>我想买一款定期寿险，能帮我做一份详细的保</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="fun-panel clearfix">
+  <div class="f-left  blk ">
+    <span class="icon one"></span>
+    <div class="f0 txt t-center">首页</div>
+  </div>
+  <div class="f-left  blk">
+    <span class="icon two"></span>
+    <div class="f0 txt t-center">数字行销</div>
+  </div>
+  <div class="f-left  blk active">
+    <span class="icon three"></span>
+    <div class="f0 txt t-center">会话消息</div>
+  </div>
+  <div class="f-left  blk ">
+    <span class="icon four"></span>
+    <div class="f0 txt t-center">交易服务</div>
+  </div>
+  <div class="f-left  blk ">
+    <span class="icon five"></span>
+    <div class="f0 txt t-center">我的</div>
+  </div>
+</div>
+
+<!--<div class="posi5 pad5-8 bg7 b-sh4">
+  <button type="button" class="hx-bt3 t-center">返回</button>
+</div>-->
+</body>
+</html>

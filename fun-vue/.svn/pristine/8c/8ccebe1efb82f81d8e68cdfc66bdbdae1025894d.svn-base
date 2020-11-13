@@ -1,0 +1,144 @@
+<template>
+  <div>
+    <div class="fun-top-panel" @click="goBack()">
+      <span class="mess-back "><div class="cont-wh"></div></span>
+      <span class="title c7 f4 dblock2 t-center ">客户画像</span>
+    </div>
+    <div class="portrayal-top ">
+      <div class="sex posi2" v-if="customerSex == '1'"><img src="../../assets/img/hx/male.png"/></div><!--男士-->
+      <div class="sex posi2" v-if="customerSex == '0'"><img src="../../assets/img/hx/famale.png"/></div><!--女士-->
+      <div class="sex posi2" v-if="!customerSex || customerSex == '2'"><img src="../../assets/img/hx/male.png"/></div>
+      <!--未知，图暂未提供-->
+      <div class="tab-self">
+        <!-- 自定义标签"c12" -->
+        <!-- <div class="tab f1 c7 o-p4 clearfix" v-for="(item, index) in thirdLabelList" :key="index">
+            <span class="f-left" v-if="index%2 == 0">{{item}}</span>
+            <span class="f-right c12" v-if="index%2 != 0">{{item}}</span>
+        </div> -->
+
+        <div class="tab f1 c7 o-p4 clearfix" v-for="(item, index) in secondLabelList" :key="index">
+          <span class="f-left" v-if="item.secText">{{item.secText}}：{{item.tirText}}</span>
+          <span class="f-right c12">{{item.rightTxt}}</span>
+        </div>
+      </div>
+      <div class="t-center c7 f2-1 info">{{customerSex == '0' ? '女' : (customerSex == '1' ? '男' : '未知')}} /
+        {{customerAge}}岁
+      </div>
+    </div>
+
+    <section class=" pad1-3 bg7 b-radius1 fun-info-b2">
+      <section class="clearfix" v-for="(item, index) in funCustomerFirstPortraitDTOList" :key="index">
+        <h3 class="portrayal-tit1  mar3-6"
+            :class="index == '0' ? 'pt1' : (index == '1' ? 'pt2' : (index == '2' ? 'pt3' : (index == '3' ? 'pt4' : '')))"
+            style="overflow: hidden;">{{item.firstName}}</h3>
+        <section class="hx-tag clearfix">
+          <div class="f-left mar5-1" v-for="(item2, index) in item.funCustomerSecondPortraitDTOList" :key="index">
+            <span v-for="(item3, index) in item2.funCustomerThirdPortraitDTOList" :key="index">{{item2.secondName}}：{{item3.thirdName}}</span>
+          </div>
+        </section>
+      </section>
+    </section>
+  </div>
+</template>
+<script>
+  import Vue from 'vue'
+  import { mapGetters } from 'vuex'
+  import * as tool from '@/common/Tool'
+  import { api_sell } from '@/api/index'
+  import DataSource from '@/common/DataSource'
+  import '@vant/touch-emulator'
+
+  export default {
+    name: 'portraitDetail',
+    data() {
+      return {
+        clientNewId: this.$route.params.q,
+        resultId: this.$route.params.r,
+        funCustomerFirstPortraitDTOList: [],//一级标签列表
+        secondLabelList: [],
+        thirdLabelList: [],//三级标签列表
+        customerSex: '',
+        customerAge: '',
+        tagsName: '',
+        newTagList: []
+      }
+    },
+    computed: {
+      ...mapGetters(['user']),
+    },
+    components: {},
+    beforeCreate: function () {
+      document.getElementsByTagName('body')[0].className = 'fun-top-zhx'
+    },
+    created() {
+      this.queryCustomerPortrait()
+      this.queryCustomerPortraitDetail()
+    },
+    methods: {
+      queryCustomerPortrait() {
+        const _data = {
+          saasId: tool.app.saasId,
+          resultId: this.resultId
+        }
+        api_sell.queryCustomerPortrait(_data).then(data => {
+          if (data.status == tool.rtCode.status) {
+            this.customerSex = data.sex
+            this.customerAge = data.age
+            this.tagsName = data.tagsName
+
+            for (let i in this.tagsName) {
+              this.newTagList.push({ rightTxt: this.tagsName[i] })
+            }
+            console.log(this.newTagList)
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        })
+      },
+      queryCustomerPortraitDetail() {
+        let that = this
+        const _data = {
+          saasId: tool.app.saasId,
+          clientNewId: this.clientNewId
+          // clientNewId: '1017010836'
+        }
+        api_sell.queryCustomerPortraitDetail(_data).then(data => {
+          if (data.status == tool.rtCode.status) {
+            if (!!data.funCustomerFirstPortraitDTOList) {
+              this.funCustomerFirstPortraitDTOList = data.funCustomerFirstPortraitDTOList
+              for (let i in data.funCustomerFirstPortraitDTOList) {
+                for (let index in data.funCustomerFirstPortraitDTOList[i].funCustomerSecondPortraitDTOList) {
+                  this.secondLabelList.push({
+                    secText: data.funCustomerFirstPortraitDTOList[i].funCustomerSecondPortraitDTOList[index].secondName
+                  })
+                  for (let ind in data.funCustomerFirstPortraitDTOList[i].funCustomerSecondPortraitDTOList[index].funCustomerThirdPortraitDTOList) {
+                    this.secondLabelList[i].tirText = data.funCustomerFirstPortraitDTOList[i].funCustomerSecondPortraitDTOList[index].funCustomerThirdPortraitDTOList[ind].thirdName
+                  }
+                }
+              }
+              this.secondLabelList = this.secondLabelList.concat(this.newTagList)
+            } else {
+              this.secondLabelList = this.secondLabelList.concat(this.newTagList)
+            }
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        })
+      },
+
+      goBack() {
+        this.$router.go(-1)
+      },
+    },
+    beforeDestroy: function () {
+      DataSource.del('messPath', 2)
+      // document.body.removeAttribute("class", "fun-top-zhx");
+    },
+  }
+</script>
+<style scoped>
+  html, body {
+    position: relative;
+    height: 100%;
+  }
+</style>

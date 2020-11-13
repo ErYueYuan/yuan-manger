@@ -1,0 +1,161 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0;minimum-scale=1.0, maximum-scale=1.0">
+<title>首页</title>
+  <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/css/common.css">
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+
+
+</head>
+
+<body class="bg7">
+    <div class="main-container  clearfix">
+      <div class="index-top">
+        <ul class="top-one">
+          <li class="one posi2">
+            <div class=""><img src="../assets/img/index/bar_bg.png" /></div>
+            <b class="state">C级</b>
+          </li>
+          <li class="two">
+            <h3 class="f4 posi2">慎卿雪<b class="state posi2 c-p">工作中</b>
+              <div class="sl-other-b " >
+                <span class="border-b1">工作中</span>
+                <span >忙碌</span>
+              </div>
+            </h3>
+            <div class="tag t1 f1 c-p">签如</div>
+            <!--<div class="tag t2 f1 c-p">签出</div>-->
+            <div class="rule c-p">升级规则></div>
+          </li>
+          <li class="three posi2 f1 c-p">在线9小时
+            <div class="sl-other-b sob2" >
+              <span class="border-b1">通时180分钟</span>
+              <span class="border-b1">通次80次</span>
+              <span >在线9小时</span>
+            </div>
+          </li>
+        </ul>
+        <div class="top-two ">
+          <section class="box posi2">
+              <div class="line posi2" title="">
+                <b></b>
+              </div>
+              <div class="tag-box" style="left:40%">
+                <div class="num">￥35000</div>
+                <span class="tag tag1"></span>
+              </div>
+              <div class="tag-box2" style="left:70%">
+                <div class="num">￥35000</div>
+                <span class="tag tag2">B</span>
+              </div>
+              <div class="tag-box3" style="right:0">
+                <div class="num">￥35000</div>
+                <span class="tag tag3">B</span>
+              </div>
+          </section>
+          <div class="jl  posi2">距离次月等级维持仅剩￥1000元标保
+              <b class="close f-right c-p"></b>
+              <span style="left:40%;"></span>
+          </div>
+
+        </div>
+      </div>
+      <div class="index-top2">
+        <h3 class="f3">标保达成率<span>2020年8月4日 周二</span></h3>
+        <h4 class="c5 f2">今日任务 ￥5000</h4>
+        <div class="top-two posi2">
+          <div class="line " title="">
+            <b></b>
+          </div>
+          <div class="tag-box" style="left:40%">
+            <span class="tag tag1"></span>
+            <div class="num">￥35000</div>
+
+          </div>
+          <div class="tag-box3" style="right:0">
+            <span class="tag tag3"></span>
+            <div class="num">￥35000</div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="index-top3">
+        <ul>
+          <li >
+            <b class="icon1 posi2">
+              <i class="flags">1</i>
+            </b>
+            <p class="f2 c6 t-center">待跟进</p>
+          </li>
+          <li>
+            <b class="icon2 posi2"><i class="flags">1</i></b>
+            <p class="f2 c6 t-center">跟进中</p>
+          </li>
+          <li>
+            <b class="icon3 posi2"></b>
+            <p class="f2 c6 t-center">计划跟进</p>
+          </li>
+          <li>
+            <b class="icon4 posi2"></b>
+            <p class="f2 c6 t-center">待成交</p>
+          </li>
+        </ul>
+      </div>
+      <div class="index-top4">
+        <div><img src="../assets/img/chart1.jpg" /></div>
+          <div class="more-box f2 c4 t-center c-p">
+            <b></b>查看更多
+          </div>
+      </div>
+      <div class="index-top4">
+        <div><img src="../assets/img/chart2.jpg" /></div>
+        <div class="more-box f2 c4 t-center c-p">
+          <b></b>查看更多
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="fun-panel clearfix">
+      <div class="f-left  blk active">
+        <span class="icon one"></span>
+        <div class="f0 txt t-center">首页</div>
+      </div>
+      <div class="f-left  blk">
+        <span class="icon two"></span>
+        <div class="f0 txt t-center">数字行销</div>
+      </div>
+      <div class="f-left  blk ">
+        <span class="icon three"></span>
+        <div class="f0 txt t-center">会话消息</div>
+      </div>
+      <div class="f-left  blk ">
+        <span class="icon four"></span>
+        <div class="f0 txt t-center">交易服务</div>
+      </div>
+      <div class="f-left  blk ">
+        <span class="icon five"></span>
+        <div class="f0 txt t-center">我的</div>
+      </div>
+    </div>
+
+<div class="mask-layer"></div>
+<div class="pop-box">
+    <h3 class="tit c6 f4 t-center">等级升级或维持规则</h3>
+    <div class="pad5-4 f2-1 c5">
+      <p>1.等级共分A+、A、B、C、D、D-6个等级，等级越高，系统将优先为您分配更优质客户资源</p>
+      <p>2.考核周期为每个自然月，考核结果次月生效</p>
+      <p>3.达到维持指标但未达到提升指标时，次月将继续维持当前等级</p>
+      <p>4.达到提升指标时，次月等级将提升至上一级</p>
+      <p>5.未达到维持指标时，次月等级将降为下一等级</p></div>
+  <div class=" t-center f4 c8 pad6-1 border-t c-p">我知道了</div>
+</div>
+
+</body>
+</html>

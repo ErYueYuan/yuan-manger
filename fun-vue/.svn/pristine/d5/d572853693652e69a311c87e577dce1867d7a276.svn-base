@@ -1,0 +1,76 @@
+<template>
+  <div>
+    <div id="courseTag" class="swiper-container">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" v-for="(tags, index) in courseClassTagTwo" :key="index" @click="swiperClick(tags, index)">
+          <div class="pad8-1"><span class="hx-bt3 bt2 f2 active">{{tags.classname}}</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  import { api_system, api_article } from "@/api/index"
+  import * as tool from "@/common/Tool"
+  import Swiper from 'swiper'
+  import 'swiper/css/swiper.min.css'
+  import 'swiper/js/swiper.min.js'
+
+  export default {
+    name: "ExcellentCourse",
+    data () {
+      return {
+        courseClassTagOne: [],
+        courseClassTagTwo: [],
+        courseOneTagID: '',
+      }
+    },
+    created () {
+      this.getCoursesTagData()
+    },
+    methods: {
+      initSwiper () {
+        const swiper = new Swiper('#courseTag', {
+          freeMode: true,
+          freeModeMomentumRatio: 0.5,
+          slidesPerView: 4,
+          speed:300,//滑动开始到滑动结束的时间
+          observer:true,//修改swiper自己或子元素时，自动初始化swiper
+          observeParents:true,//修改swiper的父元素时，自动初始化swiper
+          autoplayDisableOnInteraction:false,//用户操作swiper之后是否禁止autoplay
+        });
+      },
+      getCoursesTagData () {
+        let _data = {
+          saasId: tool.app.saasId,
+          classlevel: 0
+        }
+        api_article.courseClassList(_data).then(data => {
+          if (data.status === tool.rtCode.status) {
+            this.courseClassTagOne = data.classList
+            this.courseOneTagID = this.courseClassTagOne[0].id
+            this.getCoursesTagTwoData()
+          }
+        })
+      },
+      getCoursesTagTwoData () {
+        let _data = {
+          saasId: tool.app.saasId,
+          classlevel: 1,
+          classid: 'd5d494a7d5874ae29fe0dc7622e19fd5' // this.courseOneTagID
+        }
+        api_article.courseClassList(_data).then(data => {
+          if (data.status === tool.rtCode.status) {
+            this.courseClassTagTwo = data.classList
+            this.initSwiper()
+          }
+        })
+      },
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

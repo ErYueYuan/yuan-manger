@@ -1,0 +1,128 @@
+<template>
+    <div class="bg3">
+        <div class="fun-top-panel  bg7 ">
+            <span class="mess-back " @click="goBack()"><div class="cont"></div></span>
+            <span class="title c6 f4 dblock2 t-center ">家庭成员</span>
+        </div>
+
+        <div class="main-container mar1  clearfix">
+            <div class="mar3-2">
+                <section class=" bg7 pad5-3">
+                    <div class="f2 t-center c4 mar7-2"><b class="fun-icon icon-l"></b>当前投保信息<b class="fun-icon icon-r"></b></div>
+                    <div class="fun-info-b1">
+                        <section class="floor2">
+                            <span class="posi2">高预算<b class="cls c-p" title="关闭"></b></span>
+                            <span class="posi2">高预算<b class="cls c-p" title="关闭"></b></span>
+                            <span class="posi2">高预算<b class="cls c-p" title="关闭"></b></span>
+                            <span class="edit c-p"><i></i>自定义</span>
+                        </section>
+                    </div>
+                </section>
+                <section class=" bg7 mar3-2 pad5-3">
+                    <div class="f2 t-center c4 mar7-2"><b class="fun-icon icon-l"></b>常用标签<b class="fun-icon icon-r"></b></div>
+                    <div class="c5 f2-1">客户需求</div>
+                    <div class="sel-b3">
+                        <label v-for="(item, index) in demandList" :key="index">
+                            <input type="checkbox"><b>{{item.tagName}}</b>
+                        </label>
+                        <!-- <label>
+                            <input type="checkbox" v-if="item.multiple == '2'"><b>{{item.tagName}}</b>
+                        </label> -->
+                    </div>
+
+                    <div class="c5 f2-1">客户能力</div>
+                    <div class="sel-b3">
+                        <label v-for="(item, index) in abilityList" :key="index">
+                            <input type="checkbox"><b>{{item.tagName}}</b>
+                        </label>
+                        <!-- <label>
+                            <input type="checkbox" v-if="item.multiple == '2'"><b>{{item.tagName}}</b>
+                        </label> -->
+                    </div>
+
+                    <div class="c5 f2-1">客户意愿</div>
+                    <div class="sel-b3">
+                        <label v-for="(item, index) in intentionList" :key="index">
+                            <input type="checkbox"><b>{{item.tagName}}</b>
+                        </label>
+                        <!-- <label>
+                            <input type="checkbox" v-if="item.multiple == '2'"><b>{{item.tagName}}</b>
+                        </label> -->
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="posi5 pad5-8  ">
+            <button type="button" class="hx-bt3 t-center">保存</button>
+        </div>
+    </div>
+</template>
+<script>
+    import Vue from 'vue'
+    import { mapGetters } from 'vuex'
+    import * as tool from '@/common/Tool'
+    import { api_sell } from '@/api/index'
+    import DataSource from '@/common/DataSource'
+    import { Popup, Picker } from 'vant'
+    // import Rules from './Rules'
+    // import Works from './Works'
+    // import Visitor from './Visitor'
+    // import Performance from './Performance'
+
+    Vue.use(Popup)
+    Vue.use(Picker)
+
+    export default {
+        name: "EditLabel",
+        data () {
+            return {
+                clientId: this.$route.params.q,
+                intentionList: [],
+                demandList: [],
+                abilityList: [],
+            }
+        },
+        computed: {
+            ...mapGetters(['user']),
+        },
+        components: {
+            // 'rules': Rules,
+            // 'works': Works,
+            // 'visitor': Visitor,
+            // 'performance': Performance
+        },
+        created () {
+            this.getTags();
+        },
+        methods: {
+            getTags () {
+                const _data = {
+                    saasId:tool.app.saasId
+                }
+                api_sell.getTags(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.intentionList = data.resultTags[0].intention;
+                        this.demandList = data.resultTags[1].demand;
+                        this.abilityList = data.resultTags[2].ability;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                });
+            },
+
+
+
+            goBack () {
+                this.$router.push({ path: '/customerDetail/' + this.clientId});
+            },
+
+            
+            
+            
+        }
+    }
+</script>
+<style scoped>
+  
+</style>

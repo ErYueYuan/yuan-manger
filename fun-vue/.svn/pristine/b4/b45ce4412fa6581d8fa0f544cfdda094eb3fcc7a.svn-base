@@ -1,0 +1,564 @@
+
+<template>
+    <div class="bg7">
+        <div class="fun-top-panel bg-my  ">
+            <span class="mess-back " @click="goBack()"><div class="cont-wh"></div></span>
+            <span class="title c7 f4 dblock2 t-center ">个人信息</span>
+        </div>
+
+        <div class="main-container mar1  clearfix">
+            <top-panel :customerBaseInfo="customerBaseInfo" :customerResultId="customerResultId"></top-panel>
+
+            <div class="posi2 mar3-5 bg7  bg7 b-radius1">
+                <section class=" pad1-3  ">
+                    <div id="proNav" class="swiper-container border-b1">
+                        <div class="swiper-wrapper f-flex" style="overflow-x: scroll;">
+                            <van-tabs title-active-color="#ee0a24" v-model="active" @click="handleClickTag">
+                                <van-tab
+                                    :scrollspy="true"
+                                    v-for="(item, index) in tabList"
+                                    :key="index"
+                                    :title="item.tagName">
+                                </van-tab>
+                            </van-tabs>
+                        </div>
+                    </div>
+
+                    <!-- 基本信息 -->
+                    <div>
+                        <div class="bg7 mar3-2 pad1-3 b-sh1 fun-info-b1">
+                            <h3 class="tit tri f3 c6 " @click="portraitDetail()">客户画像<span class="c5 f1">详情</span></h3>
+                            <div class="floor1 posi2">
+                                <div class="avator b-sh1">
+                                    <img v-if="!!head" :src="head" alt="pic" />
+                                    <img v-if="!head" src="../../assets/img/szxx/other.png" alt="pic" />
+                                </div>
+                                <span>{{portraitSex == '0' ? '女' : (portraitSex == '1' ? '男' : '未知')}}</span>
+                                <span>{{!!portraitAge ? portraitAge : '未知'}}</span>
+                                <!-- <span>三口之家</span>
+                                <span>产品咨询</span> -->
+                                <span class="more">...</span>
+                            </div>
+                            <div class="floor2">
+                                <span v-for="(item, index) in portraitTagsName" :key="index" ><div>{{item}}</div></span>
+                                <span class="edit c-p" @click="editLabel()" ><div><i></i>编辑</div></span>
+                            </div>
+                        </div>
+                        <div class="bg7 mar3-2 pad1-3 b-sh1 fun-info-b1">
+                            <h3 class="tit f3 c6">互动情况</h3>
+                            <div v-if="this.interactNum == 0" class="cont  bg-1">
+                                <div class=" t-center f1 c4">暂无互动，快去添加好友吧</div>
+                            </div>
+                            <ul v-if="this.interactNum != 0" class="ul01">
+                                <li v-if="customerType == '1' || customerType == '2'" @click="goMess()">消息沟通：{{this.addFriendsTime}} 添加为好友，已产生{{this.interactNum}}条信息互动</li>
+                                <li v-if="customerType == '3'" @click="goMess()">消息沟通：{{this.addFriendsTime}} 关注公众号，已产生{{this.interactNum}}条信息互动</li>
+                                <li v-if="this.firstTrail != ''" @click="goTrail()">最近轨迹：{{this.firstTrail.split('.')[0] | dataFormat('yyyy-MM-dd hh:mm:ss')}} 查看产品链接</li>
+                                <li v-if="this.visitTime != ''" @click="goFollow()">回访预约时间：{{this.visitTime.split('.')[0] | dataFormat('yyyy-MM-dd hh:mm:ss')}}</li>
+                            </ul>
+                        </div>
+                        <div class="bg7 mar3-2 pad1-3 b-sh1 fun-info-b1">
+                            <h3 class="tit tri f3 c6  " @click="checkMore()">历史方案<span  class="c5 f1" v-show="proposalList.length > 0">查看更多</span></h3>
+                            <section class="blk-cont2020  ">
+                                <ul class="cont-blk  icon-wrap " v-show="proposalList.length > 0">
+                                    <li class="li-p5  posi2 clearfix">
+                                        <div class="product2020 f-left posi2">
+                                            <img class="lazy-p" :src="proposalList.ERiskPicRelaPath" alt="pic">
+                                        </div>
+                                        <div class="info-blk  ">
+                                            <h3 class=" mess f3 c44 ">{{proposalList.riskName}}</h3>
+                                            <p class="f2 mess">{{'被保人：' + (proposalList.insuredsex == 1 ? '男' : '女') + '&nbsp;&nbsp;&nbsp;&nbsp;' + proposalList.insuredage + '周岁&nbsp;&nbsp;&nbsp;'}}</p>
+                                            <p class="f2 mar2  mess">编码: {{proposalList.proposalNo}}</p>
+                                            <p class="f2 mess">首期保费：<span class="c8">{{proposalList.totalamount}}￥起</span></p>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <!-- 空状态 -->
+                                <div class="cont   bg-1" v-show="proposalList.length == 0">
+                                    <div class=" t-center f1 c4">暂无内容，快去为客户制作方案吧！</div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <div class="ek-com-tit bold">详细信息</div>
+                        <section class="member-box bg7  b-sh5">
+                            <div id="pMember" class="swiper-container">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide dblock mar3" v-for="(item, index) in familyList" :key="index"  :class="relation == index ? 'active' : ''"   @click="currentRelation(item, index)">
+                                        <img v-if="!!item.head" :src="item.head" alt="pic">
+                                        <img v-if="!item.head" src="../../assets/img/szxx/other.png" alt="pic">
+                                        <span>{{item.relationName}}</span>
+                                        <!-- <div class="bar" title="当前"></div> --><!-- 小下标 -->
+                                    </div>
+
+                                    <div class="swiper-slide dblock mar3" @click="addFamily()">
+                                        <img src="../../assets/img/szxx/add.png"/>
+                                        <span title="添加"><span class="opacity0">添加</span>&nbsp;</span>
+                                        <div class="bar" title="当前"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- 基本信息 -->
+                        <section class="mar3-6 bg7  b-sh1 overhide">
+                            <section class="pad1">
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1" style="font-weight: bolder !important">{{customerName}}信息</dt>
+                                    <dd class="t-right f3 c8 flex-end" @click="editCustomerDetail()"><!-- editCustomerDetail(clid) -->
+                                        <img src="../../assets/img/szxx/edit2.png" alt="" class="editimg">编辑
+                                    </dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">姓名</dt>
+                                    <dd class="t-right f3 c5 ">{{customerDetail.cname}}</dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">性别</dt>
+                                    <dd v-if="!!customerDetail.sex" class="t-right f3 c5 ">{{customerDetail.sex == '0' ? '女' : (customerDetail.sex == '1' ? '男' : '未知')}}</dd>
+                                    <dd v-if="!customerDetail.sex" class="t-right f3 c5 ">未知</dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">手机号码</dt>
+                                    <dd class="t-right f3 c5 ">{{customerDetail.mobile}}</dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">出生日期</dt>
+                                    <dd class="t-right f3 c5 ">{{customerDetail.birthday}}</dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">年龄</dt>
+                                    <dd class="t-right f3 c5 ">{{customerDetail.age}}</dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">国籍</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.nationalityName}}</dd>
+                                </dl>
+                                <dl class="per-box bg7">
+                                    <dt class="c6 f3-1">婚姻</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.marriageName}}</dd>
+                                </dl>
+                            </section>
+                        </section>
+
+                        <!-- 证件类型 -->
+                        <section class="mar3-6 bg7  b-sh1 overhide">
+                            <section class="pad1">
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">证件类型</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.cerTypeName}}</dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">证件有效期</dt>
+                                    <dd class="t-right f3 c5" v-show="customerDetail.cerValidDateType == '1'">{{customerDetail.cerValidDate}}</dd>
+                                    <dd class="t-right f3 c5" v-show="customerDetail.cerValidDateType == '0'">长期有效</dd>
+                                </dl>
+                                <dl class="per-box bg7">
+                                    <dt class="c6 f3-1">证件号码</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.cerCode}}</dd>
+                                </dl>
+                            </section>
+                        </section>
+
+                        <!-- 行业 -->
+                        <section class="mar3-6 bg7  b-sh1 overhide" v-show="otherInfo">
+                            <section class="pad1">
+                                <dl class="per-box line4 bg7 border-b1">
+                                    <dt class="c6 f3-1">行业</dt>
+                                  <dd class="t-right f3 c5 "><div class="k1-wrap3"><div class="k1-wrap3-c">{{customerDetail.occupname}}</div></div></dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">职业</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.occupxtionname}}</dd>
+                                </dl>
+                                <dl class="per-box bg7 border-b1">
+                                    <dt class="c6 f3-1">电子邮箱</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.email}}</dd>
+                                </dl>
+                                <dl class="per-box bg7">
+                                    <dt class="c6 f3-1">税收居民</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.taxFlagName}}</dd>
+                                </dl>
+                            </section>
+                        </section>
+
+                        <!-- 常住城市 -->
+                        <section class="mar3-6 bg7  b-sh1 overhide" v-show="otherInfo">
+                            <section class="pad1">
+                                <dl class="per-box pb2 bg7 border-b1">
+                                    <dt class="c6 f3-1">常住城市</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.provinceName}} - {{customerDetail.cityName}}</dd><!-- {{customerDetail.countyName}} -->
+                                </dl>
+                                <dl class="per-box line2 bg7 border-b1">
+                                    <dt class="c6 f3-1">详细地址</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.address}}</dd>
+                                </dl>
+                                <dl class="per-box bg7">
+                                    <dt class="c6 f3-1">邮政编码</dt>
+                                    <dd class="t-right f3 c5">{{customerDetail.postalcode}}</dd>
+                                </dl>
+                            </section>
+                        </section>
+                        <br>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- <footer-panel :customerResultId="customerResultId" :customerBaseInfo="customerBaseInfo" :customerDetail="customerDetail"></footer-panel> -->
+        <footer-panel :customerResultId="customerResultId" :customerBaseInfo="customerBaseInfo" ></footer-panel>
+    </div>
+</template>
+<script>
+    import Vue from 'vue'
+    import { mapGetters } from 'vuex'
+    import * as tool from '@/common/Tool'
+    import { api_sell } from '@/api/index'
+    import DataSource from '@/common/DataSource'
+    import { Popup, Picker, Tab, Tabs } from 'vant'
+    import { CustomerTopPanel } from '@/components/index'
+    import { CustomerFooterPanel } from '@/components/index'
+
+    Vue.use(Popup)
+    Vue.use(Picker)
+    Vue.use(Tab)
+    Vue.use(Tabs)
+
+    export default {
+        name: "customerDetail",
+        data () {
+            return {
+                clid: this.$route.params.q,//clientId
+                customerResultId: this.$route.params.r,//resultId
+                nikeName: "",
+                sex: "",
+                cerCode: "",
+                customerBaseInfo: {},
+                customerDetail: {},
+                familyList: [],//家庭成员列表
+                relation: 0,//家庭成员列表初始化展示项
+                relationFlag: "01",
+                otherInfo: true,
+                productTag: 'B',//已购产品标签初始化展示项,B:寿险产品E:互助产品:F:理财产品
+                portraitTagsName: [],//客户画像里的标签
+                portraitSex: "",
+                head: "",
+                portraitAge: "",
+                addFriendsTime: "",
+                interactNum: "",
+                visitTime: "",
+                funVisitTrailDTO: [],
+                tabList: [
+                    {
+                        id: '0',
+                        innerCode: '0',
+                        tagName: '基本信息'
+                    },
+                    {
+                        id: '1',
+                        innerCode: '1',
+                        tagName: '订单'
+                    },
+                    {
+                        id: '2',
+                        innerCode: '2',
+                        tagName: '轨迹'
+                    },
+                    {
+                        id: '3',
+                        innerCode: '3',
+                        tagName: '跟进'
+                    },
+                    {
+                        id: '4',
+                        innerCode: '4',
+                        tagName: '历史方案'
+                    },
+                    {
+                        id: '5',
+                        innerCode: '5',
+                        tagName: '已购产品'
+                    }
+                ],
+                tagIndex: '2',
+                active: 0,
+                customerName: "本人",
+                proposalList: [],
+                offset: 0,
+                limit: 10,
+                length: 0,
+                riskName: "",
+                proposalNo: "",
+                totalamount: "",
+                insuredsex: "",
+                insuredage: "",
+                firstTrail: '',//最近轨迹的时间
+                customerType: "",//1:加微好友  2:自建、获取  3:关注公众号
+                aid: "",
+                oid: "",
+                rid: "",
+            }
+        },
+        computed: {
+            ...mapGetters(['user']),
+        },
+        components: {
+            'top-panel': CustomerTopPanel,
+            'footer-panel': CustomerFooterPanel,
+        },
+        created () {
+            // console.log('客户详情接受参数：',this.$route.params)
+            this.queryBasicIntroduction();//基本介绍
+            this.queryCustomerPortrait();//客户画像
+            this.getCustomerInteract();//互动情况
+            this.getCustomerLastTrail();//访客记录
+            this.getFamilyList();//家庭成员列表
+        },
+        methods: {
+
+            handleClickTag (index, title) {
+                this.tagIndex = this.tabList[index].innerCode
+                if (this.tagIndex == '1') {
+                    this.$router.push({ name: 'orderList',params: {
+                        q: this.clid,
+                        r: this.customerResultId
+                    } })
+                } else if (this.tagIndex == '2') {
+                    this.$router.push({ name: 'trailList',params: {
+                        q: this.clid,
+                        r: this.customerResultId
+                    } })
+                } else if (this.tagIndex == '3') {
+                    this.$router.push({ name: 'followList',params: {
+                        q: this.clid,
+                        r: this.customerResultId
+                    } })
+                } else if (this.tagIndex == '4') {
+                    this.$router.push({ name: 'historyList',params: {
+                        q: this.clid,
+                        r: this.customerResultId
+                    } })
+                } else if (this.tagIndex == '5') {
+                    this.$router.push({ name: 'payProductList',params: {
+                        q: this.clid,
+                        r: this.customerResultId
+                    } })
+                }
+            },
+
+            queryBasicIntroduction () {
+                console.log(this.$route.params,this.clid);
+                const _data = {
+                    saasId: tool.app.saasId,
+                    clientId: this.clid
+                }
+                api_sell.queryBasicIntroduction(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.customerBaseInfo = data;
+                        this.aid = data.appId;
+                        this.oid = data.openId;
+                        this.rid = data.resultId;
+                        this.getCustomerDetail(data.clientNewId);
+                        this.queryProposalList();//历史方案列表
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            queryCustomerPortrait () {
+                const _data = {
+                    saasId: tool.app.saasId,
+                    resultId: this.customerResultId
+                }
+                api_sell.queryCustomerPortrait(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.portraitSex = data.sex;
+                        this.portraitAge = data.age;
+                        this.portraitTagsName = data.tagsName;
+                        this.head = data.head;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            getCustomerInteract () {
+                const _data = {
+                    saasId: tool.app.saasId,
+                    clientId: this.clid
+                }
+                api_sell.getCustomerInteract(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        if (data.funCustomerInteractDTO) {
+                            this.addFriendsTime = data.funCustomerInteractDTO.addFriendsTime;
+                            this.interactNum = data.funCustomerInteractDTO.interactNum;
+                            this.visitTime = data.funCustomerInteractDTO.visitTime;
+                            this.customerType = data.funCustomerInteractDTO.customerType;
+                            this.officialAppId = data.funCustomerInteractDTO.appId;
+                            this.officialClientId = data.funCustomerInteractDTO.clientId;
+                            this.officialOpenid = data.funCustomerInteractDTO.openid;
+                        }
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            queryProposalList () {
+                const _data = {
+                    agentCode: this.user.userInfo.agentcode,
+                    saasId: tool.app.saasId,
+                    operation: "1",
+                    pagesize: this.limit,
+                    pageoffset: 1,
+                    uuserId: this.user.userInfo.userId,
+                    customerId: this.customerBaseInfo.clientNewId,
+                    platformId: tool.app.platformId
+                }
+
+                api_sell.queryProposalList(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        if (data.dataM.proposalList > 0) {
+                            this.proposalList = data.dataM.proposalList[0];
+                            this.proposalList.riskName = data.dataM.proposalList[0].riskName;
+                            this.proposalList.proposalNo = data.dataM.proposalList[0].proposalNo;
+                            this.proposalList.totalamount = data.dataM.proposalList[0].totalamount;
+                            this.proposalList.insuredsex = data.dataM.proposalList[0].insuredsex;
+                            this.proposalList.insuredage = data.dataM.proposalList[0].insuredage.slice(0,-1);
+                            this.proposalList.length = data.dataM.proposalList.length;
+                        }
+                    } else {
+                        // tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            getCustomerLastTrail () {
+                const _data = {
+                    openid: this.user.userInfo.openid,
+                    saasId: tool.app.saasId,
+                    userId: this.user.userInfo.userId
+                }
+                api_sell.getCustomerLastTrail(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        if (data.funVisitTrailDTO) {
+                            this.funVisitTrailDTO = data.funVisitTrailDTO;
+                            this.firstTrail = data.funVisitTrailDTO.viewTime;
+                        }
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            currentRelation (item, index) {
+                this.relation = index;
+                this.relationFlag = item.relationFlag;
+                if (item.relationFlag == '01') {
+                    this.otherInfo = true;
+                    this.customerName = "本人";
+                } else {
+                    this.otherInfo = false;
+                    this.customerName = item.name;
+                }
+                this.getCustomerDetail(item.clientNewId);
+            },
+
+            getFamilyList () {
+                const _data = {
+                    agentCode: this.user.userInfo.agentcode,
+                    resultId: this.customerResultId,
+                    saasId: tool.app.saasId
+                }
+                api_sell.getFamilyList(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.familyList = data.familyList;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            getCustomerDetail (clientNewId) {
+                const _data = {
+                    saasId: tool.app.saasId,
+                    clientNewId: clientNewId
+                }
+                api_sell.getCustomerDetail(_data).then(data => {
+                    if (data.status == tool.rtCode.status) {
+                        this.customerDetail = data.customerDetail;
+                    } else {
+                        tool.toastMessage(data.message, 'error');
+                    }
+                })
+            },
+
+            goMess () {
+                this.$router.push({ name: 'messWindow',params: {
+                    oid: this.officialOpenid,
+                    aid: this.officialAppId,
+                    cid: this.officialClientId
+                } })
+            },
+
+            goTrail () {
+                this.$router.push({ name: 'trailList',params: {
+                    q: this.clid,
+                    r: this.customerResultId
+                } })
+            },
+
+            goFollow () {
+                this.$router.push({ name: 'followList',params: {
+                    q: this.clid,
+                    r: this.customerResultId
+                } })
+            },
+
+            portraitDetail () {
+                this.$router.push({ name: 'portraitDetail'});
+            },
+
+            checkMore () {
+                this.$router.push({ name: 'historyList',params: {
+                    q: this.clid,
+                    r: this.customerResultId
+                } })
+            },
+
+            editLabel () {
+                this.$router.push({ name: 'editLabel',params: {
+                    r: this.customerResultId,
+                    s: '0'
+                } })
+            },
+
+            editCustomerDetail () {
+                this.$router.push({ name: 'editCustomerDetail',params: {
+                    q: this.clid,
+                    r: this.customerResultId,
+                    s: this.customerBaseInfo.batchApplyMode,
+                    t: this.customerBaseInfo.clientNewId
+                } })
+            },
+
+            addFamily () {
+                this.$router.push({ name: 'addFamily',params: {
+                    q: this.customerBaseInfo.clientNewId,
+                    r: this.customerResultId
+                } })
+            },
+
+            goBack () {
+                this.$router.push({ name: 'sellList',params: {
+                    q: "1"
+                } })
+            },
+
+
+        }
+    }
+</script>
+<style scoped>
+
+</style>

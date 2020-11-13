@@ -1,0 +1,121 @@
+<template>
+    <div class="bg7">
+        <div class="fun-top-panel bg7" @click="goBack()">
+            <span class="mess-back "><div class="cont"></div></span>
+            <span class="title c3 f3 dblock2 t-center ">数字行销</span>
+        </div>
+        <div class="main-top p-fix bg7 b-radius2">
+            <section class="f-flex pad7-1 border-b1">
+                <div class="sear-bb ">
+                    <div class=" new-search ns clearfix">
+                        <section class="sear-c posi2 clearfix">
+                        <form action="" class="input-search-form" id="search_from"  >
+                            <input type="search"  input autocomplete="off" placeholder="输入关键字搜索" ng-model="search.text" class="f2 " >
+                        </form>
+                        <button class="sea-btn" ng-click="searchLike()"><span class="gg-search" ></span></button>
+                        </section>
+                    </div>
+                </div>
+                <div class="cancel-b t-center f2 c8 l-h2" @click="goBack()">取消</div>
+            </section>
+        </div>
+        <!-- 搜索历史 -->
+        <div class="main-container mar4-1 clearfix" v-if="isShowHistory">
+            <div class="pad5 f2-1 c5">搜索历史<span class="f-right" @click="delHistory()"><b class="fun-icon icon-del " title="删除"></b></span></div>
+                <section class="tab-box2">
+                    <span class=" c-p" @click="show()">诸葛亮</span>
+                    <span class=" c-p">关云长</span>
+                    <span class=" c-p">曹孟德</span>
+                    <span class=" c-p">刘备</span>
+            </section>
+        </div>
+        <!-- 搜索结果 -->
+        <div class="main-container mar4-1 clearfix" v-if="isShowResult">
+            <div class="b-sh1 pad5-5 bg7  mar6-1">
+                <div class="blk-cont-box posi2  ">
+                    <div class="img-box posi2">
+                        <img src="../../assets/img/index/bar_bg.png" />
+                        <b class="state c-p">分配客户</b>
+                    </div>
+                    <div class="right-box posi2  c-p" >
+                        <h3 class="f2 c6 mar7-2"><span>范晓华</span></h3>
+                        <div class="f2 c4 ">
+                            <span>年龄：</span><span>30岁</span><b class="s-icon b3"></b><b class="s-icon b4"></b>
+                        </div>
+                        <div class=" f2 c4">
+                            <span>客户星级：</span><span class="stars-box"><i></i><i></i><i></i><i></i><i class="grey"></i></span>
+                        </div>
+                        <div class=" f2 c4">
+                            <span>订单状态：</span><span class="c8">投保录入中</span>
+                        </div>
+                        <div class=" f2 c4">
+                            <span>订单更新时间：</span><span>2020-08-20 15:00</span>
+                        </div>
+                        <div class="f1"><b class="ek-btn-5">赠险活动客户</b></div>
+                    </div>
+                    <b class="flag">客户行销</b>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    import Vue from 'vue'
+    import { mapGetters } from 'vuex'
+    import * as tool from '@/common/Tool'
+    import { api_sell } from '@/api/index'
+    import DataSource from '@/common/DataSource'
+    import '@vant/touch-emulator'
+    import { Popup, Picker } from 'vant'
+    // import Rules from './Rules'
+    // import Works from './Works'
+    // import Visitor from './Visitor'
+    // import Performance from './Performance'
+
+    Vue.use(Popup)
+    Vue.use(Picker)
+
+    export default {
+        name: "SearchResult",
+        data () {
+            return {
+                isShowHistory: true,
+                isShowResult: false,
+            }
+        },
+        computed: {
+            ...mapGetters(['user']),
+        },
+        components: {
+            // 'rules': Rules,
+            // 'works': Works,
+            // 'visitor': Visitor,
+            // 'performance': Performance
+        },
+        created () {
+
+        },
+        methods: {
+
+            show () {
+                this.isShowHistory = false;
+                this.isShowResult = true;
+            },
+
+            delHistory () {
+                //删除搜索历史
+            },
+
+            goBack () {
+                this.$router.push({ path: '/sellList/1' });
+            },
+
+
+
+
+        }
+    }
+</script>
+<style scoped>
+
+</style>

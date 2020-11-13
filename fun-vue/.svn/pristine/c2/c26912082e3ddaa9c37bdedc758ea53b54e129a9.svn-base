@@ -1,0 +1,624 @@
+<template>
+
+  <div class="bg3">
+    <div>
+      <div class="main-top p-fix bg7 b-radius2" style="top: 0px;">
+        <section class="f-flex pad7-1 border-b1">
+          <div class="sear-bb ">
+            <div class=" new-search ns clearfix">
+              <section class="sear-c posi2 clearfix" @click="search()">
+                <form action="" class="input-search-form" id="search_from">
+                  <input type="search" disabled input autocomplete="off" placeholder="输入关键字搜索" ng-model="search.text"
+                         class="f2 ">
+                </form>
+                <button class="sea-btn" ng-click="searchLike()"><span class="gg-search"></span></button>
+              </section>
+            </div>
+          </div>
+          <div class="all-box t-center f2 c8 l-h2" @click="$router.push({path:'/client'})">全部客户</div>
+        </section>
+        <div class="sale-nav row mar0 pad6">
+          <div class="col-6" @click="getCustomer()">
+            <div class="sale-btn-l t-center"><b class="s-icon b1"></b>获取客户</div>
+          </div>
+          <div class="col-6" @click="createCustomer()">
+            <div class="sale-btn-r t-center"><b class="s-icon b2"></b>自建客户</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-container mar4-4 clearfix" style="margin-top: 146px;">
+        <section class="bg7 b-radius2 ">
+          <div class="clearfix bg7 f-flex">
+            <div class="sel-p5 pro" :class="listStatus == 1 ? 'active' : ''" @click="chooseList(1)"><label class="f3-1"><b>待跟进</b></label>
+            </div>
+            <div class="sel-p5 pro" :class="listStatus == 2 ? 'active' : ''" @click="chooseList(2)"><label class="f3-1"><b>跟进中</b></label>
+            </div>
+            <div class="sel-p5 pro" :class="listStatus == 3 ? 'active' : ''" @click="chooseList(3)"><label class="f3-1"><b>计划跟进</b></label>
+            </div>
+            <div class="sel-p5 pro" :class="listStatus == 4 ? 'active' : ''" @click="chooseList(4)"><label class="f3-1"><b>待成交</b></label>
+            </div>
+          </div>
+          <div class="bg7  border-t2 clearfix b-radius2 pad5-3">
+            <div class="fresh box3">
+              <div class=" sel-3 " :class="labelStatus == 1 ? 'on' : ''">
+                <div class="abc" :class="labelStatus == 1 ? 'abc_selected' : ''" @click="selectClick('1')">
+                  {{!labelTitle1 ? '客户类型' : labelTitle1}}
+                </div>
+              </div>
+              <div class=" sel-3 " :class="labelStatus == 2 ? 'on' : ''">
+                <div class="abc" :class="labelStatus == 2 ? 'abc_selected' : ''" @click="selectClick('2')">
+                  {{!labelTitle2 ? '等级' : labelTitle2}}
+                </div>
+              </div>
+              <!-- <div class=" sel-3 " :class="labelStatus == 3 ? 'on' : ''" v-show="listStatus == 1 || listStatus == 4">
+                <div class="abc" :class="labelStatus == 3 ? 'abc_selected' : ''" @click="selectClick('3')">
+                  {{!labelTitle3 ? '专案线索' : labelTitle3}}
+                </div>
+              </div> -->
+              <div class=" sel-3 " :class="labelStatus == 4 ? 'on' : ''">
+                <div class="abc" :class="labelStatus == 4 ? 'abc_selected' : ''" @click="selectClick('4')">
+                  {{!labelTitle4 ? '排序' : labelTitle4}}
+                </div>
+              </div>
+            </div>
+
+            <van-popup v-model="isLabel" round position="bottom">
+              <van-picker
+                show-toolbar
+                :value-key="contentValueKey"
+                :columns="labelList"
+                @cancel="isLabel = false"
+                @confirm="selectContent"
+                :style="{width: '100%'}"
+              />
+            </van-popup>
+          </div>
+        </section>
+
+        <section class="bg7 ">
+          <div class="blk-cont-box posi2 border-b1 mar6-2" v-for="(item, index) in customerList" :key="index"
+               @click="goDetail(item)">
+            <div class="img-box posi2">
+              <img v-if="!!item.head" :src="item.head" alt="pic"/>
+              <img v-if="!item.head" src="../../assets/img/index/bar_bg.png" alt="pic"/>
+              <b class="state c-p" v-show="item.batchApplyMode == 1">系统分配</b>
+              <b class="state c-p" v-show="item.batchApplyMode == 2">主动取数</b>
+              <b class="state c-p" v-show="item.batchApplyMode == 3">自建客户</b>
+            </div>
+            <div class="right-box posi2  c-p">
+              <h3 class="f2 c5 mar7-4"><span>{{item.name}}</span></h3>
+              <div class="f2 c4 ">
+                <span>年龄：</span><span>{{item.age != '未知' ? item.age + '岁' : item.age}}</span>
+                <b v-if="!!item.sex && item.sex == '1'" class="s-icon b3"></b>
+                <b v-if="!!item.sex && item.sex == '0'" class="s-icon b4"></b>
+                <b v-if="!!item.sex && item.sex == '2'" class="s-icon"></b>
+              </div>
+              <div class=" f2 c4">
+                <span>客户星级：</span>
+                <span class="stars-box" v-if="item.customerStar == '1'"><i></i><i class="grey"></i><i
+                  class="grey"></i><i class="grey"></i><i class="grey"></i></span>
+                <span class="stars-box" v-if="item.customerStar == '2'"><i></i><i></i><i class="grey"></i><i
+                  class="grey"></i><i class="grey"></i></span>
+                <span class="stars-box" v-if="item.customerStar == '3'"><i></i><i></i><i></i><i class="grey"></i><i
+                  class="grey"></i></span>
+                <span class="stars-box" v-if="item.customerStar == '4'"><i></i><i></i><i></i><i></i><i class="grey"></i></span>
+                <span class="stars-box" v-if="item.customerStar == '5'"><i></i><i></i><i></i><i></i><i></i></span>
+              </div>
+              <div class=" f2 c4" v-show="listStatus == 2 || listStatus == 3">
+                <span>跟进结果：</span><span>{{item.followUpResult}}</span>
+              </div>
+              <div class=" f2 c4" v-show="listStatus == 4">
+                <span>订单状态：</span><span class="c8">{{item.orderStatus}}</span>
+              </div>
+              <div class=" f2 c4" v-show="listStatus == 1">
+                <span>创建时间：</span><span>{{item.date | dataFormat('yyyy-MM-dd hh:mm:ss')}}</span>
+              </div>
+              <div class=" f2 c4" v-show="listStatus == 2">
+                <span>最新互动时间：</span><span>{{item.date | dataFormat('yyyy-MM-dd hh:mm:ss')}}</span>
+              </div>
+              <div class=" f2 c4" v-show="listStatus == 3">
+                <span>计划时间：</span><span>{{item.date | dataFormat('yyyy-MM-dd hh:mm:ss')}}</span>
+              </div>
+              <div class=" f2 c4" v-show="listStatus == 4">
+                <span>订单更新时间：</span><span>{{item.date | dataFormat('yyyy-MM-dd hh:mm:ss')}}</span>
+              </div>
+              <div class="f1 pad6-4" v-if="!!item.activitySource"><b class="ek-btn-5 ">{{item.activitySource}}</b></div>
+              <div class="f1 pad6-4" v-if="!!item.officialAccountName"><b class="ek-btn-5 ">{{item.officialAccountName}}</b></div>
+            </div>
+            <b class="flag">客户行销</b>
+          </div>
+        </section>
+
+        <van-empty v-show="total===0" description="暂无客户"/>
+        <div class="f2 pad888" v-if="customerList.length>=total && customerList.length>0">
+          <div class="lzg-h-more posi2 t-center">
+            <span class="c5 bg3 posi2 c222">没有更多啦</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 获取客户-网电 -->
+    <div class="mask-layer" v-show="accessStatus" @click="closed('power')"></div>
+    <div class="pop-box5 bg7" v-show="accessStatus">
+      <div>
+        <h3 class="pad6  t-center f3 c6 ">获取客户</h3>
+        <div class="mar3-2 ">
+          <section class="pad5-5  bg7">
+            <div class=" t-center">
+              <van-stepper v-model.number="value" integer step="1" :max="surplusNum" :disable-input="isDisable" @change="changeNum"/>
+            </div>
+            <div class="f1 c5 t-center mar2">今日剩余可取数量{{maxNum}}人</div>
+            <div class="pad6" @click="saveNum()">
+              <button type="button" class="hx-bt3 bt2  t-center" :class="maxNum == 0 ? 'cancel' : 'active'">取数</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <!-- 获取客户-绩优&独立 -->
+    <div class="mask-layer" v-if="isIndepend" @click="closed('independ')"></div>
+    <div class="pop-box00" v-if="isIndepend">
+      <div class="">
+        <div class="pad5-9 bg7 b-radius1">获取客户</div>
+        <div class="mar3-2 max-h2">
+          <section class="pad5-5  bg7">
+            <h3 class="f1 c6 l-h1">新人福利</h3>
+            <section class=" falg-bg">
+              <div class="f1 c5">恭喜您获取5星客户的免费领取机会！
+                数量1人，原客户成本200元
+              </div>
+              <div class="btn-box">
+                <button class=" ek-btn-1 f1 ">取数</button>
+              </div>
+            </section>
+          </section>
+          <h3 class="pad5 c5 f1">当前可用积分：1000分</h3>
+          <section class="pad5-5  bg7">
+            <h3 class="f1 c6 l-h1">5星客户</h3>
+            <div class="f1 c5">获取成本: <span class="c8">200积分/客户</span>
+              <div class="f-right w4">
+                <button class=" ek-btn-1 f1 ">取数</button>
+              </div>
+            </div>
+            <div class="pad6-1">
+              <span class="f1 c6 tit vh2">数量</span>
+              <input type="text" class="spinner-star"/>
+              <span class="f1 c4 vh2">(今日剩余可获取：5人)</span>
+            </div>
+            <div class="f1 c5 pad6-1 border-t">客户特色: 高质量保险客户，且具有明确的保险购买意向。已添加微信公众号，可直接进行沟通跟进。</div>
+          </section>
+          <section class="pad5-5  bg7">
+            <h3 class="f1 c6 l-h1">5星客户</h3>
+            <div class="f1 c5">获取成本: <span class="c8">200积分/客户</span>
+              <div class="f-right w4">
+                <button class=" ek-btn-1 f1 ">取数</button>
+              </div>
+            </div>
+            <div class="pad6-1">
+              <span class="f1 c6 tit vh2">数量</span>
+              <input type="text" class="spinner-star"/>
+              <span class="f1 c4 vh2">(今日剩余可获取：5人)</span>
+            </div>
+            <div class="f1 c5 pad6-1 border-t">客户特色: 高质量保险客户，且具有明确的保险购买意向。已添加微信公众号，可直接进行沟通跟进。</div>
+          </section>
+          <section class="pad5-5  bg7">
+            <h3 class="f1 c6 l-h1">5星客户</h3>
+            <div class="f1 c5">获取成本: <span class="c8">200积分/客户</span>
+              <div class="f-right w4">
+                <button class=" ek-btn-1 f1 ">取数</button>
+              </div>
+            </div>
+            <div class="pad6-1">
+              <span class="f1 c6 tit vh2">数量</span>
+              <input type="text" class="spinner-star"/>
+              <span class="f1 c4 vh2">(今日剩余可获取：5人)</span>
+            </div>
+            <div class="f1 c5 pad6-1 border-t">客户特色: 高质量保险客户，且具有明确的保险购买意向。已添加微信公众号，可直接进行沟通跟进。</div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <footer-panel footer="sell"></footer-panel>
+  </div>
+</template>
+<script>
+  import Vue from 'vue'
+  import { mapGetters } from 'vuex'
+  import { FooterPanel } from '@/components/index'
+  import * as tool from '@/common/Tool'
+  import { api_sell } from '@/api/index'
+  import DataSource from '@/common/DataSource'
+  import '@vant/touch-emulator'
+  import { Popup, Picker, Empty, Stepper } from 'vant'
+  import * as scroll from '@/common/Scroll'
+
+  Vue.use(Popup)
+  Vue.use(Picker)
+  Vue.use(Empty)
+  Vue.use(Stepper)
+
+  export default {
+    name: 'sellList',
+    data() {
+      return {
+        q: this.$route.params.q,//定位到具体的状态列表
+        customerList: [],//客户列表
+        listStatus: DataSource.get('listStatus', 1) ? DataSource.get('listStatus', 1) : 1,
+        customerTypeList: [],//客户类型列表
+        levelList: [],//等级列表
+        clueList: [],//专案线索列表
+        sortList: [],//排序列表
+        orderList: [],//订单状态列表
+        allType: {
+          name: '全部',
+          type: 'funzg_batch_apply_mode',
+          value: ''
+        },
+        allLevel: {
+          name: '全部',
+          type: 'funzg_customer_star',
+          value: ''
+        },
+        allClue: {
+          name: '全部',
+          type: 'funzg_customer_project_type',
+          value: ''
+        },
+        allOrder: {
+          name: '全部',
+          type: 'fun_order_status',
+          value: ''
+        },
+        labelStatus: DataSource.get('labelStatus', 1) ? DataSource.get('labelStatus', 1) : 1,
+        isLabel: false,
+        labelList: [],
+        labelTitle1: '',//筛选标签的下拉选项列表
+        labelTitle2: '',
+        labelTitle3: '',
+        labelTitle4: '',
+        labelTitle5: '',
+        labelValue1: '',//选中的筛选标签的value值
+        labelValue2: '',
+        labelValue3: '',
+        labelValue4: '',
+        labelValue5: '',
+        accessStatus: false,//获取客户弹框-网电显示隐藏
+        isIndepend: false,//获取客户弹框-绩优&独立显示隐藏
+        contentValueKey: 'name',
+        total: 0,
+        isLoad: true,
+        allLoaded: false,
+        queryLoading: true,
+        offset: 0,
+        limit: 10,
+        value: 1,//取数的数量输入值
+        maxNum: '',//最大取数量
+        surplusNum: "",//目前分配的剩余可取数量
+        isDisable: true,
+      }
+    },
+    computed: {
+      ...mapGetters(['user']),
+    },
+    components: {
+      'footer-panel': FooterPanel,
+    },
+    beforeCreate: function() {
+      document.getElementsByTagName("body")[0].className = "bg3";
+    },
+    created() {
+      this.listStatus = this.q;
+      this.getCustomerList()
+
+      //筛选标签
+      this.labelType()//类型
+      this.labelLevel()//等级
+      this.labelClue()//方案
+      this.labelSort()//排序
+      this.orderStatusList()
+    },
+    mounted() {
+      window.addEventListener('scroll', this.handleScroll)
+    },
+    methods: {
+
+      handleScroll() {
+        if (scroll.getScrollTop() + scroll.getClientHeight() > (scroll.getScrollHeight() - 5)) {
+          this.loadMore()
+        }
+      },
+      loadMore() {
+        if (this.queryLoading) {
+          return
+        }
+        if (!this.isLoad) {
+          this.isLoad = true
+          this.offset += 10
+          this.getCustomerList()
+        }
+      },
+
+      chooseList(type) {
+        this.listStatus = type
+        DataSource.set('listStatus', this.listStatus, 2)
+
+        // 清空筛选内容
+        this.labelStatus = 1
+        this.labelTitle1 = ''
+        this.labelTitle2 = ''
+        this.labelTitle3 = ''
+        this.labelTitle4 = ''
+        this.labelTitle5 = ''
+        this.labelValue1 = ''
+        this.labelValue2 = ''
+        this.labelValue3 = ''
+        this.labelValue4 = ''
+        this.labelValue5 = ''
+        this.isLabel = false
+
+        this.offset = 0
+        this.getCustomerList()
+
+
+      },
+      labelType() {
+        const _data = { type: 'funzg_batch_apply_mode/' + tool.app.platformCode + '/' + tool.app.saasId }
+        api_sell.sysDict(_data).then(data => {
+          if (data.status == tool.rtCode.status) {
+            this.customerTypeList = data.params.dicts
+            this.customerTypeList.unshift(this.allType)
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        })
+      },
+      labelLevel() {
+        const _data = { type: 'funzg_customer_star/' + tool.app.platformCode + '/' + tool.app.saasId }
+        api_sell.sysDict(_data).then(data => {
+          if (data.status == tool.rtCode.status) {
+            this.levelList = data.params.dicts
+            this.levelList.unshift(this.allLevel)
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        })
+      },
+      labelClue() {
+        const _data = { type: 'funzg_customer_project_type/' + tool.app.platformCode + '/' + tool.app.saasId }
+        api_sell.sysDict(_data).then(data => {
+          if (data.status == tool.rtCode.status) {
+            this.clueList = data.params.dicts
+            this.clueList.unshift(this.allClue)
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        })
+      },
+      labelSort() {
+        const _data = { type: 'funzg_customer_order/' + tool.app.platformCode + '/' + tool.app.saasId }
+        api_sell.sysDict(_data).then(data => {
+          if (data.status == tool.rtCode.status) {
+            this.sortList = data.params.dicts
+            // this.sortList.unshift(this.allSort);
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        })
+      },
+      orderStatusList() {
+        const _data = { type: 'fun_order_status/' + tool.app.platformCode + '/' + tool.app.saasId }
+        api_sell.sysDict(_data).then(data => {
+          if (data.status == tool.rtCode.status) {
+            this.orderList = data.params.dicts
+            this.orderList.unshift(this.allOrder)
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        })
+      },
+
+      goDetail(item) {
+        DataSource.set('customerDetailSource', 'sellList', 2);
+        this.$router.push({
+          name: 'customerDetail', params: {
+            q: item.clientId,
+            r: item.clientNewId,
+            s: item.resultId
+          }
+        })
+      },
+
+      selectClick(type) {
+        this.isLabel = true
+        this.labelStatus = type
+        if (this.listStatus == 1) {
+          if (type == 1) {
+            this.labelList = this.customerTypeList
+          } else if (type == 2) {
+            this.labelList = this.levelList
+          } else if (type == 3) {
+            this.labelList = this.clueList
+          } else if (type == 4) {
+            this.labelList = this.sortList
+          }
+        } else if (this.listStatus == 4) {
+          if (type == 1) {
+            this.labelList = this.customerTypeList
+          } else if (type == 2) {
+            this.labelList = this.levelList
+          } else if (type == 3) {
+            this.labelList = this.orderList
+          } else if (type == 4) {
+            this.labelList = this.sortList
+          }
+        } else if (this.listStatus == 2 || this.listStatus == 3) {
+          if (type == 1) {
+            this.labelList = this.customerTypeList
+          } else if (type == 2) {
+            this.labelList = this.levelList
+          } else if (type == 4) {
+            this.labelList = this.sortList
+          }
+        }
+      },
+      selectContent(values, index) {
+        this.isLabel = false
+        if (values.type == 'funzg_batch_apply_mode') {
+          if (values.name == '全部') {
+            this.labelTitle1 = '客户类型'
+            this.labelValue1 = values.value
+          } else if (values.name != '全部') {
+            this.labelTitle1 = values.name
+            this.labelValue1 = values.value
+          }
+        } else if (values.type == 'funzg_customer_star') {
+          if (values.name == '全部') {
+            this.labelTitle2 = '等级'
+            this.labelValue2 = values.value
+          } else if (values.name != '全部') {
+            this.labelTitle2 = values.name
+            this.labelValue2 = values.value
+          }
+        } else if (values.type == 'funzg_customer_project_type') {
+          if (values.name == '全部') {
+            this.labelTitle3 = '专案线索'
+            this.labelValue3 = values.value
+          } else if (values.name != '全部') {
+            this.labelTitle3 = values.name
+            this.labelValue3 = values.value
+          }
+        } else if (values.type == 'funzg_customer_order') {
+          this.labelTitle4 = values.name
+          this.labelValue4 = values.value
+        } else if (values.type == 'fun_order_status') {
+          if (values.name == '全部') {
+            this.labelTitle5 = '订单状态'
+            this.labelValue5 = values.value
+          } else if (values.name != '全部') {
+            this.labelTitle5 = values.name
+            this.labelValue5 = values.value
+          }
+        }
+        this.getCustomerList()
+      },
+
+      // 客户列表
+      getCustomerList() {
+        const _data = {
+          saasId: tool.app.saasId,
+          agentUserId: this.user.userInfo.userId,
+          customerStatus: this.listStatus,//行销状态 1:待跟进；2：跟进中；3：计划跟进；4：待成交 5：被拉黑 ；6：已成交 ；7：已放弃
+          offset: this.offset,
+          limit: this.limit,
+          // getSource: this.labelValue1,//客户来源:1-分配客户;2-取数客户;3-自建客户
+          batchApplyMode: this.labelValue1,//客户来源:1-分配客户;2-取数客户;3-自建客户
+          customerStar: this.labelValue2,//客户星级:1-5级
+          purchaseIntention: '',//专案线索,this.labelValue3
+          sort: this.labelValue4,//排序:1-时间顺序;2-客户等级
+          orderStatus: this.labelValue5,//订单状态10-订单录入中、20-已取消、30-人工核保中、40-核保失败、50-未支付、60-支付完成、70-订单完成
+        }
+        api_sell.getCustomerList(_data).then(data => {
+          if (data.status == tool.rtCode.status) {
+            this.isLoad = false
+            this.total = data.total
+            if (this.offset === 0 || this.customerList.length === 0) {
+              this.customerList = data.customerList ? data.customerList : []
+              if (this.customerList.length < this.total) {
+                this.queryLoading = false
+              }
+            } else {
+              this.customerList = this.customerList.concat(data.customerList)
+            }
+            this.allLoaded = this.customerList.length >= this.total
+            if (this.allLoaded) {
+              this.queryLoading = true
+            }
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        })
+      },
+
+      getAgentAccess() {
+        const _data = {
+          saasId: tool.app.saasId,
+          userId: this.user.userInfo.userId
+        }
+        api_sell.getAgentAccess(_data).then(data => {
+          if (data.status == tool.rtCode.status) {
+            this.maxNum = data.maxNum;
+            this.surplusNum = data.surplusNum;
+            if (data.surplusNum != 0) {
+              this.isDisable = false;
+            } else {
+              this.isDisable = true;
+            }
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        })
+      },
+
+      getCustomer() {
+        this.getAgentAccess()
+        this.accessStatus = true
+      },
+
+      changeNum(value) {
+        this.value = value
+      },
+
+      saveNum() {
+        if (this.maxNum != 0) {
+          const _data = {
+            agentCode: this.user.userInfo.agentcode,
+            saasId: tool.app.saasId,
+            userId: this.user.userInfo.userId,
+            assignNum: this.value
+          }
+          api_sell.assignAgentData(_data).then(data => {
+            if (data.status == tool.rtCode.status) {
+              this.accessStatus = false;
+              this.getCustomerList();
+            } else {
+              tool.toastMessage(data.message, 'error')
+              this.accessStatus = false;
+            }
+          })
+        } else {
+          // tool.toastMessage('今日剩余可取数量0人', 'error')
+          // this.accessStatus = false;
+        }
+      },
+
+      createCustomer() {
+        this.$router.push({ name: 'createCustomer' })
+      },
+
+      search() {
+        this.$router.push({ name: 'searchResult' })
+      },
+
+      closed(type) {
+        if (type == 'power') {
+          this.isLabel = false
+          this.accessStatus = false
+        } else if (type == 'independ') {
+          this.isIndepend = false
+        }
+      },
+    },
+    beforeDestroy: function() {
+      // document.body.removeAttribute("class", "bg3");
+    },
+    destroyed() {
+      window.removeEventListener('scroll', this.handleScroll)
+    },
+  }
+</script>
+<style scoped>
+
+</style>

@@ -1,0 +1,475 @@
+<template>
+  <div>
+    <div v-show="!isGroupChatStatus">
+      <div class="fun-top-panel bg7  ">
+        <span class="mess-back " @click="goBack"><div class="cont"></div></span>
+        <span class="title c3 f3 dblock2 t-center ">会话消息</span>
+        <div class="f2 c8 right" @click="$router.push({path: '/systemNews'})"><span class="fun-icon icon-mess"></span></div>
+      </div>
+        <div class="chat-wrapper mar3-7 posi2 clearfix">
+          <div class="chat-member bg3">
+            <div id="chatMem" class="swiper-container border-b1" style="height: 100%;">
+              <div class="swiper-wrapper">
+                <!-- 推荐 -->
+                <div class="swiper-slide mh100" v-for="(item, index) in officeList" :key="'office' + index" @click="handleOffice(item, index, 'cli')" :class="item.officeInd === officeNow ? 'active' : ''">
+                  <div class="img-box posi2">
+                    <img :src="item.source === 'public' ? item.offcialAccountHeadurl : (item.source === 'qyWx' ? item.portraitUrl : '')" />
+                    <b class="state" :class="item.source === 'public' ? 's2' : (item.source === 'qyWx' ? 's1' : '')"></b>
+                    <b class="c-flag" :class="item.offsetInd === officeNow ? 'fa1' : 'fa2'" v-if="(item.unreadCount && Number(item.unreadCount)>0) || (item.unreadNum && Number(item.unreadNum)>0)"></b>
+                  </div>
+                  <span>{{item.source === 'public' ? item.officialAccountName : (item.source === 'qyWx' ? item.nickName : '')}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class=" chatting-list ">
+            <section class="bg7" v-if="messType === 'public'">
+              <lazy-component>
+                <div class="blk-cont-box mar6-2  posi2  border-t" v-for="(item, index) in conversation" :key="index" @click="goMessWindow(item)">
+                  <div class="img-box2 posi2">
+                    <img v-lazy="item.head" />
+                    <b class="state s1"></b>
+                    <b class="c-flag fa3 " v-if="item.talkNum && item.talkNum>0"></b>
+                  </div>
+                  <div class="right-box rb1 posi2 c-p" >
+                    <h3 class="f2 c6 mar7-2">
+                      <span class="mess w5 dblock">{{item.name}}</span><span style="width:30%;" class="dblock f-right f1 c4">{{item.modifydate}}</span>
+                    </h3>
+                    <div class="f2 c5 mess">
+                      <span style="display: inline-block;width: 1px;" v-if="item.sendType === 'text'" v-html="item.content"></span>
+                      <span style="display: inline-block;width: 1px;" v-if="item.sendType !== 'text'">{{item.sendType === 'news' ? '[链接]' + item.newsContent.title : (item.messageType === 'image' ? '[图片]' : item.content)}}</span>
+                    </div>
+                  </div>
+                </div>
+              </lazy-component>
+            </section>
+            <div class="fun-icon icon-add-friend" title="添加好友" v-if="messType==='qyWx'" @click="isAddFriend = true"></div>
+            <van-tabs @click="handleTabsClick" title-active-color="#FD5147" color="#FD5147" v-if="messType==='qyWx'">
+              <van-tab title="实时会话">
+                <section class="bg7">
+                  <lazy-component>
+                    <div class="blk-cont-box mar6-2  posi2  border-t" v-for="(item, index) in conversation" :key="index" @click="goMessWindow(item)">
+                      <div class="img-box2 posi2">
+                        <img v-lazy="item.portraitUrl" />
+                        <b class="state s1"></b>
+                        <b class="c-flag fa3 " v-if="item.unreadNum && item.unreadNum>0"></b>
+                      </div>
+                      <div class="right-box rb1 posi2 c-p" >
+                        <h3 class="f2 c6 mar7-2">{{item.nickname}}<span class="f-right f1 c4" v-if="item.messageTime">{{item.messageTime | dataFormat('yyyy-MM-dd hh:mm')}}</span>
+                        </h3>
+                        <div class="f2 c5 mess">
+                          <span style="display: inline-block;width: 1px;" v-if="item.messageType === '10001'" v-html="item.messageContent"></span>
+                          <span style="display: inline-block;width: 1px;" v-if="item.messageType !== '10001'">{{item.messageType === '10006' ? '[链接]' + JSON.parse(item.messageContent).title : (item.messageType === '10003' ? '[图片]' : item.messageContent)}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </lazy-component>
+                </section>
+                <van-empty v-if="conversation.length === 0" description="暂无消息" />
+              </van-tab>
+              <van-tab title="通讯录">
+                <div class="main-top chat-group bg7  border-t">
+                  <section class="f-flex pad48-1 ">
+                    <div class="sear-bb ">
+                      <section class="">
+                        <form action="/">
+                          <van-search
+                            shape="round"
+                            v-model="searchText"
+                            placeholder="请输入搜索关键词"
+                            @search="handleSearch"
+                            @clear="handleClear"
+                          />
+                        </form>
+                      </section>
+                    </div>
+                    <div class="cancel-b t-center f2 c8 lh-44"><button class=" ek-btn-4 mar3 f1 " @click="groupSend">群发</button></div>
+                  </section>
+                </div>
+                <section class="">
+                  <div class="pad5-9 bg7 border-b1">
+                    <h3 class="ek-com-tit tri2 up f3 c6 " @click="groupShow = !groupShow"><b class="b2"></b>群组</h3>
+                  </div>
+                  <div class="pad5-9 bg7 " v-show="groupShow">
+                    <div class="ek-com-tit f3 c6" v-for="(item, index) in groupAddressBook" :key="'g-' + index">
+                      <b class="b3"><img v-lazy="item.portraitUrl" /></b>{{item.groupName}}({{item.memberNum || 0}})
+                    </div>
+                  </div>
+                  <section class="cus-list">
+                    <van-index-bar :sticky-offset-top="45"
+                                   :index-list="addressBookInitial"
+                                   highlight-color="#FD5147">
+                      <div v-for="(item, index) in initialsPyList.segs" :key="'book-' + index">
+                        <van-index-anchor  :index="item.initial"></van-index-anchor>
+                        <div class="list bg7 border-b1 " v-for="(it, ind) in item.data" :key="'init-' + ind">
+                          <div class="img-box ">
+                            <img v-lazy="it.portraitUrl">
+                          </div>
+                          <h3 class="right-box f3 c6 ">{{it.nickname}}</h3>
+                        </div>
+                      </div>
+                    </van-index-bar>
+                  </section>
+                </section>
+              </van-tab>
+            </van-tabs>
+          </div>
+        </div>
+
+
+      <footer-panel footer="mess"></footer-panel>
+      <add-friend v-if="isAddFriend"
+                  :operationWeChat="operationWeChat"
+                  @addFriend="addFriendFun"></add-friend>
+    </div>
+    <group-chat v-if="isGroupChatStatus"
+                :initialsPyList="initialsPyList"
+                :QYWeChatId="WeChatId"
+                @chooseFriendGroup="chooseFriendGroupFun"></group-chat>
+  </div>
+</template>
+
+<script>
+  import Vue from 'vue'
+  import { mapGetters } from 'vuex'
+  import * as tool from '@/common/Tool'
+  import { FooterPanel, AddFriend } from '@/components/index'
+  import { api_mess } from '@/api/index'
+  import Swiper from 'swiper'
+  import 'swiper/css/swiper.min.css'
+  import 'swiper/js/swiper.min.js'
+  import { Empty, Search, Tab, Tabs, IndexBar, IndexAnchor, Lazyload } from 'vant'
+  import DataSource from '@/common/DataSource'
+  import GroupChat from './child/GroupChat'
+
+  Vue.use(Empty).use(Search).use(Tab).use(Tabs).use(IndexBar).use(IndexAnchor).use(Lazyload, { lazyComponent: true })
+
+  export default {
+    name: "MessList",
+    data () {
+      return {
+        conversation: [],
+        officeList: [],
+        officeNow: DataSource.get('activeMessIndex', 2) ? DataSource.get('activeMessIndex', 2) : 0,
+        officeInd: -1,
+        appId: '',
+        WeChatId: '', // 企业微信号id
+        messType: '', // 区分
+        addressBookInitial: [],
+        customerAddressBook: [],
+        groupAddressBook: [],
+        initialsPyList: {},
+        isAddFriend: false,
+        isGroupChatStatus: false,
+        operationWeChat: [],
+        groupShow: false,
+        searchText: '', // 搜索关键词
+      }
+    },
+    components: {
+      'footer-panel': FooterPanel,
+      'add-friend': AddFriend,
+      'group-chat': GroupChat
+    },
+    computed: {
+      ...mapGetters(['user']),
+    },
+    beforeCreate: function() {
+      document.getElementsByTagName("body")[0].className = "bg3";
+    },
+    created () {
+      this.getOfficialAccountList() // 查询公众号列表
+      // this.handleChangeRead() // 更改已读状态
+      this.$options.sockets.onmessage = (data) => this.messageReceived(data)
+    },
+    methods: {
+      initSwiper() {
+        const swiper = new Swiper('#chatMem', {
+          direction: 'vertical',
+          freeMode: true,
+          freeModeMomentumRatio: 0.5,
+          slidesPerView: 4.5,
+          speed: 300,//滑动开始到滑动结束的时间
+          observer: true,//修改swiper自己或子元素时，自动初始化swiper
+          observeParents: true,//修改swiper的父元素时，自动初始化swiper
+          autoplayDisableOnInteraction: false,//用户操作swiper之后是否禁止autoplay
+        })
+      },
+      addressBookIntegrate(customerAddressBook) {
+        if (customerAddressBook.length == 0) return;
+        if (!String.prototype.localeCompare) return null;
+        let letters = "*ABCDEFGHJKLMNOPQRSTWXYZ".split(""),
+          zh = "阿八嚓哒妸发旮哈讥咔垃痳拏噢妑七呥扨它穵夕丫帀".split(""),
+          segs = [], // 存放数据
+          res = {},
+          curr,
+          re = /[^\u4e00-\u9fa5]/,//中文正则
+          pattern = new RegExp("[`\\-~!@#$^&*()=|{}':;',\\[\\].<>《》/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？12345678990]"); //特殊符号
+        letters.filter((items, i) => {
+          curr = {
+            initial: '', //字母
+            data: [],  //数据
+          };
+          customerAddressBook.map((v, index) => {
+            // 特殊字符
+            if (pattern.test(v.nickname[0])) {
+              if ((!zh[i - 1] || zh[i - 1].localeCompare(v.nickname) <= 0) && v.nickname.localeCompare(zh[i]) == -1) {
+                curr.data.push(v);
+              }
+            }
+            // 判断首个字是否是中文
+            if (re.test(v.nickname[0])) {
+              // 英文
+              if (v.nickname[0].toUpperCase() == items) {
+                curr.data.push(v);
+              }
+            } else {
+              // 中文
+              if ((!zh[i - 1] || zh[i - 1].localeCompare(v.nickname) <= 0) && v.nickname.localeCompare(zh[i]) == -1) {
+                curr.data.push(v);
+              }
+            }
+          })
+          if (curr.data.length) {
+            curr.initial = letters[i]
+            this.addressBookInitial.push(letters[i])
+            segs.push(curr);
+            curr.data.sort((a, b) => {
+              return a.nickname.localeCompare(b.nickname);
+            });
+          }
+        })
+        res.segs = Array.from(new Set(segs)) //去重
+        this.initialsPyList = res
+      },
+      getOperatorManageInfo(ind) {
+        api_mess.getOperatorManageQyWx({
+          type: this.user.operatorManageInfo.id,
+        }).then(res => {
+          if (res.code == '200') {
+            this.operationWeChat = res.data
+            for (let it of this.operationWeChat) {
+              this.officeInd += 1
+              it.officeInd = this.officeInd
+              it.source = 'qyWx'
+              this.officeList.push(it)
+            }
+            if (ind || ind === 0) {
+              this.WeChatId = this.operationWeChat[ind].id
+              this.getWXMessList()
+              this.getAddressBook()
+            }
+            this.initSwiper()
+          }
+        })
+      },
+      getOfficialAccountList() {
+        const _data = {
+          saasId: tool.app.saasId,
+          userId: this.user.userInfo.userId
+        }
+        api_mess.getOfficialAccountList(_data).then(data => {
+          if (data.status === tool.rtCode.status) {
+            let funAppOfficialAccountList = data.funAppOfficialAccountList
+            for (let it of funAppOfficialAccountList) {
+              this.officeInd += 1
+              it.officeInd = this.officeInd
+              it.source = 'public'
+              this.officeList.push(it)
+            }
+            if (funAppOfficialAccountList.length > this.officeNow) {
+              this.handleOffice(this.officeList[this.officeNow], this.officeNow)
+              this.getOperatorManageInfo()
+            } else {
+              const ind = this.officeNow - funAppOfficialAccountList.length
+              this.getOperatorManageInfo(ind)
+            }
+            this.initSwiper()
+          } else {
+            this.officeList = []
+            this.toastMessage(data.message, 'error')
+          }
+        })
+      },
+      handleOffice(it, ind, type) {
+        if (this.messType === 'public') {
+          this.WeChatId = ''
+        } else if (this.messType === 'qyWx') {
+          this.appId = ''
+        }
+        if (type && type === 'cli') {
+          this.officeNow = ind
+          DataSource.set('activeMessIndex', ind, 2)
+        }
+        if (it.source === 'public') {
+          if (this.appId !== it.officialAccountId) {
+            this.appId = it.officialAccountId
+            this.conversation = []
+            this.getMessList() // 查询会话列表
+          }
+        } else if (it.source === 'qyWx') {
+          if (this.WeChatId !== it.id) {
+            this.WeChatId = it.id
+            this.conversation = []
+            this.getWXMessList() // 查询会话列表
+            this.getAddressBook()
+          }
+        }
+      },
+      getMessList() {
+        const _data = {
+          saasId: tool.app.saasId,
+          userId: this.user.userInfo.userId,
+          appId: this.appId
+        }
+        api_mess.getAllClientNewTalk(_data, {showLoadingFlag: 'N'}).then(data => {
+          if (data.status === tool.rtCode.status) {
+            this.messType = 'public'
+            this.conversation = data.funRealTimeMessageDTOList
+          } else {
+            tool.toastMessage(data.message, 'error')
+          }
+        })
+      },
+      getWXMessList() {
+        const _data = {
+          operationWorkManageId: this.WeChatId,
+          operatorId: this.user.operatorManageInfo.id,
+          transferType: 0
+        }
+        api_mess.getMembersTable(_data, {showLoadingFlag: 'N'}).then(res => {
+          if (res.code == '200') {
+            this.messType = 'qyWx'
+            this.conversation = res.data
+          } else {
+            tool.toastMessage(res.msg, 'error')
+          }
+        })
+      },
+      getAddressBook () {
+        const _data = {
+          operatorId: this.user.operatorManageInfo.id,
+          operationWechatId: this.WeChatId
+        }
+        api_mess.getGroupFriendList(_data, {showLoadingFlag: 'N'}).then(res => {
+          if (res.code == '200') {
+            let customerAddressBook = res.data[0].operations.friendList
+            this.customerAddressBook = res.data[0].operations.friendList
+            this.groupAddressBook = res.data[0].operations.groupList
+            this.addressBookIntegrate(customerAddressBook)
+          }
+        })
+      },
+      handleChangeRead() {
+        const userMess = DataSource.get('userMess', 1) || 0
+        if (!userMess || !userMess.messConversation || userMess.messConversation === 0) return
+        const _data = {
+          saasId: tool.app.saasId,
+          userId: this.user.userInfo.userId
+        }
+        api_mess.readTimeStateEdit(_data).then(data => {
+          if (data.status === tool.rtCode.status) {
+            const userMess = {
+              messConversation: 0
+            }
+            DataSource.set('userMess', userMess, 1)
+            tool.setUserMess(userMess)
+          }
+        })
+      },
+      handleChangeQyRead(it) {
+        const _data = {
+          operationWechatId: this.WeChatId,
+          friendId: it.friendId,
+          groupId: it.groupId
+        }
+        api_mess.chatMessageEdit(_data).then(data => {
+        })
+      },
+      handleTabsClick(index) {
+      },
+      goMessWindow(it) {
+        if (this.messType === 'qyWx') {
+          DataSource.set('fHead', it.portraitUrl, 2)
+        }
+        let talkNum = this.messType === 'public' ? it.talkNum : (this.messType === 'qyWx' ? it.unreadNum : ''),
+          wxId = this.messType === 'qyWx' && it.friendId ? 'fid=' + it.friendId : (this.messType === 'qyWx' && it.platformGid ? 'gid=' + it.platformGid : ''),
+          parameter = this.messType === 'public' ? 'messType=public&oid=' + it.openid + '&aid=' + it.appId + '&cid=' + it.clientId : 'messType=qyWx&wid=' + it.operationWechatId + '&wctId=' + it.wechatId + '&' + wxId
+        DataSource.set('talkNum', talkNum, 1)
+        if (this.messType === 'qyWx' && it.platformGid) {
+          DataSource.set('groupName', it.nickname || '群聊', 2)
+        }
+        this.$router.push({name: 'messWindow', params: {p: parameter}})
+        if (this.messType === 'qyWx') {
+          this.handleChangeQyRead(it)
+        }
+      },
+      handleSearch () {
+        const _data = {
+          operatorId: this.user.operatorManageInfo.id,
+          searchName: this.searchText
+        }
+        api_mess.getOperatorManageInfo(_data).then(res => {
+          if (res.code == '200') {
+            this.addressBookInitial = []
+            let customerAddressBook = res.data[0].operations.friendList
+            this.addressBookIntegrate(customerAddressBook)
+          } else {
+            tool.toastMessage(res.msg, 'error')
+          }
+        })
+      },
+      handleClear () {
+        this.addressBookInitial = []
+        this.addressBookIntegrate(this.customerAddressBook)
+      },
+      goBack() {
+        this.$router.back()
+      },
+      addFriendFun(params) {
+        this.isAddFriend = false
+        if (params) {
+
+        }
+      },
+      chooseFriendGroupFun (params) {
+        this.isGroupChatStatus = false
+        if (params) {
+
+        }
+      },
+      groupSend () {
+        this.isGroupChatStatus = true
+      },
+      messageReceived: function (raw_message) {
+        let res = JSON.parse(raw_message.data)
+        console.log(res)
+        if (res && res.data && res.socketType ==='pushMessage') {
+          this.getWXMessList()
+          this.getAddressBook()
+        }else if (res && res.data && res.data.messType=== 'public') {
+          this.getMessList()
+        }
+      },
+    },
+    beforeDestroy: function() {
+      document.body.removeAttribute("class", "bg3")
+    },
+  }
+</script>
+
+<style scoped>
+  .mh100{max-height: 85px;}
+  .c-flag{height:15px;width:15px; position:absolute; border-radius:100%; background-color:#ff0000; color:#fff;right:-6px;top:-5px; font-weight: normal;}
+  .c-flag.fa1{top:-2px;right:-1px;width:8px;height:8px;}
+  .c-flag.fa2{top:0px;right:-7px;width:8px;height:8px;}
+  .c-flag.fa3{top:0px;right:0px;right:auto;width:8px;height:8px;}
+
+  @media (min-width:640px) {
+    body {
+      margin: 0 auto !important;
+      width: 100% !important;
+      text-align: left;
+    }
+  }
+</style>

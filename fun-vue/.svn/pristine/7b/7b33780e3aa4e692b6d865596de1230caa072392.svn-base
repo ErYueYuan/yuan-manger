@@ -1,0 +1,169 @@
+<template>
+  <div class="bg7">
+    <div class="main-top p-fix bg7 b-radius2">
+      <section class="f-flex pad7-1 border-b1">
+        <div class="sear-bb ">
+          <div class="ns clearfix">
+            <section class="sear-c posi2 clearfix">
+              <form
+                action=""
+                class="input-search-form"
+                id="search_from"
+              >
+                <van-search
+                  v-model="value"
+                  shape="round"
+                  show-action
+                  placeholder="请输入搜索关键词"
+                  @search="onSearch"
+                  @cancel="onCancel"
+                />
+              </form>
+            </section>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div
+      class="main-container mar4-1 clearfix"
+      v-if="list.length != 0"
+    >
+
+      <div
+        class="blk-cont-box posi2 border-b1 mar6-2"
+        v-for="(item,index) in  list"
+        :key="index"
+      >
+        <div class="img-box posi2">
+          <img src="../../assets/img/index/bar_bg.png" />
+          <b class="state c-p">分配客户</b>
+        </div>
+        <div class="right-box posi2  c-p">
+          <h3 class="f2 c6 mar7-2">{{item.name}}
+          </h3>
+          <div class="f2 c4">
+            <span>年龄：</span><span>{{item.age}}岁</span>
+          </div>
+          <div class=" f2 c4">
+            <span>客户星级：</span><span class="stars-box"><i
+                v-for="(item,index) in item.customerStar"
+                :key="index"
+              ></i></span>
+          </div>
+          <div class=" f2 c4">
+            <span>订单状态：</span><span class="c8">投保录入中</span>
+          </div>
+          <div class=" f2 c4">
+            <span>订单更新时间：</span><span>{{item.date}}</span>
+          </div>
+          <div class="f1"><b class="ek-btn-5">赠险活动客户</b></div>
+        </div>
+        <b
+          class="flag"
+          @click="goDetail(item.clientId,item.resultId)"
+        >客户行销</b>
+      </div>
+
+    </div>
+    <div
+      class="main-container mar4-1 clearfix"
+      v-else
+    >
+      <div class="pad5 f2-1 c5">搜索历史<span class="f-right"><b
+            class="fun-icon icon-del "
+            title="删除"
+            @click="delmsg"
+          ></b></span></div>
+      <section class="tab-box2">
+        <span
+          class="c-p"
+          v-for="(item,index) in textList"
+          :key="index"
+          @click="instory(item)"
+        >{{item}}</span>
+      </section>
+    </div>
+  </div>
+</template>
+
+<script>
+import { api_my } from '@/api/index'
+import * as tool from '@/common/Tool'
+import DataSource from '@/common/DataSource'
+import Vue from 'vue'
+import {
+  Search
+} from 'vant';
+Vue.use(Search)
+export default {
+  name: 'searchclient',
+  data() {
+    return {
+      textList: [],
+      list: [],
+      value: '',
+    }
+  },
+  mounted() {
+      this.getsource();
+  },
+  methods: {
+    getsource() {
+      this.textList =  DataSource.get('textList',1)?DataSource.get('textList',1):[];
+    },
+    goDetail(clientId, resultId) {
+      this.$router.push({ name: 'customerDetail',params:{q:clientId,r:resultId}});
+    },
+    onCancel() {
+      this.$router.go(-1);
+    },
+    onSearch() {
+      this.name = this.value;
+      if (this.value) {
+        this.textList.push(this.value);
+        DataSource.set('textList', this.textList, 1);
+      }
+      this.getCustomerSearchList();
+    },
+    delmsg() {
+      this.textList = [];
+      DataSource.set('textList', '', 1);
+    },
+    instory(val){
+      this.name = val;
+      this.getCustomerSearchList();
+    },
+    getCustomerSearchList() {
+      // let _data ={
+      //   saasId:this.user.userInfo.saasId,
+      //   offset:0,
+      //   limit:10,
+      //   agentUserId:this.user.userInfo.userId
+      // }
+      let _data = {
+        "name": this.name,
+        "saasId": this.user.userInfo.saasId,
+        // "offset": 0,
+        // "limit": 10,
+        // "customerStatus": 1,
+        // "customerType": 1,
+        "agentUserId": "0003660579e611e9a021246e965b5bf8",
+        "customerRelation": 1,
+        "sort": 1
+      }
+      api_my.getCustomerSearchList(_data).then(res => {
+        if (res.status == tool.rtCode.status) {
+          this.list = res.result;
+        }
+      })
+    }
+  },
+
+}
+</script>
+
+<style scoped>
+.main-top.p-fix {
+  top: 0px;
+}
+</style>

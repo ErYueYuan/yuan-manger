@@ -1,0 +1,16 @@
+var api = require('../api');
+
+module.exports = {
+    chOrderStatus: function (req, res, next) {
+        api.fetch(req, res, 'GET', 'fzgzd', 'sysDict/childDictList/ch_order_status', req.body)
+    },
+    chRiskType: function (req, res, next) {
+        api.fetch(req, res, 'GET', 'fzgzd', 'sysDict/childDictList/ch_risk_type', req.body)
+    },
+    orderList: function (req, res, next) {
+        api.fetch(req, res, 'POST', 'fzg', 'funOrder/orderList', req.body)
+    },
+    orderDetails: function (req, res, next) {
+        api.fetch(req, res, 'POST', 'ddxq', 'lzgapi/policy/policyInfo/findPolicyInfo', req.body)
+    }
+}

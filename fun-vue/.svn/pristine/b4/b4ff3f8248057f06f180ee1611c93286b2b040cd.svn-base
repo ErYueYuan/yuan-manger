@@ -1,0 +1,15 @@
+export default [
+  {
+    path: '/resetPwd',
+    name: 'resetPwd',
+    meta: {title: '修改密码'},
+    component: () => import(/* webpackChunkName: "login" */ '@/views/setting/ResetPassword')
+  },
+  {
+    path: '/my',
+    name: 'my',
+    meta: {title: '我的'},
+    component: () => import(/* webpackChunkName: "login" */ '@/views/my/My')
+  },
+]
+
