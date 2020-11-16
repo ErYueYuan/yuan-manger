@@ -1,7 +1,7 @@
 <template>
   <div class=''>
-    HOME
-    <footer-bar footer="home"></footer-bar>
+      职业
+     <footer-bar footer="profession"></footer-bar>
   </div>
 </template>
 <script>

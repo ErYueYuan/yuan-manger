@@ -1,7 +1,7 @@
 <template>
   <div class=''>
-    HOME
-    <footer-bar footer="home"></footer-bar>
+      成长
+    <footer-bar footer="group"></footer-bar>
   </div>
 </template>
 <script>

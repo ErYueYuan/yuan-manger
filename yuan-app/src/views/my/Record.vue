@@ -1,7 +1,7 @@
 <template>
   <div class=''>
-    HOME
-    <footer-bar footer="home"></footer-bar>
+      我的档案
+     <footer-bar footer="record"></footer-bar>
   </div>
 </template>
 <script>

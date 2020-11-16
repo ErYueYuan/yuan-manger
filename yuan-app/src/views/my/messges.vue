@@ -1,7 +1,7 @@
 <template>
   <div class=''>
-    HOME
-    <footer-bar footer="home"></footer-bar>
+      信息
+     <footer-bar footer="messge"></footer-bar>
   </div>
 </template>
 <script>
@@ -26,5 +26,5 @@ methods: {
 }
 }
 </script>
-<style  scoped>
+<style lang="scss"  scoped>
 </style>

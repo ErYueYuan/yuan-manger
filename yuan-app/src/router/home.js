@@ -3,8 +3,24 @@ export default[
         path:'/',
         redirect:'/login',
         meta:{
-            titel:'Life'
+            title:'Life'
         },
-        component:()=>import('@/Login')
+        component:()=>import('@/Login.vue')
     },
+    {
+        path:'/login',
+        name:'login',
+        meta:{
+            title:'Life'
+        },
+        component:()=>import('@/Login.vue')
+    },
+    {
+        path:'/home',
+        name:'home',
+        meta:{
+            title:'HOME'
+        },
+        component:()=>import('@/views/Home')
+    }
 ]

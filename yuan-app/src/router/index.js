@@ -1,16 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 import home from './home'
 import my from './my'
-const routes = [...home,...my]
+const routes = [...home,...my];
+console.log(routes);
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes:routes
 })
 
 //设置页面title

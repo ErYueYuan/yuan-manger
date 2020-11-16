@@ -1,7 +1,7 @@
 <template>
   <div class=''>
-    HOME
-    <footer-bar footer="home"></footer-bar>
+      我的
+     <footer-bar footer="my"></footer-bar>
   </div>
 </template>
 <script>
