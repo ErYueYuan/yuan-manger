@@ -1,29 +1,38 @@
 <template>
-  <div class="footerBar clearfix">
+  <div class="footerBar clearfix t-center">
     <ul>
       <li @click.stop.prevent="gePush('home')">
         <van-icon
-          name="chat-o"
+          name="shop-collect-o"
           :color="routName == 'home'?'#07c160':'#000'"
           size="30"
         />
-        <div class="footer-txt">首页</div>
+        <div
+          class="footer-txt"
+          :class="routName=='home'?'colr':''"
+        >首页</div>
       </li>
       <li @click.stop.prevent="gePush('group')">
         <van-icon
-          name="chat-o"
+          name="birthday-cake-o"
           :color="routName == 'group'?'#07c160':'#000'"
           size="30"
         />
-        <div class="footer-txt">成长</div>
+        <div
+          class="footer-txt"
+          :class="routName=='group'?'colr':''"
+        >成长</div>
       </li>
       <li @click.stop.prevent="gePush('profession')">
         <van-icon
-          name="chat-o"
+          name="friends-o"
           :color="routName == 'profession'?'#07c160':'#000'"
           size="30"
         />
-        <div class="footer-txt">求职</div>
+        <div
+          class="footer-txt"
+          :class="routName=='profession'?'colr':''"
+        >求职</div>
       </li>
       <li @click.stop.prevent="gePush('messge')">
         <van-icon
@@ -31,21 +40,27 @@
           :color="routName == 'messge'?'#07c160':'#000'"
           size="30"
         />
-        <div class="footer-txt">消息</div>
+        <div
+          class="footer-txt"
+          :class="routName=='messge'?'colr':''"
+        >消息</div>
       </li>
       <li @click.stop.prevent="gePush('my')">
         <van-icon
-          name="chat-o"
+          name="user-circle-o"
           :color="routName == 'my'?'#07c160':'#000'"
           size="30"
         />
-        <div class="footer-txt">我的</div>
+        <div
+          class="footer-txt"
+          :class="routName=='my'?'colr':''"
+        >我的</div>
       </li>
     </ul>
   </div>
 </template>
 <script>
-import {Icon} from 'vant'
+import { Icon } from 'vant'
 import Vue from 'vue'
 Vue.use(Icon)
 export default {
@@ -94,11 +109,15 @@ export default {
   bottom: 0;
   left: 0;
   width: 100%;
+  background: #ffffff;
   ul {
     display: flex;
     li {
       flex: 1;
     }
   }
+}
+.colr {
+  color: #07c160;
 }
 </style>

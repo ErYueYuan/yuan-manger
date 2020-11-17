@@ -2,7 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import '../src/assets/css/common.css'
+import '@/assets/css/common.css'
+import '@/assets/icon/iconfont.js'
 import 'lib-flexible/flexible.js'
 import 'vant/lib/index.css';
 Vue.config.productionTip = false
