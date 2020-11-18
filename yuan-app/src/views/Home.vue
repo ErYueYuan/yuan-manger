@@ -78,18 +78,39 @@
                   src="../assets/logo.png"
                   alt="Logo"
                 >
-                <span>我是一条咸鱼 <svg
+                <span>我是一条咸鱼</span> <svg
+                  class="icon"
+                  aria-hidden="true"
+                >
+                  <use xlink:href="#icon-xingbienv"></use>
+                </svg>
+                <div class="school-logo f-right">
+                  <svg
                     class="icon"
                     aria-hidden="true"
                   >
-                    <use xlink:href="#icon-xihuan-01"></use>
-                  </svg></span>
-                <div class="school-logo f-right">
-                  <img
-                    src=""
-                    alt=""
-                  >
+                    <use xlink:href="#icon-xingbienan"></use>
+                  </svg>
                   <span>学校名称</span>
+                </div>
+              </div>
+              <div class="child-main">
+                <p>往生于己，名生于人</p>
+                <img
+                  src=""
+                  alt=""
+                >
+                <div class="mian-btom">
+                  <span>
+                    <svg
+                      class="icon"
+                      style="width:0.4rem;height:0.4rem;"
+                      aria-hidden="true"
+                    >
+                      <use xlink:href="#icon-A"></use>
+                    </svg><i class="middle">322</i>
+                  </span>
+                  div.main
                 </div>
               </div>
             </div>
@@ -101,6 +122,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 import FooterBar from '@/components/tabPar'
 import Vue from 'vue'
 import { Search, Row, Col } from 'vant'
@@ -109,7 +131,8 @@ export default {
   name: 'home',
   data() {
     return {
-      searchval: ''
+      searchval: '',
+      childList: []
     }
   },
   components: {
@@ -118,10 +141,20 @@ export default {
   computed: {
   },
   created() {
+    this.getList();
   },
   mounted() {
   },
   methods: {
+    getList() {
+      axios.get('http://localhost:8090/mode2/DataOne').then(res => {
+        console.log(res);
+        let { data } = res
+        if (data.status == 200) {
+          this.childList = data.dataSource
+        }
+      })
+    }
   }
 }
 </script>
@@ -158,10 +191,11 @@ $pad5: 5px;
 .content-list {
   padding: 5px;
   .list-child {
-    margin: 3px 0;
+    margin: 5px 0;
+    padding: 5px;
     .child-head {
       padding: 0.08rem;
-      height: 1.333333rem;
+      height: 40px;
       line-height: 1.333333rem;
       img {
         width: 0.666667rem;
@@ -171,6 +205,9 @@ $pad5: 5px;
       span {
         margin-left: 0.666667rem;
       }
+    }
+    .child-main {
+      padding: 10px;
     }
   }
 }
