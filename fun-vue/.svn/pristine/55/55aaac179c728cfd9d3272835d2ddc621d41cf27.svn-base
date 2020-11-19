@@ -1,8 +1,0 @@
-export default [
-  {
-    path: '/productList',
-    name: 'productList',
-    meta: {title: '产品列表'},
-    component: () => import(/* webpackChunkName: "login" */ '@/views/product/ProductList')
-  },
-]

@@ -2,8 +2,8 @@
 
 /* CSS Document */
 .icon {
-  width: 0.8rem;
-  height: 0.8rem;
+  width: 0.6rem;
+  height: 0.6rem;
   vertical-align: middle;
   fill: currentColor;
   overflow: hidden;
@@ -122,7 +122,6 @@ img {
   border: 0;
   height: auto;
   width: 100%;
-  vertical-align: middle;
 }
 
 label {
@@ -868,12 +867,24 @@ i {
   padding-bottom: 12px;
 }
 
+.pad7-3 {
+  padding-bottom: 40px;
+}
+
 .pad8 {
   padding: 0 15px 0 0;
 }
 
 .pad8-1 {
   padding: 0 0 0 15px;
+}
+
+.pad9 {
+  padding-top: 10px;
+}
+
+.pad9-1 {
+  padding-top: 20px;
 }
 
 .pad888 {

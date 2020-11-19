@@ -1,9 +1,0 @@
-export default [
-    {
-      path: '/service',
-      name: 'service',
-      meta: {title: '产品服务'},
-      component: () => import(/* webpackChunkName: "login" */ '@/views/service/DealService')
-    },
-  ]
-  

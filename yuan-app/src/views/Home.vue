@@ -1,116 +1,111 @@
 <template>
   <div class='home-box'>
-    <div class="container-box">
-      <van-search
-        v-model="searchval"
-        shape="round"
-        background="#ffff"
-        placeholder="请输入搜索关键词"
-      ></van-search>
-      <van-row
-        type="flex"
-        justify="center"
-      >
-        <van-col :span="6">
-          <div class="col-box  t-center">
-            <svg
-              class="icon"
-              aria-hidden="true"
-            >
-              <use xlink:href="#icon-pengyouquan"></use>
-            </svg>
-            <div class="col-span">EveryDay1</div>
-          </div>
-        </van-col>
-        <van-col :span="6">
-          <div class="col-box  t-center">
-            <svg
-              class="icon"
-              aria-hidden="true"
-            >
-              <use xlink:href="#icon-biaoqing"></use>
-            </svg>
-            <div class="col-span">EveryDay2</div>
-          </div>
-        </van-col>
-        <van-col :span="6">
-          <div class="col-box  t-center">
-            <svg
-              class="icon"
-              aria-hidden="true"
-            >
-              <use xlink:href="#icon-paizhao"></use>
-            </svg>
-            <div class="col-span">EveryDay3</div>
-          </div>
-        </van-col>
-        <van-col :span="6">
-          <div class="col-box  t-center">
-            <svg
-              class="icon"
-              aria-hidden="true"
-            >
-              <use xlink:href="#icon-xihuan-01"></use>
-            </svg>
-            <div class="col-span">EveryDay4</div>
-          </div>
-        </van-col>
-      </van-row>
+    <div class="home-head border-b pad1-5">
       <van-row>
-        <div class="low-love">
-          <p><strong>伤心篇</strong></p>
-          <p>今天阴天转小雨,有点失落</p>
-        </div>
-      </van-row>
-      <van-row>
-        <div class="home-content border-t mar2">
-          <div class="content-tag clearfix">
-            <ul>
+        <van-col :span="8">
+          <svg
+            class="icon"
+            aria-hidden="true"
+          >
+            <use xlink:href="#icon-paizhao"></use>
+          </svg>
+        </van-col>
+        <van-col
+          :span="8"
+          class=""
+        >
+          <div class="content-tag">
+            <ul class="clearfix t-center">
               <li><span class="active">热门</span></li>
               <li><span>|</span></li>
               <li><span>推荐</span></li>
             </ul>
           </div>
+        </van-col>
+        <van-col
+          :span="8"
+          class="t-right"
+        >
+          <svg
+            class="icon"
+            aria-hidden="true"
+          >
+            <use xlink:href="#icon-qiandao-01"></use>
+          </svg>
+        </van-col>
+      </van-row>
+    </div>
+    <div class="container-box">
+      <van-search
+        v-model="searchval"
+        shape="round"
+        background="#ffff"
+        placeholder="请输入名字,比如'郑玲'"
+      ></van-search>
+      <van-row>
+        <div class="home-content mar2 pad7-3">
           <section class="content-list">
-            <div class="list-child">
-              <div class="child-head border-b">
+            <div
+              class="list-child clearfix"
+              v-for="(item,index) in childList"
+              :key="index"
+              @click.stop.prevent="userDtails(item)"
+            >
+              <div class="child-head child-left f-left">
                 <img
-                  src="../assets/logo.png"
+                  :src="item.headImg"
                   alt="Logo"
                 >
-                <span>我是一条咸鱼</span> <svg
-                  class="icon"
-                  aria-hidden="true"
-                >
-                  <use xlink:href="#icon-xingbienv"></use>
-                </svg>
-                <div class="school-logo f-right">
-                  <svg
-                    class="icon"
-                    aria-hidden="true"
-                  >
-                    <use xlink:href="#icon-xingbienan"></use>
-                  </svg>
-                  <span>学校名称</span>
-                </div>
               </div>
-              <div class="child-main">
-                <p>往生于己，名生于人</p>
-                <img
-                  src=""
-                  alt=""
-                >
-                <div class="mian-btom">
-                  <span>
+              <div class="child-right f-left">
+                <div class="">
+                  <p class="f3">{{item.name}}</p>
+                  <span class="c5 f0">朋友关联</span>
+                  <div class="school-logo f-right">
                     <svg
                       class="icon"
                       style="width:0.4rem;height:0.4rem;"
                       aria-hidden="true"
                     >
-                      <use xlink:href="#icon-A"></use>
-                    </svg><i class="middle">322</i>
-                  </span>
-                  div.main
+                      <use xlink:href="#icon-liebiao"></use>
+                    </svg>
+                  </div>
+                </div>
+                <div class="child-main pad9 pad7-1">
+                  <p>{{item.mockContent}}</p>
+                  <img
+                    :src="item.headImg"
+                    alt=""
+                  >
+                  <div class="mian-btom pad9 clearfix">
+                    <div class="btom-left f-left">
+                      <span class="iconfont icon-A"></span>
+                      <i class=" mar5-2">{{item.number?item.number:0}}</i>
+                    </div>
+                    <div class="btom-right f-right">
+                      <ul>
+                        <li @click.stop="done=!done">
+                          <span
+                            class="iconfont  icon-xintiao"
+                            v-if="done"
+                          ></span>
+                          <svg
+                            v-else
+                            class="icon"
+                            aria-hidden="true"
+                          >
+                            <use xlink:href="#icon-xintiao"></use>
+                          </svg>
+                          <i class=" mar5-2">{{item.number?item.number:0}}</i>
+                        </li>
+                        <li>
+                          <span class="iconfont  icon-xintiao"></span>
+                          <i class=" mar5-2">{{item.number?item.number:0}}</i>
+                        </li>
+
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -132,7 +127,8 @@ export default {
   data() {
     return {
       searchval: '',
-      childList: []
+      childList: [],
+      done: true
     }
   },
   components: {
@@ -154,12 +150,19 @@ export default {
           this.childList = data.dataSource
         }
       })
+    },
+    userDtails(item) {
+      this.$router.push({ name: 'userdetails', params: { o: item } })
     }
   }
 }
 </script>
 <style lang="scss" scoped>
 $pad5: 5px;
+.home-head {
+  height: 60px;
+  line-height: 60px;
+}
 .low-love {
   height: 2.133333rem;
   width: 85%;
@@ -170,29 +173,33 @@ $pad5: 5px;
   margin-top: 20px;
 }
 .content-tag {
-  padding: 5px;
+  margin: 0 auto;
   ul {
+    display: flex;
     li {
-      float: left;
-      margin: 0 0.133333rem;
+      flex: 1;
       text-align: center;
       font-size: 0.373333rem;
       span {
         vertical-align: middle;
       }
       .active {
-        font-weight: 600;
-        font-size: 0.426667rem;
+        font-weight: 800;
+        font-size: 18px;
         color: #000;
+        padding-bottom: 5px;
+        border-bottom: 2px solid #f34f45;
       }
     }
   }
 }
+.child-right {
+  padding-left: 10px;
+  width: calc(100% - 1.28rem);
+}
 .content-list {
-  padding: 5px;
   .list-child {
-    margin: 5px 0;
-    padding: 5px;
+    margin: 20px 0;
     .child-head {
       padding: 0.08rem;
       height: 40px;
@@ -202,13 +209,13 @@ $pad5: 5px;
         height: 0.666667rem;
         border-radius: 100%;
       }
-      span {
-        margin-left: 0.666667rem;
-      }
     }
-    .child-main {
-      padding: 10px;
-    }
+  }
+}
+.btom-right {
+  ul > li {
+    float: left;
+    margin-right: 5px;
   }
 }
 </style>
