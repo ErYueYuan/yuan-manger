@@ -8,7 +8,9 @@ import '@/assets/icon/iconfont.css'
 import '@/assets/icon/iconfont.js'
 import 'lib-flexible/flexible.js'
 import 'vant/lib/index.css';
+import axios from 'axios'
 Vue.config.productionTip = false
+Vue.prototype.$http = axios
 new Vue({
   router,
   store,

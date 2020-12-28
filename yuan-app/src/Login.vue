@@ -34,6 +34,11 @@
             </van-button>
           </div>
         </van-form>
+         <form action="/file_upload" method="post" enctype="multipart/form-data">
+              <input type="file" name="image" size="50" />
+              <br />
+              <input type="submit" value="上传文件" />
+              </form>
       </div>
     </div>
  
@@ -41,6 +46,7 @@
 </template>
 <script>
 import Vue from 'vue';
+import * as tool from '@/common/tool'
 import { Icon, Form, Field, Button } from 'vant';
 Vue.use(Icon).use(Form).use(Field).use(Button)
 export default {
@@ -62,8 +68,18 @@ export default {
   },
   methods: {
     onsubmit(value) {
-      console.log(value);
-      this.$router.push({ name: 'home' })
+      
+      this.$http.get('/chmobile/del_user',{
+      params: {
+        name: this.name,
+        password:this.password
+      }
+   }).then((req,res)=>{
+     console.log(req,res)
+     alert(req,res)
+   })
+      tool.setUser(value)
+      // this.$router.push({ name: 'home' })
     }
   }
 }

@@ -117,6 +117,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import axios from 'axios'
 import FooterBar from '@/components/tabPar'
 import Vue from 'vue'
@@ -135,8 +136,10 @@ export default {
     'footer-bar': FooterBar
   },
   computed: {
+    ...mapGetters(['user'])
   },
   created() {
+    console.log(this.user);
     this.getList();
   },
   mounted() {
