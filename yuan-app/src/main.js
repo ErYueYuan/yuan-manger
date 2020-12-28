@@ -6,11 +6,10 @@ import '@/assets/css/common.css'
 import '@/assets/css/main.css'
 import '@/assets/icon/iconfont.css'
 import '@/assets/icon/iconfont.js'
-import 'lib-flexible/flexible.js'
-import 'vant/lib/index.css';
-import axios from 'axios'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI)
 Vue.config.productionTip = false
-Vue.prototype.$http = axios
 new Vue({
   router,
   store,

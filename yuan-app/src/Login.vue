@@ -34,14 +34,8 @@
             </van-button>
           </div>
         </van-form>
-         <form action="/file_upload" method="post" enctype="multipart/form-data">
-              <input type="file" name="image" size="50" />
-              <br />
-              <input type="submit" value="上传文件" />
-              </form>
       </div>
     </div>
- 
   </div>
 </template>
 <script>

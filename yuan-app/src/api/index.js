@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { Toast } from 'vant'
 import api_home from './home'
 import api_my from './my'
 // axios.defaults.baseURL = //配置全局默认
@@ -11,7 +10,7 @@ axios.defaults.withCredentials = true // true：在跨域请求时，会携带�
 //根据运行环境更换路径
 let base="";
 if(process.env.Node_ENV === "development"){
-    base =""
+    base = "";
 }else {
     base = "/ym"
 }
@@ -28,14 +27,17 @@ axios.interceptors.request.use(
     return Promise.error(error)
   })
 
-// 响应拦截器
+// 添加一个响应拦截器
+axios.interceptors.response.use(function (response) {
+  console.log('响应', JSON.parse(JSON.stringify(response.data)))
+  response.data.total && store.dispatch('app/setTotal', response.data.total)
 
+  return response
+}, err)
 
 
 export const POST = (params,url)=>{
-    return axios.post(`${url}`,{
-        params:params,
-    }).then(res=>res.data)
+    return axios.post(`${url}`,params).then(res=>res.data)
 }
 export const GET = (params,url)=>{
     return axios.get(`${url}`,{
@@ -48,9 +50,7 @@ export const DELETE = (params,url)=>{
     }).then(res=>res.data)
 }
 export const PUT = (params,url)=>{
-    return axios.put(`${url}`,{
-        params:params,
-    }).then(res=>res.data)
+    return axios.put(`${url}`,params).then(res=>res.data)
 }
 
 export default [
