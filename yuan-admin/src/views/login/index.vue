@@ -81,12 +81,12 @@ export default {
     }
     return {
       loginForm: {
-        username: '',
-        password: ''
+        username: 'admin',
+        password: '111111'
       },
       loginRules: {
-        username: [{ required: true,trigger: 'blur',message: '请输入账号',validator: validateUsername }],
-        password: [{ required: true,trigger: 'blur',message: '请输入密码',validator: validatePassword }]
+        username: [{ required: true,trigger: 'blur',validator: validateUsername }],
+        password: [{ required: true,trigger: 'blur',validator: validatePassword }]
       },
       loading: false,
       passwordType: 'password',
@@ -228,7 +228,7 @@ $light_gray: #eee;
       font-weight: bold;
       background-image: -webkit-linear-gradient(bottom right, red, #fd8403, yellow);
       /* eslint-disable */
-     background-clip: text;
+      -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
   }
