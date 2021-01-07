@@ -18,3 +18,4 @@ function thron(fn, wait, bol) {
               }, wait);
        }
 }
+
