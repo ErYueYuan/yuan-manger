@@ -44,3 +44,5 @@ function thor(fuc,wait){
         }
     }
 }
+
+//ce
