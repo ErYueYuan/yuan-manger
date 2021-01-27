@@ -2,118 +2,141 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <style>
-    html,
-    body {
-        height: 100%;
-        width: 100%;
-    }
-
-    .box {
-        display: grid;
-        justify-items: center;
-        align-items: center;
-        height: 500px;
-        width: 500px;
-    }
-    .box1 {
-        width: 100px;
-        height: 100px;
-        /* background-color: saddlebrown; */
-    }
-    .container {
-        width: 500px;
-        height: 500px;
-        display: flex;
-    }
-    .item {
-        background-color: pink;
-        flex-basis: 100px;
-        flex-shrink: 0;
-        /* 防止挤压 */
-    }
-    .right {
-        background-color: purple;
-        flex-grow: 1;
-    }
-    :root {
-        --back:black;
-        --color:purple;
-    }
-    .cont {
-      background-color: var(--back);
-    }
-    .box1 {
-        height: 0;
-        width: 0;
-        border:100px solid;
-        border-color: transparent transparent #22bb33 transparent;
-        
-    }
-    
-.loading {
-  width: 50px;
-  height: 50px;
-  animation: rotate 2s linear 0s infinite;
-}
-.path {
-  animation: dash 2s ease-in-out infinite;
-  stroke: #00b390;
-  stroke-width: 2;
-  stroke-dasharray: 90 150;
-  stroke-dashoffset: 0;
-  stroke-linecap: round;
-}
-
-@keyframes rotate {
-  from {
-    tranform: rotate(0deg);
-  } 
-  to {
-    tranform: rotate(360deg);
+  html,
+  body {
+    height: 100%;
+    width: 100%;
   }
-}
 
-@keyframes dash {
-  0% {
-    stroke-dasharray:  1 150;
+  .box {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    height: 500px;
+    width: 500px;
+  }
+
+  .box1 {
+    width: 100px;
+    height: 100px;
+    /* background-color: saddlebrown; */
+  }
+
+  .container {
+    width: 500px;
+    height: 500px;
+    display: flex;
+  }
+
+  .item {
+    background-color: pink;
+    flex-basis: 100px;
+    flex-shrink: 0;
+    /* 防止挤压 */
+  }
+
+  .right {
+    background-color: purple;
+    flex-grow: 1;
+  }
+
+  :root {
+    --back: black;
+    --color: purple;
+  }
+
+  .cont {
+    background-color: var(--back);
+  }
+
+  .box1 {
+    height: 0;
+    width: 0;
+    border: 100px solid;
+    border-color: transparent transparent #22bb33 transparent;
+
+  }
+
+  .loading {
+    width: 50px;
+    height: 50px;
+    animation: rotate 2s linear 0s infinite;
+  }
+
+  .path {
+    animation: dash 2s ease-in-out infinite;
+    stroke: #00b390;
+    stroke-width: 2;
+    stroke-dasharray: 90 150;
     stroke-dashoffset: 0;
-  } 
-  50% {
-    stroke-dasharray: 90 150;
-    stroke-dashoffset: -40px;
+    stroke-linecap: round;
   }
-  100% {
-    stroke-dasharray: 90 150;
-    stroke-dashoffset: -120px;
+
+  @keyframes rotate {
+    from {
+      tranform: rotate(0deg);
+    }
+
+    to {
+      tranform: rotate(360deg);
+    }
   }
-}
+
+  @keyframes dash {
+    0% {
+      stroke-dasharray: 1 150;
+      stroke-dashoffset: 0;
+    }
+
+    50% {
+      stroke-dasharray: 90 150;
+      stroke-dashoffset: -40px;
+    }
+
+    100% {
+      stroke-dasharray: 90 150;
+      stroke-dashoffset: -120px;
+    }
+  }
 </style>
 
 <body>
-    <div class="box">
-        <div class="box1"></div>
+  <div class="box">
+    <div class="box1"></div>
+  </div>
+  <div class="container">
+    <div class="item">
     </div>
-    <div class="container">
-        <div class="item">
-        </div>
-        <div class="right">
-        </div>
+    <div class="right">
     </div>
-    <div class="cont">
-        <svg classname="loading" viewbox="25 25 50 50">
-            <circle cx="50" cy="50" r="25" classname="path" fill="none" />
-          </svg>
-    </div>
+  </div>
+  <div class="cont">
+    <svg classname="loading" viewbox="25 25 50 50">
+      <circle cx="50" cy="50" r="25" classname="path" fill="none" />
+    </svg>
+  </div>
+  <!-- <button>点击</button> -->
+  <!-- <script src="./防抖.js"></script> -->
+  <script src="./8.28.js"></script>
+  <!--    <script src="./jieliu.js"></script>-->
+  <script>
+    //下载
+    let blob = window.URL.createObjectURL(new Blob([res]));
+    let as = document.body.createElement('a');
+    as.style.display = none;
+    as.href = blob;
+    as.setAttribute('download',name)
+    document.body.append('as')
+    a.onclick();
+    document.removeChild('as');
+    window.URL.revokeObjectURL(blob)
 
-    <!-- <button>点击</button> -->
-    <!-- <script src="./防抖.js"></script> -->
-    <script src="./8.28.js"></script>
-    <!--    <script src="./jieliu.js"></script>-->
+  </script>
 </body>
 
 </html>
