@@ -20,5 +20,8 @@ console.log(Object.prototype.toString.call(2))
 console.log(Object.prototype.toString.call(true))
 
 //反转字符串
-let revet = str=>str.split('').reverse().join('');
+let revet = str => str.split('').reverse().join('');
 console.log(revet('Hello'));
+
+console.log(" " && true && 5);
+console.log(true && 5); // 5
