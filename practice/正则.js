@@ -6,3 +6,4 @@ let reg = new RegExp('xgy','i');
 console.log(reg,s1);
 /foo.bar/.test('foo/bar')
 console.log(/foo.bar/.test('foo/bar'));
+

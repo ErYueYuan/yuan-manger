@@ -23,5 +23,9 @@ console.log(Object.prototype.toString.call(true))
 let revet = str => str.split('').reverse().join('');
 console.log(revet('Hello'));
 
-console.log(" " && true && 5);
-console.log(true && 5); // 5
+console.log(" " && true && 5); // 逻辑与   当&&前面的是true，不管后面是true或者false，始终返回后面的
+console.log(true && 5);
+console.log(true || " "); // 逻辑或   当||前面的是true，不管后面是true或者false，始终返回前面的
+
+let res = ['1', '3', '10'].map(parseInt)
+console.log(res);
