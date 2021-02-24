@@ -1,1 +1,0 @@
-//改变this指向 call，bind，apply
