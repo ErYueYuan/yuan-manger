@@ -73,6 +73,10 @@ Function.prototype.myBind = function(contxt) {
 setName.myBind(obj, 'xiao', 'you')()
 
 //new 都做了什么?
+//1>  创建一个新对象
+//2>  把构造函数的this赋值给这个新对象
+//3>  执行构造函数中的新代码
+//4>  返回这个对象
 function Student(name) {
   this.name = name;
   // this.doSth();
@@ -80,7 +84,34 @@ function Student(name) {
 Student.prototype.doSth = function() {
   console.log(this.name);
 };
-var student1 = new Student('若');
+var student1 = new Student('若'); //重新创建了对象
 var student2 = new Student('川');
 console.log(student1.doSth()); // {name: '若'} '若'
-console.log(student2, student2.doSth()); // {name: '川'} '川'
+console.log(student2, student2.doSth()); // {name: '川'} '川' 
+
+function myNew() {
+  //先创建一个对象
+  var obj = new Object();
+  Cont = [...arguments].slice(1);
+  //链接原型，obj可以访问到原型上的属性    
+  obj._proto_ = Cont.prototype
+  //实现继承
+  Cont.apply(obj, arguments)
+  return obj
+
+}
+
+function create() {
+  // 创建一个空的对象
+  var obj = new Object(),
+    // 获得构造函数，arguments中去除第一个参数
+    Con = [...arguments].slice(1);
+  // 链接到原型，obj 可以访问到构造函数原型中的属性
+  obj.__proto__ = Con.prototype;
+  // 绑定 this 实现继承，obj 可以访问到构造函数中的属性
+  Con.apply(obj, arguments);
+  // 返回对象
+  return obj;
+};
+let obj2 = create(Student, 'black');
+console.log('测试:', obj2);
