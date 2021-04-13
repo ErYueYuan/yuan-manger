@@ -15,13 +15,3 @@ for(var i of srtArr){
   console.log(i);
 }
 
-let obj = {
-   n:'long',
-   age:'27',
-   sex:'gou'
-}
-for(let i in obj){
-  console.log(obj[i]);
-}
-console.log(Object.keys(obj).forEach((item,index)=>console.log(item)));//返回key 数组
-console.log(Object.values(obj));//返回value 数组

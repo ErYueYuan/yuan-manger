@@ -29,7 +29,6 @@ function thor(fuc,wait){
         if(news - old > wait){
             console.log(1,timeout)
             if (timeout){
-
                 clearTimeout(timeout)
                 timeout = null
             }

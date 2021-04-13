@@ -15,13 +15,3 @@ function getUUID () {
 
 console.log(getUUID());
 
-
-var name = 'window';
-var obj = {
-    name: 'object',
-    getName: function() {
-        return this.name;
-    }
-}
-console.log(obj.getName()); // object
-(obj.name = obj.name)(); // window

@@ -20,7 +20,7 @@ Function.prototype.myCall = function(contxt) {
   //{ name: '1' } [Function: setName] 正在调用的函数
   //把当前调用的方法定义在cont.fn上,此时this是调用函数本身
   cont.fn = this;
-  // console.log(arguments);
+  console.log("23行:",arguments);
   //   [Arguments] {
   //   '0': { name: '1', fn: [Function: setName] },  此时调用函数和接收的参数在一个对象中
   //   '1': 'mycall',  //额外传入参数
@@ -38,12 +38,12 @@ Function.prototype.myCall = function(contxt) {
   delete cont.fn
   return res;
 }
-setName.myCall(obj, ['wy', '25'])
+setName.myCall(obj, 'wy', '25')
 
 Function.prototype.myApply = function(contxt) {
   let cont = contxt || window;
   cont.fn = this;
-  console.log(arguments, arguments[1]);
+  console.log("46行：",arguments, arguments[1]);
   // [Arguments] {
   //   '0': {
   //     name: '1',
