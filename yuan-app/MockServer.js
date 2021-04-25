@@ -24,7 +24,8 @@ app.use('/mode2/DataOne', function (req, res) {
             'city': Mock.mock('@city')
 
         }]
-    }))
+    })
+    )
 })
 
 app.listen('8090', () => {

@@ -8,7 +8,17 @@
   <link rel="icon" href="<%= BASE_URL %>favicon.ico">
   <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
-
+<script>
+  (function(){
+    function autoRise(){
+      //获取screen.width的宽度和 docuemnt.docuemntElement.getBoundingClientRect().width的最小值/750*32 
+      //就是原本的750大小的32 如果屏幕是375大小就变成了16px
+      document.documentElement.style.size = Math.min(screen.width,document.documentElement.getBoundingClientRect().width)/750*32+'px'
+    }
+    window.addEventListener('resize',autoRise)
+    autoRise();
+  })()
+</script>
 <body>
   <noscript>
     <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.

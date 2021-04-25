@@ -8,6 +8,7 @@ axios.defaults.withCredentials = true // true：在跨域请求时，会携带�
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 
 //根据运行环境更换路径
+// eslint-disable-next-line no-unused-vars
 let base="";
 if(process.env.Node_ENV === "development"){
     base = "";
@@ -30,9 +31,11 @@ axios.interceptors.request.use(
 // 添加一个响应拦截器
 axios.interceptors.response.use(function (response) {
   console.log('响应', JSON.parse(JSON.stringify(response.data)))
+    // eslint-disable-next-line no-undef
   response.data.total && store.dispatch('app/setTotal', response.data.total)
 
   return response
+// eslint-disable-next-line no-undef
 }, err)
 
 

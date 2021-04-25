@@ -1,11 +1,7 @@
 <template>
-  <div class='login'>
+  <div class="login">
     <div class="login-logo">
-      <van-icon
-        name="smile-comment"
-        size="80"
-        color="#000"
-      />
+      <van-icon name="smile-comment" size="80" color="#000" />
       <div class="login-form">
         <van-form @submit="onsubmit">
           <van-field
@@ -39,48 +35,50 @@
   </div>
 </template>
 <script>
-import Vue from 'vue';
+import Vue from 'vue'
 import * as tool from '@/common/tool'
-import { Icon, Form, Field, Button } from 'vant';
-Vue.use(Icon).use(Form).use(Field).use(Button)
+import { Icon, Form, Field, Button } from 'vant'
+Vue.use(Icon)
+  .use(Form)
+  .use(Field)
+  .use(Button)
 export default {
   name: 'login',
- 
+
   data() {
     return {
       name: '',
       password: '',
-    
     }
   },
-  computed: {
-  },
-  created() {
-  },
-  mounted() {
-   
-  },
+  computed: {},
+  created() {},
+  mounted() {},
   methods: {
     onsubmit(value) {
-      
-      this.$http.get('/chmobile/del_user',{
-      params: {
-        name: this.name,
-        password:this.password
-      }
-   }).then((req,res)=>{
-     console.log(req,res)
-     alert(req,res)
-   })
+      this.$http.post('/data').then((res) => {
+        console.log(res)
+      })
+
+      this.$http
+        .get('/chmobile/del_user', {
+          params: {
+            name: this.name,
+            password: this.password,
+          },
+        })
+        .then((req, res) => {
+          console.log(req, res)
+          alert(req, res)
+        })
       tool.setUser(value)
       // this.$router.push({ name: 'home' })
-    }
-  }
+    },
+  },
 }
 </script>
-<style lang="scss"  scoped>
+<style lang="scss" scoped>
 .login {
   padding: 0.266667rem;
 }
-
 </style>

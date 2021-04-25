@@ -3,8 +3,211 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="ChangeListManager">
+    <list default="true" id="37f169b1-f4ec-471d-a257-5d597a25f999" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/practice/http工作模式.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/practice/promise,async,js.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/practice/v8引擎工作原理.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/practice/记录/v8引擎.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/practice/记录/微信账号ID.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/practice/记录/知识点.md" beforeDir="false" afterPath="$PROJECT_DIR$/practice/记录/知识点.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/.env.development" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/.env.production" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/.env.staging" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/.eslintignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/.eslintrc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/.travis.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/README-zh.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/babel.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/build/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/jest.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/jsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/mock/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/mock/mock-server.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/mock/table.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/mock/user.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/mock/utils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/postcss.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/App.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/api/table.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/api/user.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/assets/404_images/404.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/assets/404_images/404_cloud.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/components/Breadcrumb/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/components/Hamburger/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/components/SvgIcon/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/icons/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/icons/svg/dashboard.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/icons/svg/example.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/icons/svg/eye-open.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/icons/svg/eye.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/icons/svg/form.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/icons/svg/link.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/icons/svg/nested.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/icons/svg/password.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/icons/svg/table.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/icons/svg/tree.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/icons/svg/user.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/icons/svgo.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/layout/components/AppMain.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/layout/components/Navbar.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/layout/components/Sidebar/FixiOSBug.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/layout/components/Sidebar/Item.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/layout/components/Sidebar/Link.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/layout/components/Sidebar/Logo.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/layout/components/Sidebar/SidebarItem.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/layout/components/Sidebar/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/layout/components/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/layout/components/leftBar/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/layout/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/layout/mixin/ResizeHandler.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/permission.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/router/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/settings.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/store/getters.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/store/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/store/modules/app.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/store/modules/settings.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/store/modules/user.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/styles/element-ui.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/styles/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/styles/mixin.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/styles/sidebar.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/styles/transition.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/styles/variables.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/utils/auth.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/utils/get-page-title.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/utils/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/utils/request.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/utils/validate.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/views/404.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/views/dashboard/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/views/form/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/views/login/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/views/nested/menu1/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/views/nested/menu1/menu1-1/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/views/nested/menu1/menu1-2/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/views/nested/menu1/menu1-2/menu1-2-1/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/views/nested/menu1/menu1-2/menu1-2-2/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/views/nested/menu1/menu1-3/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/views/nested/menu2/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/views/table/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/src/views/tree/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/tests/unit/.eslintrc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/tests/unit/components/Breadcrumb.spec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/tests/unit/components/Hamburger.spec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/tests/unit/components/SvgIcon.spec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/tests/unit/utils/formatTime.spec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/tests/unit/utils/param2Obj.spec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/tests/unit/utils/parseTime.spec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/tests/unit/utils/validate.spec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-admin/vue.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-app/MockServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/yuan-app/MockServer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-app/server/api.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-app/server/app.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-app/server/bin/www" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-app/server/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-app/server/public/stylesheets/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-app/server/routes/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-app/server/routes/users.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-app/server/views/error.jade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-app/server/views/index.jade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-app/server/views/layout.jade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-app/src/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/yuan-app/src/Login.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yuan-app/src/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/yuan-app/src/api/index.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="1rYIUS9s69xns3t0bahmuJM9t3A" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs.mocha.mocha_node_package_dir" value="" />
+    <property name="nodejs_package_manager_path" value="yarn" />
     <property name="settings.editor.selected.configurable" value="build.tools" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RunManager">
+    <configuration name="promise,async,js.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/practice/promise,async,js.js" working-dir="$PROJECT_DIR$/practice">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.promise,async,js.js" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="37f169b1-f4ec-471d-a257-5d597a25f999" name="Default Changelist" comment="" />
+      <created>1619146612100</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1619146612100</updated>
+      <workItem from="1619146613243" duration="347000" />
+      <workItem from="1619146975737" duration="571000" />
+      <workItem from="1619147560158" duration="607000" />
+      <workItem from="1619149930395" duration="8577000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
