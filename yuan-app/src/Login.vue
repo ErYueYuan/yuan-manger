@@ -36,8 +36,9 @@
 </template>
 <script>
 import Vue from 'vue'
-import * as tool from '@/common/tool'
+// import * as tool from '@/common/tool'
 import { Icon, Form, Field, Button } from 'vant'
+import {api_home} from '@/api/index'
 Vue.use(Icon)
   .use(Form)
   .use(Field)
@@ -55,23 +56,27 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    onsubmit(value) {
-      this.$http.post('/data').then((res) => {
+    onsubmit() {
+      let _data = {
+        'username':'111',
+        'password':'000'
+      }
+      api_home.login(_data).then(res => {
         console.log(res)
       })
 
-      this.$http
-        .get('/chmobile/del_user', {
-          params: {
-            name: this.name,
-            password: this.password,
-          },
-        })
-        .then((req, res) => {
-          console.log(req, res)
-          alert(req, res)
-        })
-      tool.setUser(value)
+      // this.$http
+      //   .get('/chmobile/del_user', {
+      //     params: {
+      //       name: this.name,
+      //       password: this.password,
+      //     },
+      //   })
+      //   .then((req, res) => {
+      //     console.log(req, res)
+      //     alert(req, res)
+      //   })
+      // tool.setUser(value)
       // this.$router.push({ name: 'home' })
     },
   },

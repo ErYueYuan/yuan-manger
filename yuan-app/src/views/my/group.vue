@@ -1,6 +1,6 @@
 <template>
   <div class=''>
-      成长
+    
     <footer-bar footer="group"></footer-bar>
   </div>
 </template>

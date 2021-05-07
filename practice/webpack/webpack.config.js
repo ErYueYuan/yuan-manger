@@ -9,9 +9,8 @@ module.exports = {
   },
   plugins:{
     new htmlwebpackplugin({
-      
     })
-  }
+  },
   module:{
     rules:[
       {

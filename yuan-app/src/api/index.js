@@ -21,7 +21,7 @@ axios.interceptors.request.use(
     //在登录模块中添加本地缓存token，然后每次发请求获取带到请求头里面
     // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
     // 即使本地存在token，也有可能token是过期的，所以在响应拦截器中要对返回状态进行判断
-   
+      console.log(config)
     return config
   },
   error => {
@@ -30,16 +30,18 @@ axios.interceptors.request.use(
 
 // 添加一个响应拦截器
 axios.interceptors.response.use(function (response) {
+    console.log(response)
   console.log('响应', JSON.parse(JSON.stringify(response.data)))
     // eslint-disable-next-line no-undef
-  response.data.total && store.dispatch('app/setTotal', response.data.total)
 
   return response
 // eslint-disable-next-line no-undef
-}, err)
+}, error=>{
+    return Promise.reject(error);
+})
 
 
-export const POST = (params,url)=>{
+export const POST = (url,params)=>{
     return axios.post(`${url}`,params).then(res=>res.data)
 }
 export const GET = (params,url)=>{
@@ -56,7 +58,7 @@ export const PUT = (params,url)=>{
     return axios.put(`${url}`,params).then(res=>res.data)
 }
 
-export default [
+export {
     api_home,
     api_my
-]
+}

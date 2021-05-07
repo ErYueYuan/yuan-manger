@@ -6,6 +6,12 @@ const Mock = require('mockjs');
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
+router.post('/login',function (req,res){
+  res.json(Mock.mock({
+    status:200,
+    'token':Mock.mock('@guid')
+  }))
+})
 router.post('/data',function (req,res){
   res.json(Mock.mock({
     'status': 200,
@@ -16,10 +22,11 @@ router.post('/data',function (req,res){
       'mockAction|1': ['下载', '试听', '喜欢'],
       'zf|1-100': 1,
       'pl|1-100': 20,
-      'sex|0-1': 0,
-      'name': Mock.mock('@cname'),
-      'headImg': '@image()',
-      'city': Mock.mock('@city')
+      'sex|0-1': 0,,
+      '
+      'name': Mock.mock('@cname')headImg': '@image()',
+      'city': Mock.mock('@city'),
+      'token':Mock.mock('@guid')
 
     }]
   }))

@@ -1,26 +1,25 @@
-export default[
-    {
-        path:'/',
-        redirect:'/login',
-        meta:{
-            title:'Life'
-        },
-        component:()=>import('@/Login.vue')
+export default [{
+    path: '/',
+    redirect: '/login',
+    meta: {
+      title: 'WaWaWa'
     },
-    {
-        path:'/login',
-        name:'login',
-        meta:{
-            title:'Life'
-        },
-        component:()=>import('@/Login.vue')
+    component: () => import('@/Login.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    meta: {
+      title: 'Wa'
     },
-    {
-        path:'/home',
-        name:'home',
-        meta:{
-            title:'HOME'
-        },
-        component:()=>import('@/views/Home')
-    }
+    component: () => import('@/Login.vue')
+  },
+  {
+    path: '/home',
+    name: 'home',
+    meta: {
+      title: '让你 Wa O ~~~~'
+    },
+    component: () => import('@/views/Home')
+  }
 ]
