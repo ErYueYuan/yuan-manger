@@ -6,6 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="37f169b1-f4ec-471d-a257-5d597a25f999" name="Default Changelist" comment="增加移动适配方案">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/practice/this.js" beforeDir="false" afterPath="$PROJECT_DIR$/practice/this.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/practice/记录/工作日志.md" beforeDir="false" afterPath="$PROJECT_DIR$/practice/记录/工作日志.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/practice/记录/移动端适配方案.md" beforeDir="false" afterPath="$PROJECT_DIR$/practice/记录/移动端适配方案.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +45,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="12.19.0" />
     <property name="javascript.nodejs.core.library.typings.version" value="12.19.0" />
-    <property name="last_opened_file_path" value="G:/Fan-Hua/web/trunk" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -104,6 +107,11 @@
       <workItem from="1620269703396" duration="17200000" />
       <workItem from="1620381047352" duration="4162000" />
       <workItem from="1620458633212" duration="1950000" />
+      <workItem from="1620894344376" duration="978000" />
+      <workItem from="1621821568770" duration="170000" />
+      <workItem from="1621825128816" duration="874000" />
+      <workItem from="1621839291018" duration="141000" />
+      <workItem from="1621842000917" duration="4895000" />
     </task>
     <task id="LOCAL-00001" summary="增加移动适配方案">
       <created>1620382567513</created>
