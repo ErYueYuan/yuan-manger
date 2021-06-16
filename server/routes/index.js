@@ -22,9 +22,8 @@ router.post('/data',function (req,res){
       'mockAction|1': ['下载', '试听', '喜欢'],
       'zf|1-100': 1,
       'pl|1-100': 20,
-      'sex|0-1': 0,,
-      '
-      'name': Mock.mock('@cname')headImg': '@image()',
+      'sex|0-1': 0,
+      'name': Mock.mock('@cname'),
       'city': Mock.mock('@city'),
       'token':Mock.mock('@guid')
 
