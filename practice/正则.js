@@ -7,3 +7,9 @@ console.log(reg,s1);
 /foo.bar/.test('foo/bar')
 console.log(/foo.bar/.test('foo/bar'));
 
+//匹配替换前4后4数字
+let num = '1243345345345234324';
+console.log(num.match(/^(.{4})(?:\w+)(.{4})$/))
+let  n = num.replace(/^(.{4})(?:\w+)(.{4})$/,'$1****$2')
+console.log(n)
+
