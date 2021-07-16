@@ -204,7 +204,7 @@ this.$store.getters.方法名
 
 
     == Vuex和localstroage的区别==
-    Vuex使用组件之间存储传值，存在内存中，页面刷新没有了
+Vuex使用组件之间存储传值，存在内存中，页面刷新没有了
     localstorage 是存储在浏览器中，当浏览器关闭删除消失
 ```
 关于$emit问题
