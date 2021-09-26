@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37f169b1-f4ec-471d-a257-5d597a25f999" name="Default Changelist" comment="记录电子签名">
-      <change afterPath="$PROJECT_DIR$/practice/记录/新建项目命令.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/practice/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/practice/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/practice/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/practice/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/practice/记录/工作日志.md" beforeDir="false" afterPath="$PROJECT_DIR$/practice/记录/工作日志.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/practice/记录/未解决问题学习.md" beforeDir="false" afterPath="$PROJECT_DIR$/practice/记录/未解决问题学习.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/practice/记录/项目.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/practice/记录/新建项目命令.md" beforeDir="false" afterPath="$PROJECT_DIR$/practice/记录/新建项目命令.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,6 +169,9 @@
       <workItem from="1632476975696" duration="548000" />
       <workItem from="1632477577915" duration="12000" />
       <workItem from="1632477809663" duration="312000" />
+      <workItem from="1632643335373" duration="49000" />
+      <workItem from="1632643394979" duration="11000" />
+      <workItem from="1632643602778" duration="1704000" />
     </task>
     <task id="LOCAL-00001" summary="增加关于加载页面时执行多种事件">
       <created>1622531513922</created>
