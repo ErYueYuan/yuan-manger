@@ -32,143 +32,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a69fdd62-b4f4-4234-a9ec-5ad9e5a313e8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/api/banners.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/api/goods.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/HELP-US-OUT.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/css/font-awesome.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/css/font-awesome.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/fonts/FontAwesome.otf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/fonts/fontawesome-webfont.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/fonts/fontawesome-webfont.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/fonts/fontawesome-webfont.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/fonts/fontawesome-webfont.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/fonts/fontawesome-webfont.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/less/animated.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/less/bordered-pulled.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/less/core.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/less/fixed-width.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/less/font-awesome.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/less/icons.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/less/larger.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/less/list.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/less/mixins.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/less/path.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/less/rotated-flipped.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/less/screen-reader.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/less/stacked.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/less/variables.less" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/scss/_animated.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/scss/_bordered-pulled.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/scss/_core.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/scss/_fixed-width.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/scss/_icons.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/scss/_larger.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/scss/_list.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/scss/_mixins.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/scss/_path.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/scss/_rotated-flipped.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/scss/_screen-reader.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/scss/_stacked.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/scss/_variables.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/font-awesome/scss/font-awesome.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/iconfont/demo.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/iconfont/demo_index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/iconfont/iconfont.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/iconfont/iconfont.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/iconfont/iconfont.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/iconfont/iconfont.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/iconfont/iconfont.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/iconfont/iconfont.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/iconfont/iconfont.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/public/shoppingcar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/App.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/3.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/4.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/404.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/ic_actionbar_search_icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/ic_create_group_chat_blue.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/ic_scan_gray.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/ic_search_gray.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/ic_settings.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/ic_status_search_user.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/ic_tab_audio_active.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/ic_tab_audio_normal.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/ic_tab_broadcast_active.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/ic_tab_broadcast_normal.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/ic_tab_group_active.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/ic_tab_group_normal.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/ic_tab_home_active.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/ic_tab_home_normal.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/ic_tab_mine_active.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/ic_tab_mine_normal.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/index.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/loading.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/assets/shoppingcar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/components/Banner/index.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/components/DetailBanner/index.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/components/Header/index.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/components/Swiper/index.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/components/Tabbar/TabItem.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/components/Tabbar/index.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/main.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/modules/directive.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/modules/getImg.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/modules/rem.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/router/audio.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/router/broadcast.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/router/city.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/router/group.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/router/home.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/router/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/router/mine.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/router/moviedetail.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/store.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/store/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/store/myCar/actions.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/store/myCar/const.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/store/myCar/getters.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/store/myCar/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/store/myCar/mutations.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/store/myCar/state.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/store/myNum/actions.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/store/myNum/const.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/store/myNum/getters.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/store/myNum/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/store/myNum/mutations.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/store/myNum/state.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/stylesheets/_base.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/stylesheets/_commons.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/stylesheets/_mixins.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/stylesheets/_reset.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/stylesheets/main.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Audio/MovieBox.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Audio/MovieItem.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Audio/index.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Broadcast/MovieBox.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Broadcast/MovieItem.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Broadcast/index.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/City/index.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Group/MovieBox.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Group/MovieItem.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Group/index.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Home/Backtop.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Home/MovieBox.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Home/MovieDetail.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Home/MovieItem.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Home/index.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Mine/Car.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Mine/List-1.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Mine/List.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Mine/index.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/src/views/Notfound/index.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Douban-Movie/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Douban-Movie/yarn.lock" afterDir="false" />
+    <list default="true" id="a69fdd62-b4f4-4234-a9ec-5ad9e5a313e8" name="Default Changelist" comment="update">
+      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +50,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/Douban-Movie" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="1jrPVXBCrnQ64bpAP712BcRuwMj" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -193,8 +60,9 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../projectceshi" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -202,6 +70,8 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager" selected="Node.js.算法.js">
     <configuration name="Unnamed" type="NodeJSConfigurationType" nameIsGenerated="true" working-dir="$PROJECT_DIR$">
@@ -230,7 +100,16 @@
       <updated>1604559261986</updated>
       <workItem from="1604559263355" duration="6883000" />
       <workItem from="1604626997480" duration="70000" />
+      <workItem from="1622453291450" duration="1444000" />
     </task>
+    <task id="LOCAL-00001" summary="update">
+      <created>1622455438627</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1622455438627</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -248,86 +127,8 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
-  <component name="WindowStateProjectService">
-    <state x="248" y="69" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1604559462468">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state x="248" y="69" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.834@0.0.1536.834" timestamp="1604559462468" />
-    <state x="449" y="92" key="FileChooserDialogImpl" timestamp="1604627066094">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state x="449" y="92" key="FileChooserDialogImpl/0.0.1536.834@0.0.1536.834" timestamp="1604627066094" />
-    <state width="1075" height="192" key="GridCell.Tab.0.bottom" timestamp="1604568794629">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state width="1075" height="192" key="GridCell.Tab.0.bottom/0.0.1536.834@0.0.1536.834" timestamp="1604568794629" />
-    <state width="1075" height="192" key="GridCell.Tab.0.center" timestamp="1604568794628">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state width="1075" height="192" key="GridCell.Tab.0.center/0.0.1536.834@0.0.1536.834" timestamp="1604568794628" />
-    <state width="1075" height="192" key="GridCell.Tab.0.left" timestamp="1604568794628">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state width="1075" height="192" key="GridCell.Tab.0.left/0.0.1536.834@0.0.1536.834" timestamp="1604568794628" />
-    <state width="1075" height="192" key="GridCell.Tab.0.right" timestamp="1604568794629">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state width="1075" height="192" key="GridCell.Tab.0.right/0.0.1536.834@0.0.1536.834" timestamp="1604568794629" />
-    <state width="1075" height="240" key="GridCell.Tab.1.bottom" timestamp="1604559514095">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state width="1075" height="240" key="GridCell.Tab.1.bottom/0.0.1536.834@0.0.1536.834" timestamp="1604559514095" />
-    <state width="1075" height="240" key="GridCell.Tab.1.center" timestamp="1604559514095">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state width="1075" height="240" key="GridCell.Tab.1.center/0.0.1536.834@0.0.1536.834" timestamp="1604559514095" />
-    <state width="1075" height="240" key="GridCell.Tab.1.left" timestamp="1604559514095">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state width="1075" height="240" key="GridCell.Tab.1.left/0.0.1536.834@0.0.1536.834" timestamp="1604559514095" />
-    <state width="1075" height="240" key="GridCell.Tab.1.right" timestamp="1604559514095">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state width="1075" height="240" key="GridCell.Tab.1.right/0.0.1536.834@0.0.1536.834" timestamp="1604559514095" />
-    <state width="1075" height="240" key="GridCell.Tab.2.bottom" timestamp="1604559514096">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state width="1075" height="240" key="GridCell.Tab.2.bottom/0.0.1536.834@0.0.1536.834" timestamp="1604559514096" />
-    <state width="1075" height="240" key="GridCell.Tab.2.center" timestamp="1604559514095">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state width="1075" height="240" key="GridCell.Tab.2.center/0.0.1536.834@0.0.1536.834" timestamp="1604559514095" />
-    <state width="1075" height="240" key="GridCell.Tab.2.left" timestamp="1604559514095">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state width="1075" height="240" key="GridCell.Tab.2.left/0.0.1536.834@0.0.1536.834" timestamp="1604559514095" />
-    <state width="1075" height="240" key="GridCell.Tab.2.right" timestamp="1604559514096">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state width="1075" height="240" key="GridCell.Tab.2.right/0.0.1536.834@0.0.1536.834" timestamp="1604559514096" />
-    <state width="1075" height="240" key="GridCell.Tab.3.bottom" timestamp="1604559505559">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state width="1075" height="240" key="GridCell.Tab.3.bottom/0.0.1536.834@0.0.1536.834" timestamp="1604559505559" />
-    <state width="1075" height="240" key="GridCell.Tab.3.center" timestamp="1604559505558">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state width="1075" height="240" key="GridCell.Tab.3.center/0.0.1536.834@0.0.1536.834" timestamp="1604559505558" />
-    <state width="1075" height="240" key="GridCell.Tab.3.left" timestamp="1604559505558">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state width="1075" height="240" key="GridCell.Tab.3.left/0.0.1536.834@0.0.1536.834" timestamp="1604559505558" />
-    <state width="1075" height="240" key="GridCell.Tab.3.right" timestamp="1604559505558">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state width="1075" height="240" key="GridCell.Tab.3.right/0.0.1536.834@0.0.1536.834" timestamp="1604559505558" />
-    <state x="386" y="147" key="Vcs.Push.Dialog.v2" timestamp="1604559855392">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state x="386" y="147" key="Vcs.Push.Dialog.v2/0.0.1536.834@0.0.1536.834" timestamp="1604559855392" />
-    <state x="450" y="190" key="run.anything.popup" timestamp="1604559335704">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state x="450" y="190" key="run.anything.popup/0.0.1536.834@0.0.1536.834" timestamp="1604559335704" />
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
 </project>
