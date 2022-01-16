@@ -11,7 +11,7 @@ for (let i in obj) {
 }
 console.log(arr);
 let ar1 = Object.assign(
-  Object.create(Objcet.getPrototypeOf(obj)),
+  Object.create(Objcet.getPrototypeOf(obj)),  //通过获取原型对象,然后建立一个新对象进行合并
   obj
 );
 console.log(ar1);
